@@ -50,29 +50,42 @@ export default function App() {
         );
       }
 
-      const response = await fetch('/api/diagnose', {
+      const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
+      const response = await fetch(`${apiBaseUrl}/api/diagnose`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           image: imageData,
-          mimeType,
-          cropHint,
-          location,
-          fieldNotes,
+          zone: location || 'Cross River State',
+          crop: cropHint || 'Auto-detect',
         }),
       });
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
         throw new Error(
-          errorData.error || `Diagnosis failed with server status ${response.status}`
+          errorData.detail || errorData.error || `Diagnosis failed with server status ${response.status}`
         );
       }
 
-      const result: PathologyDiagnosis = await response.json();
-      setDiagnosis(result);
+      const data = await response.json();
+      const mappedDiagnosis: PathologyDiagnosis = {
+        is_plant: Boolean(data.is_plant),
+        crop_identified: data.crop_identified || 'Unknown',
+        health_status: (data.health_status as PathologyDiagnosis['health_status']) || 'Unknown',
+        pathology_name: data.pathology_name ?? null,
+        confidence_score: typeof data.confidence_score === 'number' ? data.confidence_score : 0,
+        severity_level: (data.severity_level as PathologyDiagnosis['severity_level']) || 'None',
+        observable_symptoms: Array.isArray(data.observable_symptoms) ? data.observable_symptoms : [],
+        immediate_containment_step: data.immediate_containment_step ?? null,
+        organic_local_remedy: data.organic_local_remedy ?? null,
+        standard_chemical_treatment: data.standard_chemical_treatment ?? null,
+        prevention_future: data.prevention_future ?? null,
+        pidgin_audio_script: data.pidgin_audio_script || '',
+      };
+      setDiagnosis(mappedDiagnosis);
     } catch (err: unknown) {
       const e = err as Error;
       console.error('Diagnosis request error:', e);
@@ -98,7 +111,7 @@ export default function App() {
       setDiagnosis(samplePreset);
       setError(null);
     } else {
-      // User uploaded or snapped image -> trigger live Gemini API analysis
+      // User uploaded or snapped image -> trigger live AgriScan API analysis
       runLiveDiagnosis(imageData, mimeType, cropHint, location, fieldNotes);
     }
   };
@@ -161,7 +174,7 @@ export default function App() {
 
           <div className="hidden md:flex items-center gap-3 text-[11px] text-primary-foreground/80">
             <span className="w-2 h-2 rounded-full bg-[#96C87C] animate-pulse" />
-            <span>Cross River Field Edition • Multimodal Gemini Active</span>
+            <span>Cross River Field Edition • AgriScan API Active</span>
           </div>
         </div>
       </div>
@@ -211,7 +224,7 @@ export default function App() {
 
               <div className="hidden sm:flex items-center gap-2 text-[11px] text-muted-foreground font-medium">
                 <span className="w-2 h-2 rounded-full bg-green-600 animate-pulse" />
-                <span>Gemini 3.8 Flash • Akpabuyo & Ikom Lab Active</span>
+                <span>AgriScan API • Calabar-Ikom Active</span>
               </div>
             </div>
           </div>
@@ -270,10 +283,10 @@ export default function App() {
                         size="sm"
                         onClick={handleReanalyzeWithAi}
                         disabled={isLoading}
-                        title="Send image to Gemini 3.8 Flash model on server"
+                        title="Send image to AgriScan API on server"
                       >
                         <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? 'animate-spin' : ''}`} />
-                        <span>{isLoading ? 'Re-analyzing...' : 'Run Live Gemini API'}</span>
+                        <span>{isLoading ? 'Re-analyzing...' : 'Run Live AgriScan API'}</span>
                       </Button>
                     </div>
 
