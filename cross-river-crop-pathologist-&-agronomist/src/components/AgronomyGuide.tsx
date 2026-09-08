@@ -62,40 +62,40 @@ export const AgronomyGuide: React.FC = () => {
   ];
 
   return (
-    <Card className="rounded-[32px] p-6 md:p-8 space-y-6 shadow-sm border-border bg-card">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-border">
+    <Card className="rounded-[32px] p-6 sm:p-8 space-y-6 shadow-2xl border border-emerald-500/30 bg-[#0D1C13]/85 backdrop-blur-md text-white">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-emerald-500/20">
         <div>
           <h3
-            className="text-xl md:text-2xl font-bold text-primary flex items-center gap-2"
+            className="text-xl sm:text-2xl font-bold text-white flex items-center gap-2.5"
             style={{ fontFamily: 'Georgia, serif' }}
           >
-            <BookOpen className="w-5 h-5 text-accent" />
+            <BookOpen className="w-6 h-6 text-[#22C55E]" />
             Cross River Tropical Crops Pathology Reference
           </h3>
-          <p className="text-xs text-muted-foreground mt-1">
+          <p className="text-xs sm:text-sm text-slate-300 mt-1">
             Key agronomic profiles, prevalent pathologies, and Nigerian treatment protocols
           </p>
         </div>
-        <Badge variant="default" className="self-start text-xs font-semibold py-1">
+        <Badge variant="default" className="self-start text-xs font-bold py-1">
           Nigeria Tropical Agriculture
         </Badge>
       </div>
 
       {/* Preparation Recipes for Rural Smallholders */}
-      <Card className="bg-muted border-border rounded-[24px] p-5 space-y-3 shadow-2xs">
-        <h4 className="text-sm font-bold text-primary flex items-center gap-2">
-          <Sparkles className="w-4 h-4 text-accent" />
+      <Card className="bg-[#0A160F] border-2 border-emerald-500/30 rounded-[24px] p-5 sm:p-6 space-y-3.5 shadow-lg text-white">
+        <h4 className="text-base font-bold text-white flex items-center gap-2">
+          <Sparkles className="w-5 h-5 text-[#22C55E]" />
           Standard Local Organic Recipes (Accessible in Nigerian Villages)
         </h4>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-foreground/80">
-          <div className="bg-background p-3.5 rounded-2xl border border-border">
-            <strong className="text-primary block mb-1">
-              1. Neem (Dongoyaro) Leaf/Seed Insecticide & Fungicide
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs sm:text-sm text-slate-200">
+          <div className="bg-black/50 p-4 rounded-2xl border border-emerald-500/25">
+            <strong className="text-[#22C55E] block mb-1.5 text-sm font-black">
+              1. Neem (Dongoyaro) Leaf/Seed Insecticide &amp; Fungicide
             </strong>
             Pound 1kg of fresh mature Dongoyaro leaves or crushed dried seeds in 5L of water. Soak for 24-48 hours. Squeeze out residue through clean cloth. Dissolve 2 tablespoons of grated local black soap (acting as surfactant/sticker). Dilute with 10L clean water and spray onto crop leaves early in the morning.
           </div>
-          <div className="bg-background p-3.5 rounded-2xl border border-border">
-            <strong className="text-primary block mb-1">
+          <div className="bg-black/50 p-4 rounded-2xl border border-emerald-500/25">
+            <strong className="text-[#22C55E] block mb-1.5 text-sm font-black">
               2. Wood Ash Protective Dusting Protocol
             </strong>
             Collect dry wood ash from domestic cooking hearths, sieve through wire mesh to remove char coals. Dust generously over yam mounds, around plantain bases, or mix 50:50 with dry sand to pour inside maize whorls. Wood ash deters chewing pests, desorbs slug/snail slime, and supplies soluble potassium.
@@ -108,40 +108,40 @@ export const AgronomyGuide: React.FC = () => {
         {guideItems.map((item, idx) => (
           <Card
             key={idx}
-            className="bg-muted border-border rounded-[24px] p-4.5 space-y-3 flex flex-col justify-between shadow-2xs hover:shadow-xs transition-shadow"
+            className="bg-[#0A160F]/90 border-2 border-emerald-500/30 rounded-[24px] p-5 space-y-3.5 flex flex-col justify-between shadow-lg text-white"
           >
             <div>
               <div className="flex items-center justify-between gap-2">
                 <h4
-                  className="text-sm font-bold text-foreground"
+                  className="text-base font-bold text-white"
                   style={{ fontFamily: 'Georgia, serif' }}
                 >
                   {item.crop}
                 </h4>
-                <Badge variant="outline" className="text-[10px] font-medium text-primary border-primary/20 bg-primary/10">
+                <Badge variant="outline" className="text-xs font-bold text-[#22C55E] border-emerald-500/40 bg-emerald-950/60">
                   Cross River
                 </Badge>
               </div>
-              <p className="text-[11px] text-muted-foreground mt-0.5">
+              <p className="text-xs text-slate-300 mt-1">
                 <strong>Main Zones:</strong> {item.focusZones}
               </p>
-              <div className="mt-2.5 text-xs text-destructive bg-destructive/10 p-2.5 rounded-xl border border-destructive/20">
-                <strong className="text-destructive block text-[10px] uppercase font-bold">
+              <div className="mt-3 text-xs sm:text-sm text-red-200 bg-red-950/40 p-3 rounded-xl border border-red-500/30">
+                <strong className="text-red-400 block text-xs uppercase font-black mb-0.5">
                   Primary Diseases/Pests:
                 </strong>
                 {item.prevalentIssues}
               </div>
             </div>
 
-            <div className="space-y-2 pt-1 text-[11px] text-foreground/80">
-              <div className="bg-background p-2.5 rounded-xl border border-border">
-                <strong className="text-primary block text-[10px] uppercase font-bold">
+            <div className="space-y-2 pt-1 text-xs text-slate-200">
+              <div className="bg-black/40 p-3 rounded-xl border border-emerald-500/20">
+                <strong className="text-[#22C55E] block text-[11px] uppercase font-black mb-0.5">
                   Organic Control:
                 </strong>
                 {item.organicStandard}
               </div>
-              <div className="bg-background p-2.5 rounded-xl border border-border">
-                <strong className="text-muted-foreground block text-[10px] uppercase font-bold">
+              <div className="bg-black/40 p-3 rounded-xl border border-emerald-500/20">
+                <strong className="text-slate-300 block text-[11px] uppercase font-black mb-0.5">
                   Standard Agrochemical:
                 </strong>
                 {item.chemicalStandard}

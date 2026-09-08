@@ -3,18 +3,18 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const alertVariants = cva(
-  "relative w-full rounded-2xl border p-4 text-xs [&>svg]:absolute [&>svg]:left-4 [&>svg]:top-4 [&>svg]:size-5 [&>svg+div]:translate-y-0 [&:has(svg)]:pl-12",
+  "relative w-full rounded-2xl border p-4 sm:p-5 text-sm sm:text-base [&>svg]:absolute [&>svg]:left-4 [&>svg]:top-4 sm:[&>svg]:top-5 [&>svg]:size-5 [&>svg+div]:translate-y-0 [&:has(svg)]:pl-12",
   {
     variants: {
       variant: {
         default:
-          "border-border bg-card text-card-foreground",
+          "border-emerald-500/30 bg-[#0D1C13]/85 text-white backdrop-blur-md shadow-lg",
         destructive:
-          "border-destructive/30 bg-destructive/10 text-destructive [&>svg]:text-destructive",
+          "border-red-500/40 bg-red-950/50 text-red-100 backdrop-blur-md shadow-lg [&>svg]:text-red-400",
         warning:
-          "border-accent/30 bg-accent/10 text-foreground [&>svg]:text-accent",
+          "border-amber-500/40 bg-amber-950/50 text-amber-100 backdrop-blur-md shadow-lg [&>svg]:text-amber-400",
         success:
-          "border-primary/30 bg-primary/10 text-foreground [&>svg]:text-primary",
+          "border-emerald-500/40 bg-emerald-950/50 text-emerald-100 backdrop-blur-md shadow-lg [&>svg]:text-[#22C55E]",
       },
     },
     defaultVariants: {
@@ -42,7 +42,7 @@ function AlertTitle({ className, ...props }: React.ComponentProps<"h5">) {
   return (
     <h5
       data-slot="alert-title"
-      className={cn("font-bold leading-none tracking-tight", className)}
+      className={cn("font-bold leading-snug tracking-tight text-base sm:text-lg text-white", className)}
       {...props}
     />
   );
@@ -52,7 +52,7 @@ function AlertDescription({ className, ...props }: React.ComponentProps<"div">) 
   return (
     <div
       data-slot="alert-description"
-      className={cn("mt-1 text-xs leading-relaxed [&_p]:leading-relaxed", className)}
+      className={cn("mt-1.5 text-sm sm:text-base leading-relaxed text-slate-200 [&_p]:leading-relaxed", className)}
       {...props}
     />
   );

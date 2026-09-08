@@ -3,24 +3,24 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const badgeVariants = cva(
-  "inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-[11px] font-bold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 [&_svg]:size-3",
+  "inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-bold transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:ring-offset-2 [&_svg]:size-3.5",
   {
     variants: {
       variant: {
         default:
-          "border-primary/20 bg-primary/10 text-primary",
+          "border-emerald-500/40 bg-emerald-950/70 text-emerald-300 shadow-sm",
         secondary:
-          "border-secondary bg-secondary text-secondary-foreground",
+          "border-white/20 bg-white/10 text-white shadow-sm",
         destructive:
-          "border-destructive/30 bg-destructive/15 text-destructive",
+          "border-red-500/40 bg-red-950/70 text-red-200 shadow-sm",
         outline:
-          "border-border bg-transparent text-foreground",
+          "border-emerald-500/40 bg-[#0A160F]/80 text-white shadow-sm",
         success:
-          "border-primary/20 bg-primary/10 text-primary",
+          "border-emerald-500/40 bg-emerald-950/70 text-[#22C55E] shadow-sm",
         warning:
-          "border-accent/30 bg-accent/15 text-accent",
+          "border-amber-500/40 bg-amber-950/70 text-amber-300 shadow-sm",
         accent:
-          "border-accent/30 bg-accent/15 text-accent",
+          "border-emerald-500/40 bg-emerald-950/70 text-emerald-300 shadow-sm",
       },
     },
     defaultVariants: {

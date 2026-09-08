@@ -189,46 +189,46 @@ export const ConnectivityStatus: React.FC<ConnectivityStatusProps> = ({
           ------------------------------------------------------------------- */}
       <div
         id="connectivity-footer-status"
-        className={`flex flex-wrap items-center gap-3 text-xs ${className}`}
+        className={`flex flex-wrap items-center gap-3.5 text-sm ${className}`}
       >
         {/* Main Status Pill (Clickable for full diagnostics modal) */}
         <button
           onClick={() => setShowModal(true)}
-          className={`group inline-flex items-center gap-2.5 px-3 py-1.5 rounded-full border text-left transition-all active:scale-95 ${
+          className={`group inline-flex items-center gap-3 px-4 py-2.5 min-h-[48px] rounded-full border text-left transition-all active:scale-95 touch-manipulation cursor-pointer ${
             isOnline
-              ? 'bg-primary/10 border-primary/30 text-primary hover:bg-primary/15'
-              : 'bg-accent/15 border-accent/40 text-accent hover:bg-accent/25'
+              ? 'bg-[#0A160F] border-emerald-500/40 text-white hover:border-[#22C55E] hover:bg-[#10281A]'
+              : 'bg-red-950/60 border-red-500/50 text-red-200 hover:bg-red-900/60'
           }`}
           title="Click to view full offline/online synchronization status"
         >
           {/* Signal Indicator Dot / Icon */}
-          <span className="relative flex h-2.5 w-2.5">
+          <span className="relative flex h-3 w-3">
             {isOnline ? (
               <>
                 <span
                   className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${
-                    isSyncing ? 'bg-primary' : 'bg-primary'
+                    isSyncing ? 'bg-[#22C55E]' : 'bg-[#22C55E]'
                   }`}
                 />
-                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-primary" />
+                <span className="relative inline-flex rounded-full h-3 w-3 bg-[#22C55E]" />
               </>
             ) : (
               <>
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-60" />
-                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-accent" />
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-60" />
+                <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500" />
               </>
             )}
           </span>
 
           {/* Status Text Label */}
-          <div className="flex items-center gap-1.5">
+          <div className="flex items-center gap-2">
             {isOnline ? (
-              <Wifi className="w-3.5 h-3.5 shrink-0 text-primary" />
+              <Wifi className="w-4 h-4 shrink-0 text-[#22C55E]" />
             ) : (
-              <WifiOff className="w-3.5 h-3.5 shrink-0 text-accent" />
+              <WifiOff className="w-4 h-4 shrink-0 text-red-400" />
             )}
 
-            <span className="font-bold text-[11px] tracking-tight">
+            <span className="font-bold text-xs sm:text-sm tracking-tight text-white">
               {isOnline ? (
                 isSyncing ? (
                   'Sync Active...'
@@ -244,29 +244,29 @@ export const ConnectivityStatus: React.FC<ConnectivityStatusProps> = ({
           {/* Network Details Chip */}
           <Badge
             variant="outline"
-            className="text-[10px] px-1.5 py-0 rounded font-mono font-bold border-current/30"
+            className="text-xs px-2 py-0.5 rounded font-mono font-bold border-emerald-500/40 text-[#22C55E] bg-black/40"
           >
             {isOnline ? effectiveType : 'LOCAL'}
           </Badge>
         </button>
 
         {/* Sync Info / Last Synced Timestamp */}
-        <div className="flex items-center gap-2 text-[11px]">
+        <div className="flex items-center gap-2 text-xs sm:text-sm">
           {isOnline ? (
-            <div className="flex items-center gap-1.5 text-muted-foreground">
-              <Clock className="w-3 h-3 text-muted-foreground/60" />
+            <div className="flex items-center gap-1.5 text-slate-300">
+              <Clock className="w-4 h-4 text-emerald-400 shrink-0" />
               <span>
-                Synced <strong className="font-semibold text-foreground">{formatSyncTime(lastSyncTime)}</strong>
+                Synced <strong className="font-bold text-white">{formatSyncTime(lastSyncTime)}</strong>
               </span>
               {pingLatency !== null && (
-                <span className="hidden sm:inline opacity-70 font-mono text-[10px]">
+                <span className="hidden sm:inline text-emerald-400 font-mono text-xs">
                   ({pingLatency}ms)
                 </span>
               )}
             </div>
           ) : (
-            <div className="flex items-center gap-1.5 text-accent font-medium">
-              <Database className="w-3 h-3 text-accent" />
+            <div className="flex items-center gap-1.5 text-red-300 font-semibold">
+              <Database className="w-4 h-4 text-red-400 shrink-0" />
               <span>Local Diagnostic Cache Enabled</span>
             </div>
           )}
@@ -277,16 +277,16 @@ export const ConnectivityStatus: React.FC<ConnectivityStatusProps> = ({
             size="icon"
             onClick={triggerSync}
             disabled={isSyncing || !isOnline}
-            className="h-7 w-7 rounded-lg text-muted-foreground hover:text-foreground"
+            className="min-h-[48px] min-w-[48px] rounded-xl text-slate-300 hover:text-white hover:bg-white/10"
             title="Check connectivity and sync now"
           >
-            <RefreshCw className={`w-3.5 h-3.5 ${isSyncing ? 'animate-spin text-primary' : ''}`} />
+            <RefreshCw className={`w-4 h-4 ${isSyncing ? 'animate-spin text-[#22C55E]' : ''}`} />
           </Button>
         </div>
 
         {/* Simulated offline warning badge (when developer/tester has simulation active) */}
         {isSimulatedOffline && (
-          <Badge variant="outline" className="text-[10px] font-bold border-destructive/40 text-destructive bg-destructive/10">
+          <Badge variant="outline" className="text-xs font-bold border-red-500/50 text-red-300 bg-red-950/60">
             SIMULATED
           </Badge>
         )}
@@ -300,26 +300,26 @@ export const ConnectivityStatus: React.FC<ConnectivityStatusProps> = ({
           aria-label="Offline Mode Notification"
           className="fixed bottom-4 left-4 right-4 sm:left-auto sm:right-6 sm:max-w-md z-40 animate-in slide-in-from-bottom-3 duration-300 pointer-events-auto"
         >
-          <div className="bg-foreground text-background rounded-2xl p-3.5 shadow-2xl border border-accent/40 flex items-start justify-between gap-3">
-            <div className="flex items-start gap-2.5">
-              <div className="w-8 h-8 rounded-xl bg-accent/20 text-accent flex items-center justify-center shrink-0 mt-0.5 border border-accent/30">
-                <WifiOff className="w-4 h-4" />
+          <div className="bg-[#0A160F] text-white rounded-2xl p-4 shadow-2xl border-2 border-red-500/50 flex items-start justify-between gap-3.5 backdrop-blur-md">
+            <div className="flex items-start gap-3">
+              <div className="w-10 h-10 rounded-xl bg-red-500/20 text-red-400 flex items-center justify-center shrink-0 mt-0.5 border border-red-500/40">
+                <WifiOff className="w-5 h-5" />
               </div>
-              <div className="space-y-0.5">
+              <div className="space-y-1">
                 <div className="flex items-center gap-2">
-                  <span className="font-bold text-xs text-accent">
+                  <span className="font-bold text-sm text-red-400">
                     Offline Field Mode Active
                   </span>
-                  <span className="text-[10px] px-1.5 py-0.2 rounded bg-accent/30 text-background font-mono">
+                  <span className="text-xs px-2 py-0.5 rounded bg-red-500/30 text-white font-mono font-bold">
                     Device Cache
                   </span>
                 </div>
-                <p className="text-[11px] opacity-90 leading-tight">
+                <p className="text-xs text-slate-200 leading-relaxed">
                   No internet connection in your field. AgriScan is running locally on your device. Offline guides &amp; preset scans remain active.
                 </p>
                 <button
                   onClick={() => setShowModal(true)}
-                  className="text-[11px] font-bold text-accent hover:underline pt-1 inline-block"
+                  className="text-xs font-bold text-emerald-400 hover:text-[#22C55E] hover:underline pt-1 inline-block cursor-pointer"
                 >
                   View Offline Capabilities &amp; Sync Guide →
                 </button>
@@ -328,10 +328,10 @@ export const ConnectivityStatus: React.FC<ConnectivityStatusProps> = ({
 
             <button
               onClick={() => setDismissFloatingPill(true)}
-              className="text-muted-foreground hover:text-foreground p-1 rounded-lg transition-colors shrink-0"
+              className="text-slate-400 hover:text-white p-1 rounded-lg transition-colors shrink-0 cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center"
               title="Dismiss warning banner"
             >
-              <X className="w-4 h-4" />
+              <X className="w-5 h-5" />
             </button>
           </div>
         </aside>
@@ -341,28 +341,28 @@ export const ConnectivityStatus: React.FC<ConnectivityStatusProps> = ({
           DETAILED CONNECTIVITY & OFFLINE SYNC MODAL
           ------------------------------------------------------------------- */}
       {showModal && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 animate-in fade-in">
-          <Card className="bg-card rounded-[28px] max-w-lg w-full p-6 sm:p-7 shadow-2xl border-border space-y-5">
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in">
+          <Card className="bg-[#0D1C13]/95 backdrop-blur-md rounded-[28px] max-w-lg w-full p-6 sm:p-7 shadow-2xl border-2 border-emerald-500/30 text-white space-y-5">
             {/* Modal Header */}
-            <div className="flex items-center justify-between pb-3 border-b border-border">
+            <div className="flex items-center justify-between pb-3 border-b border-emerald-500/20">
               <div className="flex items-center gap-3">
                 <div
-                  className={`w-10 h-10 rounded-xl flex items-center justify-center ${
+                  className={`w-11 h-11 rounded-xl flex items-center justify-center ${
                     isOnline
-                      ? 'bg-primary/10 text-primary'
-                      : 'bg-accent/15 text-accent'
+                      ? 'bg-emerald-500/20 text-[#22C55E] border border-emerald-500/40'
+                      : 'bg-red-500/20 text-red-400 border border-red-500/40'
                   }`}
                 >
-                  {isOnline ? <Wifi className="w-5 h-5" /> : <WifiOff className="w-5 h-5" />}
+                  {isOnline ? <Wifi className="w-6 h-6" /> : <WifiOff className="w-6 h-6" />}
                 </div>
                 <div>
                   <h3
-                    className="text-base sm:text-lg font-bold text-foreground"
+                    className="text-lg sm:text-xl font-bold text-white"
                     style={{ fontFamily: 'Georgia, serif' }}
                   >
                     Connectivity &amp; Sync Status
                   </h3>
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-xs text-slate-300">
                     Cross River Smallholder Field Synchronization
                   </p>
                 </div>
@@ -371,7 +371,7 @@ export const ConnectivityStatus: React.FC<ConnectivityStatusProps> = ({
                 variant="ghost"
                 size="icon"
                 onClick={() => setShowModal(false)}
-                className="rounded-xl text-muted-foreground hover:text-foreground"
+                className="rounded-xl text-slate-300 hover:text-white min-h-[44px] min-w-[44px]"
               >
                 <X className="w-5 h-5" />
               </Button>
@@ -379,42 +379,42 @@ export const ConnectivityStatus: React.FC<ConnectivityStatusProps> = ({
 
             {/* Current Connection Status Box */}
             <div
-              className={`p-4 rounded-2xl border ${
+              className={`p-4 rounded-2xl border-2 ${
                 isOnline
-                  ? 'bg-primary/5 border-primary/20'
-                  : 'bg-accent/5 border-accent/20'
+                  ? 'bg-[#0A160F] border-emerald-500/30'
+                  : 'bg-red-950/30 border-red-500/40'
               }`}
             >
               <div className="flex items-center justify-between mb-2">
-                <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                <span className="text-xs font-bold uppercase tracking-wider text-emerald-400">
                   Current Network State
                 </span>
                 <Badge
                   variant={isOnline ? 'default' : 'warning'}
-                  className="font-bold"
+                  className="font-bold text-xs"
                 >
                   {isOnline ? 'Online & Synchronized' : 'Offline Field Mode'}
                 </Badge>
               </div>
 
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 pt-2 text-xs">
-                <div className="bg-card p-2.5 rounded-xl border border-border">
-                  <span className="block text-[10px] text-muted-foreground">Network Type</span>
-                  <strong className="text-foreground font-mono">
+                <div className="bg-black/50 p-2.5 rounded-xl border border-emerald-500/20">
+                  <span className="block text-[11px] text-slate-400">Network Type</span>
+                  <strong className="text-white font-mono text-sm">
                     {effectiveType}
                   </strong>
                 </div>
 
-                <div className="bg-card p-2.5 rounded-xl border border-border">
-                  <span className="block text-[10px] text-muted-foreground">Server Latency</span>
-                  <strong className="text-foreground font-mono">
+                <div className="bg-black/50 p-2.5 rounded-xl border border-emerald-500/20">
+                  <span className="block text-[11px] text-slate-400">Server Latency</span>
+                  <strong className="text-white font-mono text-sm">
                     {pingLatency !== null ? `${pingLatency} ms` : 'N/A'}
                   </strong>
                 </div>
 
-                <div className="bg-card p-2.5 rounded-xl border border-border col-span-2 sm:col-span-1">
-                  <span className="block text-[10px] text-muted-foreground">Last Synced</span>
-                  <strong className="text-foreground">
+                <div className="bg-black/50 p-2.5 rounded-xl border border-emerald-500/20 col-span-2 sm:col-span-1">
+                  <span className="block text-[11px] text-slate-400">Last Synced</span>
+                  <strong className="text-white text-sm">
                     {formatSyncTime(lastSyncTime)}
                   </strong>
                 </div>
@@ -422,68 +422,68 @@ export const ConnectivityStatus: React.FC<ConnectivityStatusProps> = ({
             </div>
 
             {/* How Offline Works for Farmers in Cross River */}
-            <div className="space-y-2.5 text-xs text-muted-foreground">
-              <h4 className="font-bold text-foreground flex items-center gap-1.5 text-sm">
-                <Smartphone className="w-4 h-4 text-primary" />
+            <div className="space-y-3 text-xs sm:text-sm text-slate-200">
+              <h4 className="font-bold text-white flex items-center gap-2 text-sm sm:text-base">
+                <Smartphone className="w-5 h-5 text-[#22C55E]" />
                 How AgriScan Works in Remote Farms:
               </h4>
 
-              <div className="space-y-2">
-                <div className="flex items-start gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+              <div className="space-y-2.5">
+                <div className="flex items-start gap-2.5">
+                  <CheckCircle2 className="w-4 h-4 text-[#22C55E] shrink-0 mt-0.5" />
                   <p>
-                    <strong className="text-foreground">Zero-Data Offline Guides:</strong> The complete Cross River agronomy guide (Cassava, Cocoa, Oil Palm, Maize, Yam) is cached locally on your device.
+                    <strong className="text-white">Zero-Data Offline Guides:</strong> The complete Cross River agronomy guide (Cassava, Cocoa, Oil Palm, Maize, Yam) is cached locally on your device.
                   </p>
                 </div>
 
-                <div className="flex items-start gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                <div className="flex items-start gap-2.5">
+                  <CheckCircle2 className="w-4 h-4 text-[#22C55E] shrink-0 mt-0.5" />
                   <p>
-                    <strong className="text-foreground">Local Treatment Library:</strong> Organic neem leaf solutions, wood ash treatments, and recommended fungicides display immediately without loading from the cloud.
+                    <strong className="text-white">Local Treatment Library:</strong> Organic neem leaf solutions, wood ash treatments, and recommended fungicides display immediately without loading from the cloud.
                   </p>
                 </div>
 
-                <div className="flex items-start gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                <div className="flex items-start gap-2.5">
+                  <CheckCircle2 className="w-4 h-4 text-[#22C55E] shrink-0 mt-0.5" />
                   <p>
-                    <strong className="text-foreground">Automatic Sync on Reconnection:</strong> As soon as you step back into 2G/3G/4G coverage in Ikom, Calabar, or Ogoja, the app auto-syncs with Gemini 3.8 Flash live models.
+                    <strong className="text-white">Automatic Sync on Reconnection:</strong> As soon as you step back into 2G/3G/4G coverage in Ikom, Calabar, or Ogoja, the app auto-syncs with Gemini 3.8 Flash live models.
                   </p>
                 </div>
               </div>
             </div>
 
             {/* Actions */}
-            <div className="pt-2 border-t border-border flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+            <div className="pt-2 border-t border-emerald-500/20 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
               {/* Simulation button for demo / testing */}
               <Button
                 type="button"
                 variant={isSimulatedOffline ? 'destructive' : 'outline'}
-                size="sm"
+                size="default"
                 onClick={toggleSimulatedOffline}
-                className="text-xs font-bold"
+                className="min-h-[48px] text-sm font-bold"
               >
                 {isSimulatedOffline ? 'Disable Offline Simulation' : 'Simulate Offline Mode'}
               </Button>
 
-              <div className="flex items-center gap-2">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
                 <Button
                   type="button"
                   variant="default"
-                  size="sm"
+                  size="default"
                   onClick={triggerSync}
                   disabled={isSyncing || !isOnline}
-                  className="flex-1 sm:flex-none gap-2 text-xs font-bold shadow-xs"
+                  className="gap-2 min-h-[48px] text-base font-black bg-[#22C55E] text-[#060D09]"
                 >
-                  <RefreshCw className={`w-3.5 h-3.5 ${isSyncing ? 'animate-spin' : ''}`} />
+                  <RefreshCw className={`w-4 h-4 ${isSyncing ? 'animate-spin' : ''}`} />
                   <span>{isSyncing ? 'Synchronizing...' : 'Sync with Lab Server'}</span>
                 </Button>
 
                 <Button
                   type="button"
                   variant="secondary"
-                  size="sm"
+                  size="default"
                   onClick={() => setShowModal(false)}
-                  className="text-xs font-bold"
+                  className="min-h-[48px] text-base font-bold"
                 >
                   Close
                 </Button>

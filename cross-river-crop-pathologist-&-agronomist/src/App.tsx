@@ -162,30 +162,31 @@ export default function App() {
   };
 
   return (
-    <div className={`min-h-screen ${activeView === 'landing' ? 'bg-[#0B150E] text-slate-100' : 'bg-background text-foreground'} flex flex-col font-sans selection:bg-accent selection:text-accent-foreground`}>
+    <div className="min-h-screen bg-[#060D09] text-white flex flex-col font-sans selection:bg-[#22C55E] selection:text-[#060D09]">
       {activeView === 'landing' ? (
         <LandingPage onStart={handleStartScanner} />
       ) : (
-        <div className="flex-1 flex flex-col">
+        <div className="flex-1 flex flex-col bg-[#060D09]">
           <Header />
 
           {/* Navigation Sub-header */}
-          <div className="border-b border-border bg-secondary/60">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 flex items-center justify-between">
+          <div className="border-b border-emerald-500/20 bg-[#0A160F]/80 backdrop-blur-md">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Button
                   id="btn-back-landing"
                   variant="ghost"
-                  size="sm"
+                  size="default"
                   onClick={() => setActiveView('landing')}
+                  className="min-h-[48px] text-base font-bold text-white hover:text-[#22C55E] hover:bg-white/10 gap-2"
                 >
-                  <ArrowLeft className="w-3.5 h-3.5 mr-2" />
+                  <ArrowLeft className="w-4 h-4" />
                   <span>Return to Landing Page</span>
                 </Button>
               </div>
 
-              <div className="hidden sm:flex items-center gap-2 text-[11px] text-muted-foreground font-medium">
-                <span className="w-2 h-2 rounded-full bg-green-600 animate-pulse" />
+              <div className="hidden sm:flex items-center gap-2 text-xs text-emerald-300 font-bold bg-emerald-950/60 px-3 py-1.5 rounded-full border border-emerald-500/30">
+                <span className="w-2.5 h-2.5 rounded-full bg-[#22C55E] animate-pulse" />
                 <span>AgriScan API • Calabar-Ikom Active</span>
               </div>
             </div>
@@ -195,45 +196,50 @@ export default function App() {
           <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8 space-y-6">
             <div id="scanner" className="space-y-6">
               {/* Context Notice / Operational rules explanation */}
-              <Alert>
-                <Info className="w-4 h-4" />
-                <AlertTitle>Operational Rules Active:</AlertTitle>
-                <AlertDescription>
+              <Alert className="border-2 border-emerald-500/30 bg-[#0D1C13]/85 text-white backdrop-blur-md shadow-xl">
+                <Info className="w-5 h-5 text-[#22C55E]" />
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                  <AlertTitle className="text-base font-bold text-white">Operational Rules Active:</AlertTitle>
+                  <Badge variant="default" className="self-start sm:self-auto text-xs font-bold py-1">
+                    Tropical Agrologist AI
+                  </Badge>
+                </div>
+                <AlertDescription className="text-sm text-slate-200 mt-2">
                   1. Verification first (is_plant check) • 2. Cross River local treatments (Dongoyaro neem, wood ash, Nigerian agrochemicals) • 3. Direct Nigerian Pidgin audio for rural field hands • 4. Strictly typed JSON schema.
                 </AlertDescription>
-                <Badge variant="default" className="absolute top-4 right-4">
-                  Tropical Agrologist AI
-                </Badge>
               </Alert>
 
               {/* Error Message Display */}
               {error && (
                 <Alert variant="destructive">
                   <AlertCircle className="w-5 h-5" />
-                  <AlertTitle>Diagnostic Analysis Error</AlertTitle>
-                  <AlertDescription>{error}</AlertDescription>
-                  {lastSelectedParams && (
-                    <Button
-                      variant="accent"
-                      size="sm"
-                      onClick={handleReanalyzeWithAi}
-                      className="absolute top-4 right-4"
-                    >
-                      Retry
-                    </Button>
-                  )}
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <AlertTitle className="text-base font-bold">Diagnostic Analysis Error</AlertTitle>
+                    {lastSelectedParams && (
+                      <Button
+                        variant="default"
+                        size="default"
+                        onClick={handleReanalyzeWithAi}
+                        className="min-h-[48px] text-base font-black bg-[#22C55E] text-[#060D09]"
+                      >
+                        Retry Analysis
+                      </Button>
+                    )}
+                  </div>
+                  <AlertDescription className="text-sm mt-2">{error}</AlertDescription>
                 </Alert>
               )}
 
               {/* Main view: either Uploader or Diagnosis Result */}
               {diagnosis ? (
                 <div className="space-y-6">
-                  <div className="flex items-center justify-between">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                     <Button
                       id="btn-back-to-upload"
                       variant="ghost"
-                      size="sm"
+                      size="default"
                       onClick={handleReset}
+                      className="min-h-[48px] text-base font-bold text-white hover:text-[#22C55E] hover:bg-white/10"
                     >
                       ← Upload or choose another crop
                     </Button>
@@ -241,12 +247,13 @@ export default function App() {
                     <Button
                       id="btn-force-rerun-gemini"
                       variant="secondary"
-                      size="sm"
+                      size="default"
                       onClick={handleReanalyzeWithAi}
                       disabled={isLoading}
                       title="Send image to AgriScan API on server"
+                      className="min-h-[48px] text-base font-bold border-2 border-emerald-500/40 text-white hover:border-[#22C55E]"
                     >
-                      <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? 'animate-spin' : ''}`} />
+                      <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
                       <span>{isLoading ? 'Re-analyzing...' : 'Run Live AgriScan API'}</span>
                     </Button>
                   </div>
@@ -267,14 +274,14 @@ export default function App() {
             </div>
           </main>
 
-          {/* Footer matching Natural Tones Theme with Persistent Connectivity & Sync Status */}
-          <footer className="px-6 md:px-8 py-4 bg-secondary border-t border-border flex flex-col md:flex-row justify-between items-center gap-4 text-muted-foreground">
-            <ConnectivityStatus theme="natural" />
+          {/* Footer matching Unified Dark Obsidian Theme with Persistent Connectivity & Sync Status */}
+          <footer className="px-6 md:px-8 py-5 bg-[#060D09] border-t border-emerald-500/20 flex flex-col md:flex-row justify-between items-center gap-4 text-slate-300">
+            <ConnectivityStatus theme="dark" />
             <div className="flex items-center gap-4 text-center sm:text-right">
-              <p className="text-[10px] opacity-70 font-mono">
+              <p className="text-xs opacity-80 font-mono text-slate-400">
                 REF_ID: CR-8812-CAS-01 | CALABAR-IKOM NODE
               </p>
-              <p className="text-[10px] opacity-80 text-primary font-semibold">
+              <p className="text-xs text-[#22C55E] font-bold">
                 Cross River Smallholder Edition
               </p>
             </div>

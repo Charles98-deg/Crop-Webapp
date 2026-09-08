@@ -96,15 +96,18 @@ void main() {
     lit = mix(lit, uGridColor, line * uGridOpacity * (0.45 + diff * 0.55));
   }
 
-  vec2 p = (vUv - 0.5) * uRes;
-  vec2 halfRes = uRes * 0.5;
-  float r = min(uRadius, min(halfRes.x, halfRes.y));
-  vec2 q = abs(p) - (halfRes - r);
-  float sd = length(max(q, 0.0)) + min(max(q.x, q.y), 0.0) - r;
-  float alpha = 1.0 - smoothstep(-1.25, 1.25, sd);
-  if (alpha <= 0.002) discard;
-
-  gl_FragColor = vec4(lit, alpha);
+  if (uRadius > 0.1) {
+    vec2 p = (vUv - 0.5) * uRes;
+    vec2 halfRes = uRes * 0.5;
+    float r = min(uRadius, min(halfRes.x, halfRes.y));
+    vec2 q = abs(p) - (halfRes - r);
+    float sd = length(max(q, 0.0)) + min(max(q.x, q.y), 0.0) - r;
+    float alpha = 1.0 - smoothstep(-1.25, 1.25, sd);
+    if (alpha <= 0.002) discard;
+    gl_FragColor = vec4(lit, alpha);
+  } else {
+    gl_FragColor = vec4(lit, 1.0);
+  }
 }
 `;
 
@@ -135,6 +138,7 @@ export interface ElasticMeshProps extends React.HTMLAttributes<HTMLDivElement> {
   pull?: number;
   wobble?: number;
   tilt?: number;
+  fit?: number;
   shading?: number;
   resolution?: number;
   interaction?: 'hover' | 'drag';
@@ -159,6 +163,7 @@ const ElasticMesh: React.FC<ElasticMeshProps> = ({
   pull = 0.4,
   wobble = 5,
   tilt = 14,
+  fit = 1.0,
   shading = 0.5,
   resolution = 25,
   interaction = 'hover',
@@ -184,6 +189,7 @@ const ElasticMesh: React.FC<ElasticMeshProps> = ({
     pull,
     wobble,
     tilt,
+    fit,
     shading,
     interaction,
     enabled
@@ -204,6 +210,7 @@ const ElasticMesh: React.FC<ElasticMeshProps> = ({
     pull,
     wobble,
     tilt,
+    fit,
     shading,
     interaction,
     enabled
@@ -301,7 +308,7 @@ const ElasticMesh: React.FC<ElasticMeshProps> = ({
         uAspect: { value: 1 },
         uTilt: { value: (tilt * Math.PI) / 180 },
         uDist: { value: DIST },
-        uFit: { value: FIT }
+        uFit: { value: fit }
       }
     });
 
@@ -348,10 +355,11 @@ const ElasticMesh: React.FC<ElasticMeshProps> = ({
       const t = ((propsRef.current.tilt || 0) * Math.PI) / 180;
       const ct = Math.cos(t);
       const st = Math.sin(t);
-      const a = clipY / (ct * FIT * DIST);
+      const fitVal = propsRef.current.fit || 1.0;
+      const a = clipY / (ct * fitVal * DIST);
       const py = (a * DIST) / (1 + a * st);
       const persp = DIST / (DIST - py * st);
-      pointer.tx = (clipX * aspect) / (persp * FIT);
+      pointer.tx = (clipX * aspect) / (persp * fitVal);
       pointer.ty = py;
     }
 
@@ -571,6 +579,7 @@ const ElasticMesh: React.FC<ElasticMeshProps> = ({
       program.uniforms.uShading.value = p.shading;
       program.uniforms.uRadius.value = p.borderRadius;
       program.uniforms.uTilt.value = (p.tilt * Math.PI) / 180;
+      program.uniforms.uFit.value = p.fit || 1.0;
       program.uniforms.uColor1.value = hexToRgb(p.color1);
       program.uniforms.uColor2.value = hexToRgb(p.color2);
       program.uniforms.uHighlight.value = hexToRgb(p.highlight);

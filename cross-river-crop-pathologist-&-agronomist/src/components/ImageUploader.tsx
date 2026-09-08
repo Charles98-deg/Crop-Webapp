@@ -170,22 +170,25 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
   return (
     <div className="w-full space-y-6">
       {/* Upper Control Bar: Region & Crop Selector */}
-      <Card className="rounded-[24px] p-5 md:p-6 shadow-sm border-border bg-card">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-5">
+      <Card className="rounded-[28px] p-5 sm:p-7 shadow-xl border-emerald-500/30 bg-[#0D1C13]/80 backdrop-blur-md">
+        <div className="flex flex-col md:flex-row md:items-start justify-between gap-6">
           {/* Location Selector */}
-          <div className="flex-1">
-            <label className="block text-xs font-bold text-primary mb-2 uppercase tracking-wider flex items-center gap-1.5">
-              <MapPin className="w-3.5 h-3.5 text-accent" />
+          <div className="flex-1 w-full">
+            <label
+              htmlFor="select-cross-river-zone"
+              className="block text-sm font-bold text-emerald-400 mb-2.5 uppercase tracking-wider flex items-center gap-2"
+            >
+              <MapPin className="w-4 h-4 text-[#22C55E]" />
               Cross River Agricultural Zone
             </label>
             <select
               id="select-cross-river-zone"
               value={selectedZone}
               onChange={(e) => setSelectedZone(e.target.value)}
-              className="w-full bg-muted border border-input text-foreground text-sm rounded-xl px-3.5 py-2.5 focus:outline-none focus:border-primary transition-colors"
+              className="w-full min-h-[48px] h-12 bg-[#0A160F] border-2 border-emerald-500/50 text-white text-base font-semibold rounded-xl px-4 py-3 focus:outline-none focus:border-[#22C55E] focus:ring-2 focus:ring-[#22C55E]/40 transition-colors cursor-pointer shadow-inner"
             >
               {CROSS_RIVER_ZONES.map((zone) => (
-                <option key={zone} value={zone}>
+                <option key={zone} value={zone} className="bg-[#0A160F] text-white py-2">
                   {zone}
                 </option>
               ))}
@@ -193,23 +196,25 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
           </div>
 
           {/* Crop Selector */}
-          <div className="flex-1">
-            <label className="block text-xs font-bold text-primary mb-2 uppercase tracking-wider">
+          <div className="flex-1 w-full">
+            <label className="block text-sm font-bold text-emerald-400 mb-2.5 uppercase tracking-wider">
               Target West African Crop
             </label>
-            <div className="flex flex-wrap gap-1.5">
+            <div className="flex flex-wrap gap-2.5">
               {REGIONAL_CROPS.map((crop) => (
-                <Button
+                <button
                   key={crop}
                   id={`btn-crop-select-${crop.toLowerCase().replace(/\s+/g, '-')}`}
                   type="button"
-                  variant={selectedCrop === crop ? 'default' : 'outline'}
-                  size="sm"
                   onClick={() => setSelectedCrop(crop)}
-                  className="rounded-xl text-xs font-semibold h-8"
+                  className={`min-h-[48px] px-5 py-3 rounded-2xl text-base font-bold transition-all border-2 active:scale-95 touch-manipulation cursor-pointer flex items-center justify-center ${
+                    selectedCrop === crop
+                      ? 'bg-[#22C55E] text-[#060D09] border-[#22C55E] shadow-[0_0_20px_rgba(34,197,94,0.5)] font-black'
+                      : 'bg-[#0A160F]/90 text-white border-emerald-500/40 hover:border-[#22C55E] hover:text-[#22C55E] hover:bg-[#10281A]'
+                  }`}
                 >
                   {crop}
-                </Button>
+                </button>
               ))}
             </div>
           </div>
@@ -225,12 +230,12 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
         }}
         onDragLeave={() => setDragOver(false)}
         onDrop={handleDrop}
-        className={`relative rounded-[32px] border-2 border-dashed transition-all p-6 md:p-8 text-center bg-card shadow-sm ${
+        className={`relative rounded-[32px] border-2 border-dashed transition-all p-6 sm:p-10 text-center bg-[#0D1C13]/70 backdrop-blur-md shadow-2xl min-h-[220px] flex flex-col items-center justify-center ${
           dragOver
-            ? 'border-accent bg-muted'
+            ? 'border-[#22C55E] bg-[#122A1C]/90 shadow-[0_0_30px_rgba(34,197,94,0.3)]'
             : selectedImage
-            ? 'border-primary/60'
-            : 'border-muted-foreground/40 hover:border-primary'
+            ? 'border-[#22C55E]/70'
+            : 'border-emerald-500/40 hover:border-[#22C55E]'
         }`}
       >
         {/* Hidden inputs */}
@@ -262,8 +267,8 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
 
         {/* Live Video Camera Viewfinder Mode */}
         {cameraActive ? (
-          <div className="max-w-md mx-auto space-y-4">
-            <div className="relative rounded-[24px] overflow-hidden aspect-video bg-black border-2 border-primary shadow-xl">
+          <div className="w-full max-w-md mx-auto space-y-4">
+            <div className="relative rounded-[24px] overflow-hidden aspect-video bg-black border-2 border-[#22C55E] shadow-2xl">
               <video
                 ref={videoRef}
                 autoPlay
@@ -271,16 +276,16 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
                 muted
                 className="w-full h-full object-cover"
               />
-              <div className="absolute inset-0 border-2 border-accent/60 rounded-[24px] pointer-events-none flex items-center justify-center">
-                <div className="w-48 h-48 border border-white/60 border-dashed rounded-xl" />
+              <div className="absolute inset-0 border-2 border-[#22C55E]/60 rounded-[24px] pointer-events-none flex items-center justify-center">
+                <div className="w-48 h-48 border-2 border-white/70 border-dashed rounded-2xl animate-pulse" />
               </div>
             </div>
-            <div className="flex items-center justify-center gap-3">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 w-full">
               <Button
                 id="btn-shutter-snap"
                 variant="default"
                 onClick={capturePhoto}
-                className="gap-2 px-6 py-3 font-bold shadow-md"
+                className="gap-2.5 px-7 py-3.5 min-h-[48px] text-base font-black w-full sm:w-auto shadow-lg shadow-emerald-950/60"
               >
                 <Camera className="w-5 h-5" />
                 <span>Snap Leaf / Stem Photo</span>
@@ -289,7 +294,7 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
                 id="btn-cancel-camera"
                 variant="secondary"
                 onClick={stopCamera}
-                className="px-4 py-3 font-medium"
+                className="px-6 py-3.5 min-h-[48px] text-base font-bold w-full sm:w-auto"
               >
                 Cancel
               </Button>
@@ -297,17 +302,17 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
           </div>
         ) : selectedImage ? (
           /* Image Preview Mode */
-          <div className="max-w-lg mx-auto space-y-4">
-            <div className="relative rounded-[24px] overflow-hidden max-h-80 mx-auto border-2 border-border bg-muted flex items-center justify-center shadow-inner">
+          <div className="w-full max-w-lg mx-auto space-y-5">
+            <div className="relative rounded-[28px] overflow-hidden max-h-84 mx-auto border-2 border-emerald-500/40 bg-[#0A160F] flex items-center justify-center shadow-2xl">
               <img
                 src={selectedImage}
                 alt="Selected crop preview"
-                className="max-h-72 w-auto object-contain rounded-xl"
+                className="max-h-76 w-auto object-contain rounded-2xl"
               />
               <button
                 id="btn-remove-selected-image"
                 onClick={() => setSelectedImage(null)}
-                className="absolute top-3 right-3 p-1.5 rounded-full bg-black/70 hover:bg-accent text-white transition-colors shadow-sm"
+                className="absolute top-3 right-3 p-2 rounded-full bg-black/80 hover:bg-red-600 text-white transition-colors shadow-lg min-h-[44px] min-w-[44px] flex items-center justify-center cursor-pointer"
                 title="Remove image"
               >
                 <X className="w-5 h-5" />
@@ -315,8 +320,11 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
             </div>
 
             {/* Field hand notes optional input */}
-            <div className="text-left">
-              <label className="block text-xs font-bold text-primary mb-1 uppercase tracking-wider">
+            <div className="text-left w-full">
+              <label
+                htmlFor="input-field-hand-notes"
+                className="block text-sm font-bold text-emerald-400 mb-2 uppercase tracking-wider"
+              >
                 Field Hand Observations (Optional):
               </label>
               <input
@@ -325,29 +333,29 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
                 value={fieldNotes}
                 onChange={(e) => setFieldNotes(e.target.value)}
                 placeholder="e.g. Started 5 days ago after heavy rainfall; yellowing spreads upwards"
-                className="w-full bg-muted border border-input text-foreground text-xs rounded-xl px-3.5 py-2.5 focus:outline-none focus:border-primary"
+                className="w-full min-h-[48px] bg-[#0A160F] border-2 border-emerald-500/40 text-white text-base rounded-xl px-4 py-3 focus:outline-none focus:border-[#22C55E] placeholder:text-slate-400 shadow-inner"
               />
             </div>
 
             {/* Action buttons */}
-            <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3.5 pt-2 w-full">
               <Button
                 id="btn-run-pathology-diagnosis"
                 variant="default"
                 onClick={triggerDiagnose}
                 disabled={isLoading}
-                className="gap-2 px-7 py-3 font-bold text-sm shadow-md"
+                className="gap-2.5 px-8 py-3.5 min-h-[52px] text-base sm:text-lg font-black shadow-[0_0_25px_rgba(34,197,94,0.5)] border-2 border-emerald-300/60 rounded-2xl w-full sm:w-auto"
               >
                 {isLoading ? (
                   <>
-                    <RefreshCw className="w-4 h-4 animate-spin text-primary-foreground" />
+                    <RefreshCw className="w-5 h-5 animate-spin text-[#060D09]" />
                     <span>Analyzing Pathology with Gemini AI...</span>
                   </>
                 ) : (
                   <>
-                    <Sparkles className="w-4 h-4 text-accent" />
-                    <span>Diagnose Crop Health & Generate Protocol</span>
-                    <ChevronRight className="w-4 h-4" />
+                    <Sparkles className="w-5 h-5 text-[#060D09]" />
+                    <span>Diagnose Crop Health &amp; Generate Protocol</span>
+                    <ChevronRight className="w-5 h-5" />
                   </>
                 )}
               </Button>
@@ -357,7 +365,7 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
                 variant="secondary"
                 onClick={() => fileInputRef.current?.click()}
                 disabled={isLoading}
-                className="px-4 py-3 font-medium text-xs"
+                className="px-6 py-3.5 min-h-[48px] text-base font-bold w-full sm:w-auto rounded-2xl"
               >
                 Change Photo
               </Button>
@@ -365,39 +373,40 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
           </div>
         ) : (
           /* Empty Dropzone State */
-          <div className="max-w-md mx-auto space-y-4 py-4">
-            <div className="w-16 h-16 rounded-2xl bg-secondary border border-border text-primary flex items-center justify-center mx-auto shadow-inner">
-              <Upload className="w-8 h-8" />
+          <div className="max-w-md mx-auto space-y-5 py-3 w-full">
+            <div className="w-18 h-18 rounded-3xl bg-emerald-500/20 border-2 border-emerald-500/40 text-[#22C55E] flex items-center justify-center mx-auto shadow-[0_0_20px_rgba(34,197,94,0.25)]">
+              <Upload className="w-9 h-9" />
             </div>
 
             <div>
               <h3
-                className="text-2xl font-bold text-primary"
+                className="text-2xl sm:text-3xl font-bold text-white tracking-tight"
                 style={{ fontFamily: 'Georgia, serif' }}
               >
                 Upload or Snap Crop Photo
               </h3>
-              <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed">
+              <p className="text-sm sm:text-base text-slate-200 mt-2 leading-relaxed font-normal">
                 Take a sharp, well-lit photo of the affected leaf, stem, pod, or tuber.
                 Our agronomist will diagnose disease and provide Nigerian Pidgin audio guidance.
               </p>
             </div>
 
             {cameraError && (
-              <Alert variant="destructive" className="text-left text-xs">
+              <Alert variant="destructive" className="text-left">
                 <AlertDescription>{cameraError}</AlertDescription>
               </Alert>
             )}
 
-            <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
+            {/* Mobile full-width action buttons */}
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-4 pt-2 w-full">
               <Button
                 id="btn-upload-from-gallery"
                 type="button"
-                variant="accent"
+                variant="default"
                 onClick={() => fileInputRef.current?.click()}
-                className="gap-2 px-5 py-2.5 text-xs font-bold shadow-sm"
+                className="gap-2.5 px-7 py-3.5 min-h-[48px] text-base font-black shadow-lg shadow-emerald-950/60 w-full sm:w-auto rounded-xl"
               >
-                <ImageIcon className="w-4 h-4" />
+                <ImageIcon className="w-5 h-5 text-[#060D09]" />
                 <span>Upload From Device</span>
               </Button>
 
@@ -406,63 +415,63 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
                 type="button"
                 variant="secondary"
                 onClick={startCamera}
-                className="gap-2 px-5 py-2.5 text-xs font-bold border-border shadow-sm"
+                className="gap-2.5 px-7 py-3.5 min-h-[48px] text-base font-bold border-2 border-emerald-500/40 hover:border-[#22C55E] shadow-sm w-full sm:w-auto rounded-xl"
               >
-                <Camera className="w-4 h-4 text-accent" />
+                <Camera className="w-5 h-5 text-[#22C55E]" />
                 <span>Open Field Camera</span>
               </Button>
             </div>
 
-            <p className="text-[11px] text-muted-foreground">
-              Drag & drop photos here • Supports JPG, PNG, WebP up to 20MB
+            <p className="text-xs sm:text-sm text-slate-300 font-medium pt-1">
+              Drag &amp; drop photos here • Supports JPG, PNG, WebP up to 20MB
             </p>
           </div>
         )}
       </div>
 
       {/* Pre-loaded Field Samples for Quick Testing in Cross River State */}
-      <Card className="rounded-[24px] p-5 shadow-sm border-border bg-card">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3 pb-2 border-b border-border">
+      <Card className="rounded-[28px] p-5 sm:p-7 shadow-xl border-emerald-500/30 bg-[#0D1C13]/80 backdrop-blur-md">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 pb-3 border-b border-emerald-500/20">
           <div>
             <h4
-              className="text-base font-bold text-primary flex items-center gap-2"
+              className="text-base sm:text-lg font-bold text-white flex items-center gap-2"
               style={{ fontFamily: 'Georgia, serif' }}
             >
-              <Sparkles className="w-4 h-4 text-accent" />
+              <Sparkles className="w-4 h-4 text-[#22C55E]" />
               Pre-loaded Cross River State Field Cases
             </h4>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs sm:text-sm text-slate-300 mt-0.5">
               Select a real agricultural case study to test diagnosis and Nigerian Pidgin audio protocols instantly
             </p>
           </div>
-          <Badge variant="default" className="self-start sm:self-auto text-[11px]">
+          <Badge variant="default" className="self-start sm:self-auto text-xs py-1">
             6 Priority Crops + Rule #1 Test
           </Badge>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-3 pt-1">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-3.5 pt-1">
           {FIELD_SAMPLES.map((sample) => (
             <button
               key={sample.id}
               id={`sample-card-${sample.id}`}
               type="button"
               onClick={() => handleSelectSample(sample)}
-              className="flex flex-col text-left p-3 rounded-[20px] bg-muted hover:bg-card border border-border hover:border-accent transition-all group active:scale-95 shadow-2xs hover:shadow-xs"
+              className="flex flex-col text-left p-3.5 rounded-[22px] bg-[#0A160F]/90 hover:bg-[#10281A] border-2 border-emerald-500/30 hover:border-[#22C55E] transition-all group active:scale-95 shadow-md hover:shadow-lg min-h-[48px] touch-manipulation cursor-pointer"
             >
-              <div className="aspect-video w-full rounded-[14px] overflow-hidden bg-secondary mb-2 border border-border flex items-center justify-center">
+              <div className="aspect-video w-full rounded-[14px] overflow-hidden bg-black/50 mb-2.5 border border-emerald-500/20 flex items-center justify-center">
                 <img
                   src={sample.thumbnailUrl}
                   alt={sample.title}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform"
                 />
               </div>
-              <span className="text-[10px] font-bold uppercase tracking-wider text-accent truncate">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-[#22C55E] truncate">
                 {sample.crop}
               </span>
-              <h5 className="text-xs font-semibold text-foreground line-clamp-1 leading-snug group-hover:text-primary">
+              <h5 className="text-sm font-bold text-white line-clamp-1 leading-snug group-hover:text-emerald-300 mt-0.5">
                 {sample.title}
               </h5>
-              <span className="text-[10px] text-muted-foreground truncate mt-0.5">
+              <span className="text-xs text-slate-300 truncate mt-0.5 font-medium">
                 {sample.localZone}
               </span>
             </button>

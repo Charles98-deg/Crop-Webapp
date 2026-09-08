@@ -68,6 +68,7 @@ export const AnimatedCard: React.FC<AnimatedCardProps> = ({
           color2={color2}
           interaction={interaction}
           tilt={tilt}
+          fit={0.82}
           shading={shading}
           borderRadius={borderRadius}
           showGrid={showGrid}
