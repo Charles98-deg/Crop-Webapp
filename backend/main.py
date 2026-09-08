@@ -40,7 +40,8 @@ Rules:
 1. Verify if the image contains a plant leaf, stem, or fruit. If not, set "is_plant": false and set all disease fields to null.
 2. Treatment recommendations must be practical for Cross River farmers: emphasize accessible local remedies (Dongoyaro/neem extracts, wood ash, sanitation) alongside registered agrochemicals.
 3. Formulate "pidgin_audio_script" in authentic, conversational Nigerian Pidgin for rural field hands.
-4. Output strictly valid JSON conforming to the requested schema.
+4. If you are less than 85% confident, set needs_clarification to true and generate a single multiple-choice question to ask the farmer. Populate "clarification_question" with the question and "options" with 2-4 plausible choices. If confidence is 85% or higher, set needs_clarification to false.
+5. Output strictly valid JSON conforming to the requested schema.
 """
 
 DIAGNOSIS_SCHEMA = {
@@ -57,7 +58,10 @@ DIAGNOSIS_SCHEMA = {
         "organic_local_remedy": {"type": "STRING"},
         "standard_chemical_treatment": {"type": "STRING"},
         "prevention_future": {"type": "STRING"},
-        "pidgin_audio_script": {"type": "STRING"}
+        "pidgin_audio_script": {"type": "STRING"},
+        "needs_clarification": {"type": "BOOLEAN"},
+        "clarification_question": {"type": "STRING"},
+        "options": {"type": "ARRAY", "items": {"type": "STRING"}}
     },
     "required": [
         "is_plant",
@@ -71,16 +75,18 @@ DIAGNOSIS_SCHEMA = {
         "organic_local_remedy",
         "standard_chemical_treatment",
         "prevention_future",
-        "pidgin_audio_script"
+        "pidgin_audio_script",
+        "needs_clarification",
+        "clarification_question",
+        "options"
     ]
 }
 
-# Configured to use gemini-3.8-flash first, with fallbacks if busy
+
+# Configured to use active 2026 models
 MODELS_TO_TRY = [
-    "gemini-3.8-flash",
-    "gemini-2.5-flash",
-    "gemini-2.0-flash",
-    "gemini-1.5-flash"
+    "gemini-3.5-flash",
+    "gemini-2.5-flash"
 ]
 
 @app.get("/")

@@ -1,5 +1,5 @@
 {
-  "name": "Cross River Crop Pathologist & Agronomist",
+  "name": "AgriScan Cross River",
   "description": "AI-powered plant pathology diagnostic system for West African tropical crops in Cross River State, Nigeria (Cassava, Cocoa, Oil Palm, Maize, Plantain, Yam) with Nigerian Pidgin audio guidance.",
   "requestFramePermissions": ["camera"],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]

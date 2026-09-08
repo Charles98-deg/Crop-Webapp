@@ -10,13 +10,59 @@ interface PidginAudioPlayerProps {
   pathologyName?: string | null;
 }
 
+// Fallback hierarchy for authentic African/Nigerian female voice selection
+const selectPreferredVoice = (availableVoices: SpeechSynthesisVoice[]): SpeechSynthesisVoice | null => {
+  if (!availableVoices || availableVoices.length === 0) return null;
+
+  // 1. Voice with lang === 'en-NG' or language starting with 'en-NG'
+  const nigerianLangVoice = availableVoices.find((v) => {
+    const lang = (v.lang || '').toLowerCase();
+    return lang === 'en-ng' || lang.startsWith('en-ng');
+  });
+  if (nigerianLangVoice) return nigerianLangVoice;
+
+  // 2. Voice name containing "Nigeria", "Yoruba", "Igbo", or "Hausa"
+  const nigerianKeywords = ['nigeria', 'yoruba', 'igbo', 'hausa'];
+  const nigerianNameVoice = availableVoices.find((v) => {
+    const name = (v.name || '').toLowerCase();
+    return nigerianKeywords.some((keyword) => name.includes(keyword));
+  });
+  if (nigerianNameVoice) return nigerianNameVoice;
+
+  // 3. Voice with lang === 'en-GH' (Ghana) or en-ZA (South Africa)
+  const africanRegionalVoice = availableVoices.find((v) => {
+    const lang = (v.lang || '').toLowerCase();
+    return lang === 'en-gh' || lang.startsWith('en-gh') || lang === 'en-za' || lang.startsWith('en-za');
+  });
+  if (africanRegionalVoice) return africanRegionalVoice;
+
+  // 4. Any female English voice (name includes "Female", "Samantha", "Victoria", "Karen", "Zira", or "Google UK English Female")
+  const femaleKeywords = ['female', 'samantha', 'victoria', 'karen', 'zira', 'google uk english female'];
+  const femaleEnglishVoice = availableVoices.find((v) => {
+    const name = (v.name || '').toLowerCase();
+    const lang = (v.lang || '').toLowerCase();
+    const isEnglish = lang.startsWith('en');
+    const isFemaleName = femaleKeywords.some((keyword) => name.includes(keyword));
+    return isEnglish && isFemaleName;
+  });
+  if (femaleEnglishVoice) return femaleEnglishVoice;
+
+  // Generic fallback: British/English or first available voice
+  return (
+    availableVoices.find((v) => (v.lang || '').toLowerCase().startsWith('en-gb')) ||
+    availableVoices.find((v) => (v.lang || '').toLowerCase().startsWith('en')) ||
+    availableVoices[0] ||
+    null
+  );
+};
+
 export const PidginAudioPlayer: React.FC<PidginAudioPlayerProps> = ({
   script,
   cropName,
   pathologyName,
 }) => {
   const [isPlaying, setIsPlaying] = useState(false);
-  const [speechRate, setSpeechRate] = useState<number>(0.9); // Slightly slower for clear rural field comprehension
+  const [speechRate, setSpeechRate] = useState<number>(0.88); // Clear, measured field cadence for Pidgin pronunciation
   const [copied, setCopied] = useState(false);
   const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
   const [selectedVoice, setSelectedVoice] = useState<SpeechSynthesisVoice | null>(null);
@@ -31,37 +77,31 @@ export const PidginAudioPlayer: React.FC<PidginAudioPlayerProps> = ({
       .filter(Boolean);
   }, [script]);
 
-  // Load browser speech synthesis voices
+  // Load browser speech synthesis voices and listen for voiceschanged event
   useEffect(() => {
     const updateVoices = () => {
       if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
         const availableVoices = window.speechSynthesis.getVoices();
-        setVoices(availableVoices);
-
-        // Prioritize English voices, preferably African or British English (familiar in Nigeria)
-        const preferredVoice =
-          availableVoices.find(
-            (v) =>
-              v.lang.toLowerCase().includes('en-ng') ||
-              v.lang.toLowerCase().includes('en-za') ||
-              v.lang.toLowerCase().includes('en-gh')
-          ) ||
-          availableVoices.find((v) => v.lang.toLowerCase().includes('en-gb')) ||
-          availableVoices.find((v) => v.lang.toLowerCase().includes('en'));
-
-        if (preferredVoice) {
-          setSelectedVoice(preferredVoice);
+        if (availableVoices && availableVoices.length > 0) {
+          setVoices(availableVoices);
+          const preferred = selectPreferredVoice(availableVoices);
+          if (preferred) {
+            setSelectedVoice(preferred);
+          }
         }
       }
     };
 
     updateVoices();
+
     if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+      window.speechSynthesis.addEventListener('voiceschanged', updateVoices);
       window.speechSynthesis.onvoiceschanged = updateVoices;
     }
 
     return () => {
       if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+        window.speechSynthesis.removeEventListener('voiceschanged', updateVoices);
         window.speechSynthesis.cancel();
       }
     };
@@ -90,10 +130,16 @@ export const PidginAudioPlayer: React.FC<PidginAudioPlayerProps> = ({
       window.speechSynthesis.cancel();
 
       const utterance = new SpeechSynthesisUtterance(script);
-      utterance.rate = speechRate;
-      utterance.pitch = 1.0;
-      if (selectedVoice) {
-        utterance.voice = selectedVoice;
+      // Configured speech properties for clear Nigerian Pidgin field cadence
+      utterance.lang = 'en-NG';
+      utterance.pitch = 1.1; // natural female pitch
+      utterance.rate = speechRate; // clear, measured field cadence (0.88 default)
+
+      const activeVoice =
+        selectedVoice ||
+        selectPreferredVoice(voices.length > 0 ? voices : window.speechSynthesis.getVoices());
+      if (activeVoice) {
+        utterance.voice = activeVoice;
       }
 
       utterance.onboundary = (event) => {
@@ -236,7 +282,7 @@ export const PidginAudioPlayer: React.FC<PidginAudioPlayerProps> = ({
         <div className="flex items-center gap-2 text-xs">
           <span className="text-muted-foreground font-semibold text-[11px] uppercase tracking-wider">Speed:</span>
           <div className="inline-flex rounded-xl bg-secondary p-0.5 border border-border">
-            {[0.8, 0.9, 1.0].map((rate) => (
+            {[0.8, 0.88, 1.0].map((rate) => (
               <button
                 key={rate}
                 onClick={() => {
@@ -251,7 +297,7 @@ export const PidginAudioPlayer: React.FC<PidginAudioPlayerProps> = ({
                     : 'text-muted-foreground hover:text-foreground'
                 }`}
               >
-                {rate === 0.8 ? 'Slow (0.8x)' : rate === 0.9 ? 'Field (0.9x)' : 'Normal (1x)'}
+                {rate === 0.8 ? 'Slow (0.8x)' : rate === 0.88 ? 'Field Cadence (0.88x)' : 'Normal (1x)'}
               </button>
             ))}
           </div>

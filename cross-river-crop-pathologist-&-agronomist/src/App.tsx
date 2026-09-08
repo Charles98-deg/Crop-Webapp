@@ -17,10 +17,12 @@ import {
   RefreshCw,
   Info,
   ArrowLeft,
+  Sparkles,
 } from 'lucide-react';
+import { ElasticMeshShowcase } from './components/AnimatedCard';
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState<'landing' | 'diagnose' | 'guide'>('landing');
+  const [activeView, setActiveView] = useState<'landing' | 'scanner'>('landing');
   const [diagnosis, setDiagnosis] = useState<PathologyDiagnosis | null>(null);
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
   const [lastSelectedParams, setLastSelectedParams] = useState<{
@@ -84,6 +86,9 @@ export default function App() {
         standard_chemical_treatment: data.standard_chemical_treatment ?? null,
         prevention_future: data.prevention_future ?? null,
         pidgin_audio_script: data.pidgin_audio_script || '',
+        needs_clarification: Boolean(data.needs_clarification),
+        clarification_question: data.clarification_question ?? null,
+        options: Array.isArray(data.options) ? data.options : [],
       };
       setDiagnosis(mappedDiagnosis);
     } catch (err: unknown) {
@@ -134,53 +139,32 @@ export default function App() {
     }
   };
 
-  const handleLaunchScannerFromLanding = () => {
-    setActiveTab('diagnose');
+  const handleClarificationOptionSelect = (option: string) => {
+    if (lastSelectedParams) {
+      const updatedNotes = lastSelectedParams.fieldNotes
+        ? `${lastSelectedParams.fieldNotes}. Farmer clarification: ${option}`
+        : `Farmer clarification: ${option}`;
+      const newParams = { ...lastSelectedParams, fieldNotes: updatedNotes };
+      setLastSelectedParams(newParams);
+      runLiveDiagnosis(
+        newParams.imageData,
+        newParams.mimeType,
+        newParams.cropHint,
+        newParams.location,
+        newParams.fieldNotes
+      );
+    }
+  };
+
+  const handleStartScanner = () => {
+    setActiveView('scanner');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
-    <div className={`min-h-screen ${activeTab === 'landing' ? 'bg-slate-950 text-slate-100' : 'bg-background text-foreground'} flex flex-col font-sans selection:bg-accent selection:text-accent-foreground`}>
-      {/* Top Banner & Tab Navigation Bar */}
-      <div className="bg-primary text-primary-foreground border-b border-primary/80 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-12 flex items-center justify-between text-xs">
-          <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as typeof activeTab)}>
-            <TabsList className="bg-primary/50 border-none">
-              <TabsTrigger
-                value="landing"
-                id="global-tab-landing"
-                className="data-[state=active]:bg-card data-[state=active]:text-primary data-[state=inactive]:text-primary-foreground/80"
-              >
-                AgriScan Overview (Landing Page)
-              </TabsTrigger>
-              <TabsTrigger
-                value="diagnose"
-                id="global-tab-diagnose"
-                className="data-[state=active]:bg-card data-[state=active]:text-primary data-[state=inactive]:text-primary-foreground/80"
-              >
-                <Sprout className="w-3.5 h-3.5" />
-                <span>Live AI Diagnostic Scanner</span>
-              </TabsTrigger>
-              <TabsTrigger
-                value="guide"
-                id="global-tab-guide"
-                className="hidden sm:flex data-[state=active]:bg-card data-[state=active]:text-primary data-[state=inactive]:text-primary-foreground/80"
-              >
-                <BookOpen className="w-3.5 h-3.5" />
-                <span>Pathology Guide</span>
-              </TabsTrigger>
-            </TabsList>
-          </Tabs>
-
-          <div className="hidden md:flex items-center gap-3 text-[11px] text-primary-foreground/80">
-            <span className="w-2 h-2 rounded-full bg-[#96C87C] animate-pulse" />
-            <span>Cross River Field Edition • AgriScan API Active</span>
-          </div>
-        </div>
-      </div>
-
-      {activeTab === 'landing' ? (
-        <LandingPage onLaunchScanner={handleLaunchScannerFromLanding} />
+    <div className={`min-h-screen ${activeView === 'landing' ? 'bg-[#0B150E] text-slate-100' : 'bg-background text-foreground'} flex flex-col font-sans selection:bg-accent selection:text-accent-foreground`}>
+      {activeView === 'landing' ? (
+        <LandingPage onStart={handleStartScanner} />
       ) : (
         <div className="flex-1 flex flex-col">
           <Header />
@@ -190,35 +174,13 @@ export default function App() {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Button
-                  id="tab-btn-back-landing"
+                  id="btn-back-landing"
                   variant="ghost"
                   size="sm"
-                  onClick={() => setActiveTab('landing')}
+                  onClick={() => setActiveView('landing')}
                 >
-                  <ArrowLeft className="w-3.5 h-3.5" />
+                  <ArrowLeft className="w-3.5 h-3.5 mr-2" />
                   <span>Return to Landing Page</span>
-                </Button>
-
-                <div className="h-4 w-px bg-border mx-1" />
-
-                <Button
-                  id="tab-btn-diagnose"
-                  variant={activeTab === 'diagnose' ? 'default' : 'ghost'}
-                  size="sm"
-                  onClick={() => setActiveTab('diagnose')}
-                >
-                  <Sprout className="w-3.5 h-3.5" />
-                  <span>Diagnostic Lab & Audio</span>
-                </Button>
-
-                <Button
-                  id="tab-btn-guide"
-                  variant={activeTab === 'guide' ? 'default' : 'ghost'}
-                  size="sm"
-                  onClick={() => setActiveTab('guide')}
-                >
-                  <BookOpen className="w-3.5 h-3.5" />
-                  <span>Cross River Crops Guide</span>
                 </Button>
               </div>
 
@@ -231,81 +193,78 @@ export default function App() {
 
           {/* Main Content Area */}
           <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8 space-y-6">
-            {activeTab === 'diagnose' ? (
-              <div id="scanner" className="space-y-6">
-                {/* Context Notice / Operational rules explanation */}
-                <Alert>
-                  <Info className="w-4 h-4" />
-                  <AlertTitle>Operational Rules Active:</AlertTitle>
-                  <AlertDescription>
-                    1. Verification first (is_plant check) • 2. Cross River local treatments (Dongoyaro neem, wood ash, Nigerian agrochemicals) • 3. Direct Nigerian Pidgin audio for rural field hands • 4. Strictly typed JSON schema.
-                  </AlertDescription>
-                  <Badge variant="default" className="absolute top-4 right-4">
-                    Tropical Agrologist AI
-                  </Badge>
+            <div id="scanner" className="space-y-6">
+              {/* Context Notice / Operational rules explanation */}
+              <Alert>
+                <Info className="w-4 h-4" />
+                <AlertTitle>Operational Rules Active:</AlertTitle>
+                <AlertDescription>
+                  1. Verification first (is_plant check) • 2. Cross River local treatments (Dongoyaro neem, wood ash, Nigerian agrochemicals) • 3. Direct Nigerian Pidgin audio for rural field hands • 4. Strictly typed JSON schema.
+                </AlertDescription>
+                <Badge variant="default" className="absolute top-4 right-4">
+                  Tropical Agrologist AI
+                </Badge>
+              </Alert>
+
+              {/* Error Message Display */}
+              {error && (
+                <Alert variant="destructive">
+                  <AlertCircle className="w-5 h-5" />
+                  <AlertTitle>Diagnostic Analysis Error</AlertTitle>
+                  <AlertDescription>{error}</AlertDescription>
+                  {lastSelectedParams && (
+                    <Button
+                      variant="accent"
+                      size="sm"
+                      onClick={handleReanalyzeWithAi}
+                      className="absolute top-4 right-4"
+                    >
+                      Retry
+                    </Button>
+                  )}
                 </Alert>
+              )}
 
-                {/* Error Message Display */}
-                {error && (
-                  <Alert variant="destructive">
-                    <AlertCircle className="w-5 h-5" />
-                    <AlertTitle>Diagnostic Analysis Error</AlertTitle>
-                    <AlertDescription>{error}</AlertDescription>
-                    {lastSelectedParams && (
-                      <Button
-                        variant="accent"
-                        size="sm"
-                        onClick={handleReanalyzeWithAi}
-                        className="absolute top-4 right-4"
-                      >
-                        Retry
-                      </Button>
-                    )}
-                  </Alert>
-                )}
+              {/* Main view: either Uploader or Diagnosis Result */}
+              {diagnosis ? (
+                <div className="space-y-6">
+                  <div className="flex items-center justify-between">
+                    <Button
+                      id="btn-back-to-upload"
+                      variant="ghost"
+                      size="sm"
+                      onClick={handleReset}
+                    >
+                      ← Upload or choose another crop
+                    </Button>
 
-                {/* Main view: either Uploader or Diagnosis Result */}
-                {diagnosis ? (
-                  <div className="space-y-6">
-                    <div className="flex items-center justify-between">
-                      <Button
-                        id="btn-back-to-upload"
-                        variant="ghost"
-                        size="sm"
-                        onClick={handleReset}
-                      >
-                        ← Upload or choose another crop
-                      </Button>
-
-                      <Button
-                        id="btn-force-rerun-gemini"
-                        variant="secondary"
-                        size="sm"
-                        onClick={handleReanalyzeWithAi}
-                        disabled={isLoading}
-                        title="Send image to AgriScan API on server"
-                      >
-                        <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? 'animate-spin' : ''}`} />
-                        <span>{isLoading ? 'Re-analyzing...' : 'Run Live AgriScan API'}</span>
-                      </Button>
-                    </div>
-
-                    <DiagnosisResultView
-                      diagnosis={diagnosis}
-                      imagePreviewUrl={imagePreviewUrl || undefined}
-                      onReset={handleReset}
-                    />
+                    <Button
+                      id="btn-force-rerun-gemini"
+                      variant="secondary"
+                      size="sm"
+                      onClick={handleReanalyzeWithAi}
+                      disabled={isLoading}
+                      title="Send image to AgriScan API on server"
+                    >
+                      <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? 'animate-spin' : ''}`} />
+                      <span>{isLoading ? 'Re-analyzing...' : 'Run Live AgriScan API'}</span>
+                    </Button>
                   </div>
-                ) : (
-                  <ImageUploader
-                    onImageSelected={handleImageSelected}
-                    isLoading={isLoading}
+
+                  <DiagnosisResultView
+                    diagnosis={diagnosis}
+                    imagePreviewUrl={imagePreviewUrl || undefined}
+                    onReset={handleReset}
+                    onSelectOption={handleClarificationOptionSelect}
                   />
-                )}
-              </div>
-            ) : (
-              <AgronomyGuide />
-            )}
+                </div>
+              ) : (
+                <ImageUploader
+                  onImageSelected={handleImageSelected}
+                  isLoading={isLoading}
+                />
+              )}
+            </div>
           </main>
 
           {/* Footer matching Natural Tones Theme with Persistent Connectivity & Sync Status */}

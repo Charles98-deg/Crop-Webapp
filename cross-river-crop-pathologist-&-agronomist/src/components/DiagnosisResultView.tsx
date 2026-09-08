@@ -28,7 +28,9 @@ interface DiagnosisResultViewProps {
   diagnosis: PathologyDiagnosis;
   imagePreviewUrl?: string;
   onReset?: () => void;
+  onSelectOption?: (option: string) => void;
 }
+
 
 const getSeverityBadgeVariant = (level: SeverityLevel): {
   variant: 'destructive' | 'warning' | 'secondary' | 'default';
@@ -83,6 +85,7 @@ export const DiagnosisResultView: React.FC<DiagnosisResultViewProps> = ({
   diagnosis,
   imagePreviewUrl,
   onReset,
+  onSelectOption,
 }) => {
   const [showJsonRaw, setShowJsonRaw] = useState(false);
   const [jsonCopied, setJsonCopied] = useState(false);
@@ -99,6 +102,49 @@ export const DiagnosisResultView: React.FC<DiagnosisResultViewProps> = ({
       // fallback
     }
   };
+
+  // Case 0: Inverse Prompting Clarification Flow (Result Card Hidden)
+  if (diagnosis.needs_clarification) {
+    return (
+      <div id="clarification-dialog-view" className="space-y-6 max-w-2xl mx-auto py-2">
+        <div className="bg-card border-2 border-primary/20 rounded-3xl p-6 sm:p-8 shadow-lg">
+          <div className="flex items-center gap-2.5 mb-4">
+            <span className="w-3 h-3 rounded-full bg-amber-500 animate-pulse" />
+            <Badge variant="outline" className="text-amber-700 bg-amber-50 dark:text-amber-400 dark:bg-amber-950/40 border-amber-300">
+              Confidence &lt; 85% • Clarification Needed
+            </Badge>
+          </div>
+
+          <h2
+            className="text-xl sm:text-2xl md:text-3xl font-bold text-foreground tracking-tight leading-snug mb-6"
+            style={{ fontFamily: 'Georgia, serif' }}
+          >
+            {diagnosis.clarification_question || 'Please answer this question to confirm diagnosis:'}
+          </h2>
+
+          <div className="grid grid-cols-1 gap-3 sm:gap-4">
+            {diagnosis.options && diagnosis.options.length > 0 ? (
+              diagnosis.options.map((option, idx) => (
+                <button
+                  key={idx}
+                  type="button"
+                  onClick={() => onSelectOption?.(option)}
+                  className="w-full text-left p-4 sm:p-5 rounded-2xl border-2 border-border bg-secondary/70 hover:bg-primary/10 hover:border-primary active:scale-[0.98] transition-all duration-150 text-base sm:text-lg font-semibold text-foreground shadow-sm min-h-[58px] flex items-center justify-between touch-manipulation cursor-pointer group"
+                >
+                  <span>{option}</span>
+                  <span className="text-muted-foreground group-hover:text-primary transition-colors text-xl font-bold ml-3">
+                    →
+                  </span>
+                </button>
+              ))
+            ) : (
+              <p className="text-sm text-muted-foreground">No options provided.</p>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   // Case 1: Verification Rule #1 — Image is not a plant
   if (!diagnosis.is_plant) {

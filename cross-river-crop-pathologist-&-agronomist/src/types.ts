@@ -14,6 +14,9 @@ export interface PathologyDiagnosis {
   standard_chemical_treatment: string | null;
   prevention_future: string | null;
   pidgin_audio_script: string;
+  needs_clarification?: boolean;
+  clarification_question?: string | null;
+  options?: string[];
 }
 
 export type WestAfricanCrop =

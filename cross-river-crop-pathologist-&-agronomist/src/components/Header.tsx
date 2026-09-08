@@ -20,7 +20,7 @@ export const Header: React.FC = () => {
                   className="text-xl sm:text-2xl font-bold tracking-tight text-primary-foreground"
                   style={{ fontFamily: 'Georgia, serif' }}
                 >
-                  AgroPath <span className="font-light italic text-primary-foreground/70">Cross River</span>
+                  AgriScan <span className="font-light italic text-primary-foreground/70">Cross River</span>
                 </h1>
                 <Badge
                   variant="outline"
