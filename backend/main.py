@@ -83,11 +83,7 @@ DIAGNOSIS_SCHEMA = {
 }
 
 
-# Configured to use active 2026 models
-MODELS_TO_TRY = [
-    "gemini-3.5-flash",
-    "gemini-2.5-flash"
-]
+AVAILABLE_MODELS = ["gemini-3.6-flash", "gemini-1.5-flash", "gemini-1.5-pro"]
 
 @app.get("/")
 def health_check():
@@ -110,9 +106,7 @@ async def diagnose(payload: DiagnosisRequest):
             "and provide immediate containment, organic treatment, and the pidgin voice script."
         )
 
-        last_error = None
-
-        for model_name in MODELS_TO_TRY:
+        for model_name in AVAILABLE_MODELS:
             try:
                 response = ai_client.models.generate_content(
                     model=model_name,
@@ -125,12 +119,11 @@ async def diagnose(payload: DiagnosisRequest):
                     )
                 )
                 return json.loads(response.text)
-            except Exception as err:
-                last_error = err
-                time.sleep(1)
+            except Exception as e:
+                print(f"Model {model_name} failed: {e}")
                 continue
 
-        raise last_error if last_error else Exception("All models failed.")
+        raise HTTPException(status_code=500, detail="All AI fallback models failed.")
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
