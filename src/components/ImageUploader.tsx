@@ -107,23 +107,42 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
   // Live Camera streaming helpers
   const startCamera = async () => {
     setCameraError(null);
+    let stream: MediaStream | null = null;
+
+    // First attempt: prefer rear-facing camera (works on mobile)
+    const preferredConstraints: MediaStreamConstraints = {
+      video: {
+        facingMode: { ideal: 'environment' },
+        width: { ideal: 1280 },
+        height: { ideal: 720 },
+      },
+      audio: false,
+    };
+
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: { ideal: 'environment' }, width: { ideal: 1280 }, height: { ideal: 720 } },
-        audio: false,
-      });
-      streamRef.current = stream;
-      setCameraActive(true);
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream;
-        videoRef.current.play();
+      stream = await navigator.mediaDevices.getUserMedia(preferredConstraints);
+    } catch (primaryErr) {
+      console.warn('Preferred camera constraints failed, retrying with basic video:', primaryErr);
+      // Fallback: any available camera (works on laptops without a rear camera)
+      try {
+        stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+      } catch (fallbackErr) {
+        const error = fallbackErr as Error;
+        console.warn('All camera stream attempts failed, falling back to file capture:', error);
+        setCameraError('Camera stream unavailable. Using device camera shutter.');
+        cameraInputRef.current?.click();
+        return;
       }
-    } catch (err: unknown) {
-      const error = err as Error;
-      console.warn('Direct camera stream error, falling back to input capture:', error);
-      setCameraError('Camera stream unavailable. Using device camera shutter.');
-      // Trigger native file input with camera capture
-      cameraInputRef.current?.click();
+    }
+
+    streamRef.current = stream;
+    setCameraActive(true);
+
+    if (videoRef.current) {
+      videoRef.current.srcObject = stream;
+      videoRef.current.onloadedmetadata = () => {
+        videoRef.current?.play().catch((err) => console.error('Video play error:', err));
+      };
     }
   };
 
