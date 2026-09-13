@@ -122,29 +122,40 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
     try {
       stream = await navigator.mediaDevices.getUserMedia(preferredConstraints);
     } catch (primaryErr) {
-      console.warn('Preferred camera constraints failed, retrying with basic video:', primaryErr);
+      console.error('[Camera] Preferred constraints failed:', primaryErr);
       // Fallback: any available camera (works on laptops without a rear camera)
       try {
         stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
       } catch (fallbackErr) {
         const error = fallbackErr as Error;
-        console.warn('All camera stream attempts failed, falling back to file capture:', error);
-        setCameraError('Camera stream unavailable. Using device camera shutter.');
-        cameraInputRef.current?.click();
+        console.error('[Camera] All stream attempts failed:', error);
+        setCameraError(
+          `Camera unavailable: ${error.message || error.name}. Please use "Upload From Device" instead.`
+        );
         return;
       }
     }
 
     streamRef.current = stream;
+    // setCameraActive(true) triggers a re-render that mounts the <video> element.
+    // The stream is wired to the video in the useEffect below, which runs *after*
+    // React commits the DOM update and videoRef.current is populated.
     setCameraActive(true);
+  };
 
-    if (videoRef.current) {
-      videoRef.current.srcObject = stream;
-      videoRef.current.onloadedmetadata = () => {
-        videoRef.current?.play().catch((err) => console.error('Video play error:', err));
+  // ✅ Attach the MediaStream to the <video> element only after React has mounted it.
+  // Previously this ran synchronously after setCameraActive(true) — at that point
+  // videoRef.current was still null (the <video> hadn't been inserted yet), so the
+  // srcObject assignment was silently skipped and the viewfinder stayed black.
+  useEffect(() => {
+    if (cameraActive && videoRef.current && streamRef.current) {
+      const video = videoRef.current;
+      video.srcObject = streamRef.current;
+      video.onloadedmetadata = () => {
+        video.play().catch((err) => console.error('[Camera] Video play error:', err));
       };
     }
-  };
+  }, [cameraActive]);
 
   const stopCamera = () => {
     if (streamRef.current) {
@@ -169,9 +180,12 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
     }
   };
 
+  // Stop all tracks when the component unmounts to release the camera indicator light
   useEffect(() => {
     return () => {
-      stopCamera();
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach((track) => track.stop());
+      }
     };
   }, []);
 
