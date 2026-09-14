@@ -308,6 +308,7 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
                 playsInline
                 muted
                 className="w-full h-full object-cover"
+                style={{ width: '100%', minHeight: '320px', objectFit: 'cover' }}
               />
               <div className="absolute inset-0 border-2 border-[#22C55E]/60 rounded-[24px] pointer-events-none flex items-center justify-center">
                 <div className="w-48 h-48 border-2 border-white/70 border-dashed rounded-2xl animate-pulse" />
