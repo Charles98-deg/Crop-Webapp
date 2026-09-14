@@ -52,11 +52,11 @@ export default function App() {
         );
       }
 
-      const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || '';
-      const response = await fetch(`${apiBaseUrl}/api/diagnose`, {
+      const response = await fetch('https://kind-parks-make.loca.lt/api/diagnose', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Bypass-Tunnel-Reminder': 'true',
         },
         body: JSON.stringify({
           image: imageData,
