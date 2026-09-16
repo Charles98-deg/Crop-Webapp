@@ -14,6 +14,14 @@ export interface PathologyDiagnosis {
   standard_chemical_treatment: string | null;
   prevention_future: string | null;
   pidgin_audio_script: string;
+  action_plan_0_2_hours?: string | null;
+  action_plan_2_6_hours?: string | null;
+  action_plan_6_24_hours?: string | null;
+  avoid?: string[] | string | null;
+  escalation?: string | null;
+  local_context_used?: string | null;
+  is_uncertain?: boolean;
+  more_info_needed?: string | null;
   needs_clarification?: boolean;
   clarification_question?: string | null;
   options?: string[];

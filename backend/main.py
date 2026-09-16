@@ -31,18 +31,29 @@ app.add_middleware(
 
 class DiagnosisRequest(BaseModel):
     image: str
-    zone: str = "Cross River State"
-    crop: str = "Auto-detect"
+    zone: str | None = None
+    location: str | None = None
+    crop: str | None = "Auto-detect"
+    cropHint: str | None = None
+    fieldNotes: str | None = None
 
 SYSTEM_INSTRUCTION = """
 You are the Tropical Agrologist AI, an expert plant pathologist and agronomist specializing in Cross River State, Nigeria (Cassava, Cocoa, Oil Palm, Maize, Plantain, Yams).
 
 Rules:
-1. Verify if the image contains a plant leaf, stem, or fruit. If not, set "is_plant": false and set all disease fields to null.
-2. Treatment recommendations must be practical for Cross River farmers: emphasize accessible local remedies (Dongoyaro/neem extracts, wood ash, sanitation) alongside registered agrochemicals.
-3. Formulate "pidgin_audio_script" in authentic, conversational Nigerian Pidgin for rural field hands.
-4. If you are less than 85% confident, set needs_clarification to true and generate a single multiple-choice question to ask the farmer. Populate "clarification_question" with the question and "options" with 2-4 plausible choices. If confidence is 85% or higher, set needs_clarification to false.
-5. Output strictly valid JSON conforming to the requested schema.
+1. Verification (Rule #1): Verify if the image contains a plant leaf, stem, fruit, pod, or root. If not, set "is_plant": false, "crop_identified": "Not a plant", "action_plan_0_2_hours": "No plant detected. Please take a clear photo of your crop.", and all disease fields to null.
+2. Crop Detection: Auto-detect the crop from the image if not specified.
+3. Uncertainty & Safety: Never pretend 100% certainty. Use "Likely" or "Possible" if confidence is below 0.85. If evidence is blurry or insufficient, set is_uncertain to true and describe what photo is needed in more_info_needed.
+4. Optional Location Context: Farm location is optional. If an LGA is provided, incorporate genuine local context into local_context_used. If not provided, supply general guidance and set local_context_used to "General guidance (no LGA specified)". Never fabricate local facts.
+5. 24-Hour Action Plan: Provide practical steps:
+   - action_plan_0_2_hours: Immediate containment/isolation (0–2h).
+   - action_plan_2_6_hours: Next step today (2–6h).
+   - action_plan_6_24_hours: Actions for rest of day/next morning (6–24h).
+   - avoid: Array of 2-4 counterproductive or dangerous actions to avoid.
+   - escalation: When to seek human/extension expert help.
+6. Treatment recommendations: Practical for Cross River farmers (Dongoyaro neem, wood ash, sanitation, standard registered agrochemicals with PPE).
+7. Formulate pidgin_audio_script in authentic, warm Nigerian Pidgin for rural field hands.
+8. Output strictly valid JSON conforming to the schema.
 """
 
 DIAGNOSIS_SCHEMA = {
@@ -56,6 +67,14 @@ DIAGNOSIS_SCHEMA = {
         "severity_level": {"type": "STRING"},
         "observable_symptoms": {"type": "ARRAY", "items": {"type": "STRING"}},
         "immediate_containment_step": {"type": "STRING"},
+        "action_plan_0_2_hours": {"type": "STRING"},
+        "action_plan_2_6_hours": {"type": "STRING"},
+        "action_plan_6_24_hours": {"type": "STRING"},
+        "avoid": {"type": "ARRAY", "items": {"type": "STRING"}},
+        "escalation": {"type": "STRING"},
+        "local_context_used": {"type": "STRING"},
+        "is_uncertain": {"type": "BOOLEAN"},
+        "more_info_needed": {"type": "STRING"},
         "organic_local_remedy": {"type": "STRING"},
         "standard_chemical_treatment": {"type": "STRING"},
         "prevention_future": {"type": "STRING"},
@@ -68,23 +87,19 @@ DIAGNOSIS_SCHEMA = {
         "is_plant",
         "crop_identified",
         "health_status",
-        "pathology_name",
         "confidence_score",
         "severity_level",
         "observable_symptoms",
-        "immediate_containment_step",
-        "organic_local_remedy",
-        "standard_chemical_treatment",
-        "prevention_future",
-        "pidgin_audio_script",
-        "needs_clarification",
-        "clarification_question",
-        "options"
+        "action_plan_0_2_hours",
+        "action_plan_2_6_hours",
+        "action_plan_6_24_hours",
+        "avoid",
+        "pidgin_audio_script"
     ]
 }
 
 
-AVAILABLE_MODELS = ["gemini-3.6-flash", "gemini-1.5-flash", "gemini-1.5-pro"]
+AVAILABLE_MODELS = ["gemini-3.6-flash", "gemini-3.5-flash", "gemini-3.5-flash-lite"]
 
 @app.get("/")
 def health_check():
@@ -100,12 +115,24 @@ async def diagnose(payload: DiagnosisRequest):
         image_bytes = base64.b64decode(raw_b64)
         image = Image.open(BytesIO(image_bytes))
 
-        prompt = (
-            f"Analyze this crop photo from the {payload.zone} zone in Cross River State. "
-            f"Target crop: {payload.crop}. "
-            "Identify the crop, diagnose any pathology or pest damage, evaluate severity, "
-            "and provide immediate containment, organic treatment, and the pidgin voice script."
-        )
+        effective_crop = payload.cropHint or payload.crop or "Auto-detect"
+        effective_zone = payload.location or payload.zone or ""
+
+        prompt = "Analyze this crop photo for plant pathology in Cross River State, Nigeria. "
+        if effective_crop and effective_crop != "Auto-detect":
+            prompt += f"Target crop indicated: {effective_crop}. "
+        else:
+            prompt += "Auto-detect the crop from the image. "
+
+        if effective_zone and "general" not in effective_zone.lower() and "no location" not in effective_zone.lower():
+            prompt += f"Farm location context: {effective_zone}. "
+        else:
+            prompt += "No specific farm location provided; supply general agricultural guidance. "
+
+        if payload.fieldNotes:
+            prompt += f"Field notes: {payload.fieldNotes}. "
+
+        prompt += "Identify the crop, evaluate symptoms, determine severity, provide structured 24-hour action plan (0-2h, 2-6h, 6-24h, avoid, escalation), organic and agrochemical treatments, and Nigerian Pidgin audio script."
 
         for model_name in AVAILABLE_MODELS:
             try:

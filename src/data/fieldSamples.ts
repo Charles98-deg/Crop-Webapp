@@ -209,6 +209,20 @@ export const FIELD_SAMPLES: FieldSample[] = [
         'Target vector whiteflies using systemic insecticides like Lambda-cyhalothrin (Karate 5EC or Lamdex) or Imidacloprid (Confidor) at 30-40ml per 15L knapsack. Wear rubber boots, gloves, and face shield when spraying.',
       prevention_future:
         'Only plant certified virus-free stem cuttings from IITA or National Root Crops Research Institute (NRCRI) resistant clones such as TME 419, TMS 98/0505, or Game-Changer varieties.',
+      action_plan_0_2_hours:
+        'Uproot (rogue out) severely twisted or yellowed cassava stands immediately; transport them in sacks out of the field to prevent whiteflies from carrying viral sap to adjacent rows.',
+      action_plan_2_6_hours:
+        'Prepare Dongoyaro (neem) botanical extract: pound fresh leaves or seeds, soak in water with grated local black soap as a natural vector deterrent spray.',
+      action_plan_6_24_hours:
+        'Survey entire field for whitefly presence on leaf undersides at dusk. Apply neem deterrent spray or selective vector spray on boundary buffer rows.',
+      avoid: [
+        'Do NOT cut stems from symptomatic plants for next season propagation.',
+        'Do NOT leave rogued cassava foliage beside drainage furrows where vectors congregate.',
+        'Do NOT apply excessive high-nitrogen fertilizer which accelerates succulent vegetative growth favored by whiteflies.',
+      ],
+      escalation:
+        'Contact Cross River Agricultural Development Programme (CRADP) or IITA extension agents if over 20% of stands in your block show severe twisting.',
+      local_context_used: 'Central Cocoa & Cassava Belt (Ikom / Obubra)',
       pidgin_audio_script:
         'Farmer well done o! Wetin dey worry your cassava so na Cassava Mosaic sickness. Dis sickness dey come from tiny whitefly insects wey dey carry bad water enter di plant, na why di leaves dey turn yellow, dey twist like rope. First thing wey you go do now now: uproot any stand wey don spoil pass, go burn am or bury am far from farm so e no go touch others. If you no wan spend money buy chemical, squeeze plenty Dongoyaro neem leaf for inside water, put small black soap, spray di leaves make di whitefly run comot. Next planting season, no take cutting from sick farm; go carry clean resistant bundle like TME 419 from IITA or agric extension officers. Your farm go dey fine!',
     },
@@ -242,6 +256,20 @@ export const FIELD_SAMPLES: FieldSample[] = [
         'Foliar and pod spray of systemic plus contact copper fungicide such as Ridomil Gold (Metalaxyl-M + Mancozeb) or Nordox 75WG / Kocide 2000 (Copper Hydroxide) at 50g per 15L knapsack every 14-21 days during heavy rains. Always wear safety gear.',
       prevention_future:
         'Adopt regular 2-week sanitation harvesting throughout rainy season. Maintain 3m x 3m planting spacing and plant Phytophthora-tolerant CRIN hybrid materials.',
+      action_plan_0_2_hours:
+        'Using a disinfected harvesting hook, pluck all blackened and infected cocoa pods immediately to halt Phytophthora sporangia spore release.',
+      action_plan_2_6_hours:
+        'Carry infected pods away from the plantation; dig a sanitary trench at least 50cm deep, deposit pods, and cover with fresh domestic wood ash before burying.',
+      action_plan_6_24_hours:
+        'Prune low-hanging chupons (water shoots) to open tree canopy for airflow and sunlight penetration. In early morning, apply preventative copper spray (Ridomil Gold / Nordox) to healthy developing pods.',
+      avoid: [
+        'Do NOT leave plucked diseased pods on the plantation floor or near irrigation ditches.',
+        'Do NOT prune trees with unsterilized tools after cutting infected pods; dip blade in wood ash or bleach water.',
+        'Do NOT spray chemical fungicides during torrential downpours when runoff wastes inputs.',
+      ],
+      escalation:
+        'Alert the local Cocoa Farmers Association or extension officer if black pod spreads to more than 15 trees within a 48-hour rainy spell.',
+      local_context_used: 'Etung & Boki Rainforest Cocoa Belt',
       pidgin_audio_script:
         'Agric people well done! Dis black mark wey dey eat your cocoa pod na Black Pod sickness, Phytophthora megakarya, and e dey spread like wild fire for rainy season for Cross River. As I dey talk to you now, take your pruning hook pluck all dem black pods sharp-sharp! Carry dem comot from farm go dig hole bury dem with wood ash. Open di cocoa tree canopy so breeze and sun fit enter, because cold and wet place na wetin di sickness like. Enter agro-store for Ikom or your junction, buy Ridomil Gold or Nordox copper spray, mix am according to measurement spray di pods. Protect your hands and eyes with mask and gloves. If you do this one, your harvest go full bags!',
     },
@@ -275,6 +303,20 @@ export const FIELD_SAMPLES: FieldSample[] = [
         'Apply Ampligo 150 ZC (Chlorantraniliprole + Lambda-cyhalothrin) at 10-15ml per 15L sprayer, or Emamectin Benzoate 5% SG (Proclaim) directly aimed into the whorl nozzle at dusk when caterpillars come out to feed.',
       prevention_future:
         'Early planting with first steady rains in April/May to escape peak moth populations. Intercrop with Desmodium or Mucuna (push-pull strategy) and plant high-yielding hybrid seeds like Oba Super 1 or 2.',
+      action_plan_0_2_hours:
+        'Walk rows early in the morning and manually crush large caterpillars visible in the maize funnel/whorl before they burrow deeper into the growing point.',
+      action_plan_2_6_hours:
+        'Collect 2 parts sieved dry hearth wood ash, 1 part fine sand, and a pinch of ground hot pepper (atarodo). Mix thoroughly in a bucket.',
+      action_plan_6_24_hours:
+        'Drop half a teaspoon of the wood ash/sand mixture directly into each maize whorl to desiccate and irritate larvae, or apply evening spray of Ampligo / Emamectin Benzoate at dusk when caterpillars feed actively.',
+      avoid: [
+        'Do NOT spray insecticides at midday under direct sunlight when caterpillars hide deep inside the whorl.',
+        'Do NOT apply uncalibrated pesticide overdoses which kill beneficial predatory ants and earwigs.',
+        'Do NOT ignore nearby border grasses where armyworm moths lay alternate egg batches.',
+      ],
+      escalation:
+        'Seek immediate agrochemical input advice if whorl damage exceeds 20-30% of plants prior to tassel emergence.',
+      local_context_used: 'Ogoja & Yala Savanna Grain Belt',
       pidgin_audio_script:
         'Farmer greetings o! Dis caterpillar wey dey chop your corn heart na Fall Armyworm, the wicked worm wey dey bite holes for whorl leave brown sawdust inside. If you no quick stop am, e go chop di whole farm before corn bring tassel. Today today, early morning, carry dry wood ash mix with fine sand and small dry pepper, drop half spoon straight inside every corn whorl. The ash and sand go choke the caterpillar die. If plenty worms still dey, buy Ampligo or Emamectin Benzoate chemical, spray am for evening time when the worms come outside chop. Make sure you cover your nose and mouth well when you dey spray. You go conquer am!',
     },
@@ -308,6 +350,20 @@ export const FIELD_SAMPLES: FieldSample[] = [
         'Foliar spray with systemic fungicides such as Propiconazole (Tilt 250 EC) or Mancozeb 80WP mixed with mineral oil or surfactant to help stick to waxy plantain leaves during heavy downpours.',
       prevention_future:
         'Mulch heavily with organic manure to boost plant vigor; introduce Sigatoka-resistant plantain hybrids developed by IITA (such as PITA 14, PITA 17, or BITA 3).',
+      action_plan_0_2_hours:
+        'De-leaf (prune off) severely spotted lower leaves displaying black necrotic streaks using a clean, sharp cutlass.',
+      action_plan_2_6_hours:
+        'Place pruned infected leaves upside down (abaxial face to soil) under pseudostems and cover with dry grass mulch to prevent airborne ascospore ejection.',
+      action_plan_6_24_hours:
+        'Clear encroaching weeds within 2 meters of pseudostem bases and spread wood ash around roots to deliver potassium. Schedule early morning fungicide spray if rain is forecast.',
+      avoid: [
+        'Do NOT leave pruned diseased leaves standing upright or elevated where breeze catches spores.',
+        'Do NOT plant suckers at overly dense spacing (< 2.5m x 2.5m) in humid plantation bottoms.',
+        'Do NOT cut healthy green upper functional leaves needed for bunch filling.',
+      ],
+      escalation:
+        'Consult ADP extension specialists if younger leaves (< leaf 4 from the top) collapse before flowering.',
+      local_context_used: 'Akamkpa & Biase Plantations (Southern Agro-Zone)',
       pidgin_audio_script:
         'My plantain farmer, well done! Wetin dey spoil your plantain leaves so na Black Sigatoka fungus. E dey start like tiny brown line, come turn black like fire burn di leaf, make plantain bunch small and ripen before time. Wetin you go do right away: take sharp cutlass cut all dem dry black leaves comot, turn di back face ground make breeze no carry di sickness blow go up. Put plenty animal dung or compost and wood ash round the plantain root make e get power. Spray am with Tilt or Mancozeb if rain dey too heavy. Your plantain fingers go fat well well!',
     },
@@ -341,6 +397,20 @@ export const FIELD_SAMPLES: FieldSample[] = [
         'Broadcast Kieserite (Magnesium Sulfate - MgSO4) at 1.0 to 1.5 kg per mature palm or Dolomite limestone (if soil is very acidic) in a ring around the drip line before onset of heavy rains.',
       prevention_future:
         'Balance Potassium (MOP) and Magnesium fertilizer ratios in sandy coastal acid soils of Cross River State to prevent induced Mg lock-out.',
+      action_plan_0_2_hours:
+        'Inspect and confirm that only older sun-exposed lower fronds show orange spotting while new spear leaves remain green (distinguishing deficiency from lethal crown rot).',
+      action_plan_2_6_hours:
+        'Clear a 2-meter weed circle around the palm base; do NOT cut off the orange fronds prematurely, as the palm continues salvaging mobile nutrients from them.',
+      action_plan_6_24_hours:
+        'Broadcast 1.0 to 1.5 kg of Kieserite (Magnesium Sulfate) or Dolomite in an even ring along the frond drip line before expected rainfall; mulch with empty fruit bunches (EFB) if available.',
+      avoid: [
+        'Do NOT prune off chlorotic orange fronds; cutting them starves the palm and reduces yield further.',
+        'Do NOT dump concentrated muriate of potash (MOP) without balancing magnesium ratios in acidic sands.',
+        'Do NOT apply fertilizers directly against the palm trunk bark.',
+      ],
+      escalation:
+        'Request soil and leaf tissue sampling from NIFOR / extension agents if orange spotting affects middle fronds across large plantation acreage.',
+      local_context_used: 'Calabar & Akamkpa Palm Estates',
       pidgin_audio_script:
         'Palm farmer greetings to you! Wetin dey make your palm fronds turn bright yellow and orange like orange peel no be insect sickness o; na hunger for Magnesium mineral for inside Cross River acid soil. Di plant dey shout say e need food! No cut the orange leaves yet o. First clear the grass round the palm tree trunk, then pour one to two kilograms of Kieserite or Dolomite powder round the palm. You fit also carry empty palm fruit bunch or burnt ash from palm mill spread round am. Inside three months, new green fronds go shoot out and your palm oil bunch go weigh heavy!',
     },
@@ -374,6 +444,20 @@ export const FIELD_SAMPLES: FieldSample[] = [
         'Apply Mancozeb 80 WP or Carbendazim (Bavistin) at 40g per 15L knapsack, alternating with systemic Azoxystrobin every 14 days during wet July-September months. Observe harvest interval.',
       prevention_future:
         'Use certified disease-free seed yam setts treated with wood ash and fungicide slurry before planting. Practice 3-year crop rotation without planting yams in same mound location.',
+      action_plan_0_2_hours:
+        'Carefully prop up fallen or sagging yam vines onto sturdy dry bamboo stakes to elevate foliage at least 1 meter away from contaminated rain-splashed soil.',
+      action_plan_2_6_hours:
+        'Prune blackened dying leaf clusters touching the ground with a clean knife, and dust the yam mounds generously with fine hearth wood ash to deter spore germination.',
+      action_plan_6_24_hours:
+        'Prepare Mancozeb 80WP or Carbendazim protective spray (40g/15L knapsack) and apply evenly over both leaf surfaces during calm early morning conditions.',
+      avoid: [
+        'Do NOT walk through wet yam fields during rain or heavy dew, as foot traffic rapidly disperses sticky fungal conidia.',
+        'Do NOT use overhead irrigation or splash water directly onto yam vine foliage.',
+        'Do NOT save infected tubers from scorched vines as seed setts for subsequent planting.',
+      ],
+      escalation:
+        'Escalate to local Ogoja/Obudu cooperative agronomists if vine die-back reaches the main stem within 3 days.',
+      local_context_used: 'Ogoja & Obudu Yam Hubs',
       pidgin_audio_script:
         'Ogoja and Obudu yam farmers, salute! Dis black spots wey dey burn your yam leaves and make vine turn black dry die, na Anthracnose fungal scorch. Heavy rain dey splash am from ground enter the leaves. Quick action wey you must do: lift the yam vines from ground tie dem well for dry bamboo stick make air enter. Throw dry wood ash plenty round the yam heap. Then carry Mancozeb or Carbendazim chemical spray the leaves front and back make the fungus die. Next year, treat your seed yam sett with ash and clean fungicide before you bury am for mound. God go protect your big yam tubers!',
     },
@@ -399,6 +483,18 @@ export const FIELD_SAMPLES: FieldSample[] = [
       organic_local_remedy: null,
       standard_chemical_treatment: null,
       prevention_future: null,
+      action_plan_0_2_hours:
+        'No plant tissue detected. Please take a clear, well-lit photo focusing on a crop leaf, stem, fruit, or root.',
+      action_plan_2_6_hours:
+        'Ensure phone camera lens is clean and hold phone 15-30cm from the crop in natural daylight.',
+      action_plan_6_24_hours:
+        'Rescan with AgriScan when a field crop specimen is ready for health assessment.',
+      avoid: [
+        'Do NOT upload photos of farming tools, machinery, buildings, animals, or distant landscape panoramas.',
+        'Do NOT apply agricultural chemicals or interventions to mechanical equipment.',
+      ],
+      escalation: 'No agronomic escalation required for non-plant objects.',
+      local_context_used: null,
       pidgin_audio_script:
         'Dis picture wey you upload no be plant o. Na mechanical tool or iron wey dey here. Abeg snap clean photo of your crop leaf, stem, or fruit wey you wan make our agronomist inspect.',
     },

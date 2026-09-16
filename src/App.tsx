@@ -52,19 +52,54 @@ export default function App() {
         );
       }
 
-      const apiBase = (import.meta.env.VITE_API_BASE_URL || 'https://easy-dodos-move.loca.lt').replace(/\/+$/, '');
-      const response = await fetch(`${apiBase}/api/diagnose`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Bypass-Tunnel-Reminder': 'true',
-        },
-        body: JSON.stringify({
-          image: imageData,
-          zone: location || 'Cross River State',
-          crop: cropHint || 'Auto-detect',
-        }),
+      const configuredApiBase = (import.meta.env.VITE_API_BASE_URL || '').replace(/\/+$/, '');
+      const payloadBody = JSON.stringify({
+        image: imageData,
+        mimeType: mimeType || 'image/jpeg',
+        zone: location || '',
+        location: location || '',
+        crop: cropHint || 'Auto-detect',
+        cropHint: cropHint || 'Auto-detect',
+        fieldNotes: fieldNotes || '',
       });
+
+      let response: Response;
+      try {
+        const targetUrl = configuredApiBase ? `${configuredApiBase}/api/diagnose` : '/api/diagnose';
+        response = await fetch(targetUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Bypass-Tunnel-Reminder': 'true',
+          },
+          body: payloadBody,
+        });
+
+        if (!response.ok && configuredApiBase) {
+          // If remote endpoint fails with 502/404/etc, try local relative server
+          console.warn(`Remote API returned ${response.status}. Retrying local /api/diagnose...`);
+          response = await fetch('/api/diagnose', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: payloadBody,
+          });
+        }
+      } catch (fetchErr) {
+        if (configuredApiBase) {
+          console.warn('Configured API base unreachable, falling back to local /api/diagnose:', fetchErr);
+          response = await fetch('/api/diagnose', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: payloadBody,
+          });
+        } else {
+          throw fetchErr;
+        }
+      }
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
@@ -82,7 +117,23 @@ export default function App() {
         confidence_score: typeof data.confidence_score === 'number' ? data.confidence_score : 0,
         severity_level: (data.severity_level as PathologyDiagnosis['severity_level']) || 'None',
         observable_symptoms: Array.isArray(data.observable_symptoms) ? data.observable_symptoms : [],
-        immediate_containment_step: data.immediate_containment_step ?? null,
+        immediate_containment_step: data.immediate_containment_step ?? data.action_plan_0_2_hours ?? null,
+        action_plan_0_2_hours: data.action_plan_0_2_hours ?? data.immediate_containment_step ?? null,
+        action_plan_2_6_hours: data.action_plan_2_6_hours ?? data.organic_local_remedy ?? null,
+        action_plan_6_24_hours: data.action_plan_6_24_hours ?? null,
+        avoid: Array.isArray(data.avoid)
+          ? data.avoid
+          : typeof data.avoid === 'string'
+          ? [data.avoid]
+          : null,
+        escalation: data.escalation ?? null,
+        local_context_used:
+          data.local_context_used ??
+          (location && !location.toLowerCase().includes('general')
+            ? `${location}, Cross River`
+            : 'General Cross River agricultural guidance'),
+        is_uncertain: Boolean(data.is_uncertain),
+        more_info_needed: data.more_info_needed ?? null,
         organic_local_remedy: data.organic_local_remedy ?? null,
         standard_chemical_treatment: data.standard_chemical_treatment ?? null,
         prevention_future: data.prevention_future ?? null,
