@@ -52,16 +52,18 @@ export default function App() {
         );
       }
 
-      const response = await fetch('https://kind-parks-make.loca.lt/api/diagnose', {
+      const apiBase = import.meta.env.VITE_API_BASE_URL || '';
+      const response = await fetch(`${apiBase}/api/diagnose`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Bypass-Tunnel-Reminder': 'true',
         },
         body: JSON.stringify({
           image: imageData,
-          zone: location || 'Cross River State',
-          crop: cropHint || 'Auto-detect',
+          mimeType: mimeType,
+          cropHint: cropHint || 'Auto-detect',
+          location: location || 'Cross River State',
+          fieldNotes: fieldNotes,
         }),
       });
 
