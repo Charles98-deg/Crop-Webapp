@@ -60,10 +60,8 @@ export default function App() {
         },
         body: JSON.stringify({
           image: imageData,
-          mimeType: mimeType,
-          cropHint: cropHint || 'Auto-detect',
-          location: location || 'Cross River State',
-          fieldNotes: fieldNotes,
+          zone: location || 'Cross River State',
+          crop: cropHint || 'Auto-detect',
         }),
       });
 
