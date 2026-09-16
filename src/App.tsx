@@ -52,7 +52,7 @@ export default function App() {
         );
       }
 
-      const apiBase = import.meta.env.VITE_API_BASE_URL || '';
+      const apiBase = (import.meta.env.VITE_API_BASE_URL || 'https://easy-dodos-move.loca.lt').replace(/\/+$/, '');
       const response = await fetch(`${apiBase}/api/diagnose`, {
         method: 'POST',
         headers: {
