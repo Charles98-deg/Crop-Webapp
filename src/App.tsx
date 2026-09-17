@@ -53,13 +53,15 @@ export default function App() {
       }
 
       const rawApiBase = (
-        import.meta.env.VITE_API_BASE_URL || 'https://easy-beers-pick.loca.lt'
+        import.meta.env.VITE_API_BASE_URL || 'https://fruity-parents-find.loca.lt'
       ).trim();
       const configuredApiBase = rawApiBase
         .replace(/^(https?:\/\/)+/, (match) =>
           match.includes('https://') ? 'https://' : 'http://'
         )
-        .replace(/\/+$/, '');
+        .replace(/\/+$/, '')
+        .replace(/\/api\/diagnose\/?$/, '')
+        .replace(/\/api\/?$/, '');
       const payloadBody = JSON.stringify({
         image: imageData,
         mimeType: mimeType || 'image/jpeg',

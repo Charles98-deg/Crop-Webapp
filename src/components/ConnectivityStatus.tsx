@@ -51,10 +51,25 @@ export function useConnectivity(): ConnectivityState {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 6000);
 
-      const res = await fetch('/api/health', {
+      const rawApiBase = (
+        import.meta.env.VITE_API_BASE_URL || 'https://fruity-parents-find.loca.lt'
+      ).trim();
+      const configuredApiBase = rawApiBase
+        .replace(/^(https?:\/\/)+/, (match) =>
+          match.includes('https://') ? 'https://' : 'http://'
+        )
+        .replace(/\/+$/, '')
+        .replace(/\/api\/diagnose\/?$/, '')
+        .replace(/\/api\/?$/, '');
+      const healthUrl = configuredApiBase ? `${configuredApiBase}/` : '/api/health';
+
+      const res = await fetch(healthUrl, {
         method: 'GET',
         cache: 'no-store',
         signal: controller.signal,
+        headers: {
+          'Bypass-Tunnel-Reminder': 'true',
+        },
       });
       clearTimeout(timeoutId);
 
