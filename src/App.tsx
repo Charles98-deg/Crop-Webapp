@@ -52,7 +52,14 @@ export default function App() {
         );
       }
 
-      const configuredApiBase = (import.meta.env.VITE_API_BASE_URL || '').replace(/\/+$/, '');
+      const rawApiBase = (
+        import.meta.env.VITE_API_BASE_URL || 'https://fifty-yaks-lay.loca.lt'
+      ).trim();
+      const configuredApiBase = rawApiBase
+        .replace(/^(https?:\/\/)+/, (match) =>
+          match.includes('https://') ? 'https://' : 'http://'
+        )
+        .replace(/\/+$/, '');
       const payloadBody = JSON.stringify({
         image: imageData,
         mimeType: mimeType || 'image/jpeg',
@@ -63,43 +70,15 @@ export default function App() {
         fieldNotes: fieldNotes || '',
       });
 
-      let response: Response;
-      try {
-        const targetUrl = configuredApiBase ? `${configuredApiBase}/api/diagnose` : '/api/diagnose';
-        response = await fetch(targetUrl, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Bypass-Tunnel-Reminder': 'true',
-          },
-          body: payloadBody,
-        });
-
-        if (!response.ok && configuredApiBase) {
-          // If remote endpoint fails with 502/404/etc, try local relative server
-          console.warn(`Remote API returned ${response.status}. Retrying local /api/diagnose...`);
-          response = await fetch('/api/diagnose', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: payloadBody,
-          });
-        }
-      } catch (fetchErr) {
-        if (configuredApiBase) {
-          console.warn('Configured API base unreachable, falling back to local /api/diagnose:', fetchErr);
-          response = await fetch('/api/diagnose', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: payloadBody,
-          });
-        } else {
-          throw fetchErr;
-        }
-      }
+      const targetUrl = configuredApiBase ? `${configuredApiBase}/api/diagnose` : '/api/diagnose';
+      const response = await fetch(targetUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Bypass-Tunnel-Reminder': 'true',
+        },
+        body: payloadBody,
+      });
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
