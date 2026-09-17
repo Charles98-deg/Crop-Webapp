@@ -53,7 +53,7 @@ export default function App() {
       }
 
       const rawApiBase = (
-        import.meta.env.VITE_API_BASE_URL || 'https://fifty-yaks-lay.loca.lt'
+        import.meta.env.VITE_API_BASE_URL || 'https://easy-beers-pick.loca.lt'
       ).trim();
       const configuredApiBase = rawApiBase
         .replace(/^(https?:\/\/)+/, (match) =>
