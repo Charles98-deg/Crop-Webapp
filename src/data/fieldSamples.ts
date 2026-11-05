@@ -1,7 +1,7 @@
 import { FieldSample } from '../types';
 
 // Procedurally generated high-fidelity agricultural visual representations (SVG Data URIs)
-// for field testing in Cross River State conditions.
+// for field testing in global agro-ecological conditions.
 
 const createSvgDataUrl = (svgContent: string): string => {
   return `data:image/svg+xml;utf8,${encodeURIComponent(svgContent.trim())}`;
@@ -37,7 +37,7 @@ const cassavaCmdSvg = createSvgDataUrl(`
   <line x1="200" y1="150" x2="195" y2="25" stroke="#fef08a" stroke-width="2"/>
   <line x1="200" y1="150" x2="70" y2="83" stroke="#fef08a" stroke-width="2"/>
   <line x1="200" y1="150" x2="330" y2="83" stroke="#fef08a" stroke-width="2"/>
-  <text x="20" y="35" fill="#fef08a" font-family="sans-serif" font-weight="bold" font-size="14">CASSAVA MOSAIC (CMD) - IKOM</text>
+  <text x="20" y="35" fill="#fef08a" font-family="sans-serif" font-weight="bold" font-size="14">CASSAVA MOSAIC (CMD) - SPECIMEN 01</text>
 </svg>`);
 
 // 2. Cocoa Black Pod (Phytophthora megakarya)
@@ -58,7 +58,7 @@ const cocoaBlackPodSvg = createSvgDataUrl(`
   <path d="M195,140 Q215,150 240,160 Q265,175 273,190" stroke="#e4e4e7" stroke-dasharray="3,3" stroke-width="4" fill="none"/>
   <circle cx="215" cy="180" r="12" fill="#27272a"/>
   <circle cx="235" cy="205" r="18" fill="#09090b"/>
-  <text x="20" y="35" fill="#fca5a5" font-family="sans-serif" font-weight="bold" font-size="14">COCOA BLACK POD - ETUNG / BOKI</text>
+  <text x="20" y="35" fill="#fca5a5" font-family="sans-serif" font-weight="bold" font-size="14">COCOA BLACK POD - SPECIMEN 02</text>
 </svg>`);
 
 // 3. Maize Fall Armyworm damage
@@ -86,7 +86,7 @@ const maizeArmywormSvg = createSvgDataUrl(`
   <circle cx="204" cy="122" r="2.5" fill="#a16207"/>
   <circle cx="195" cy="130" r="3.5" fill="#713f12"/>
   <circle cx="202" cy="133" r="2" fill="#854d0e"/>
-  <text x="20" y="35" fill="#fde047" font-family="sans-serif" font-weight="bold" font-size="14">MAIZE FALL ARMYWORM - OGOJA</text>
+  <text x="20" y="35" fill="#fde047" font-family="sans-serif" font-weight="bold" font-size="14">MAIZE FALL ARMYWORM - SPECIMEN 03</text>
 </svg>`);
 
 // 4. Plantain Black Sigatoka
@@ -107,7 +107,7 @@ const plantainSigatokaSvg = createSvgDataUrl(`
   <path d="M270,70 L320,100" stroke="#1c1917" stroke-width="10" stroke-linecap="round"/>
   <!-- Dried tip necrosis -->
   <path d="M340,30 C360,22 375,20 380,20 C360,55 330,80 320,60 Z" fill="#451a03"/>
-  <text x="20" y="35" fill="#fed7aa" font-family="sans-serif" font-weight="bold" font-size="14">PLANTAIN BLACK SIGATOKA - BIASE</text>
+  <text x="20" y="35" fill="#fed7aa" font-family="sans-serif" font-weight="bold" font-size="14">PLANTAIN BLACK SIGATOKA - SPECIMEN 04</text>
 </svg>`);
 
 // 5. Oil Palm Magnesium Deficiency (Orange Frond Spotting)
@@ -134,7 +134,7 @@ const oilPalmDeficiencySvg = createSvgDataUrl(`
   <circle cx="130" cy="110" r="4" fill="#7c2d12"/>
   <circle cx="200" cy="90" r="4" fill="#7c2d12"/>
   <circle cx="280" cy="75" r="4" fill="#7c2d12"/>
-  <text x="20" y="35" fill="#fed7aa" font-family="sans-serif" font-weight="bold" font-size="14">OIL PALM ORANGE FROND - AKAMKPA</text>
+  <text x="20" y="35" fill="#fed7aa" font-family="sans-serif" font-weight="bold" font-size="14">OIL PALM ORANGE FROND - SPECIMEN 05</text>
 </svg>`);
 
 // 6. Yam Anthracnose / Vine Blight
@@ -158,7 +158,7 @@ const yamAnthracnoseSvg = createSvgDataUrl(`
   <circle cx="130" cy="190" r="5" fill="#1c1917"/>
   <!-- Black necrotic tip causing 'scorch' appearance -->
   <path d="M175,225 Q190,240 205,225 Z" fill="#1c1917"/>
-  <text x="20" y="35" fill="#fde047" font-family="sans-serif" font-weight="bold" font-size="14">YAM ANTHRACNOSE - YALA / OGOJA</text>
+  <text x="20" y="35" fill="#fde047" font-family="sans-serif" font-weight="bold" font-size="14">YAM ANTHRACNOSE - SPECIMEN 06</text>
 </svg>`);
 
 // 7. Non-plant image (Testing verification rule #1)
@@ -176,7 +176,7 @@ const farmWrenchToolsSvg = createSvgDataUrl(`
   <!-- Screws & bolts -->
   <circle cx="150" cy="210" r="12" fill="#cbd5e1"/>
   <circle cx="210" cy="220" r="10" fill="#64748b"/>
-  <text x="20" y="35" fill="#f87171" font-family="sans-serif" font-weight="bold" font-size="14">TEST: HARDWARE TOOL (NON-PLANT)</text>
+  <text x="20" y="35" fill="#f87171" font-family="sans-serif" font-weight="bold" font-size="14">NON-PLANT SPECIMEN (CONTROL)</text>
 </svg>`);
 
 export const FIELD_SAMPLES: FieldSample[] = [
@@ -184,7 +184,7 @@ export const FIELD_SAMPLES: FieldSample[] = [
     id: 'cassava-cmd',
     title: 'Cassava Mosaic Disease (CMD)',
     crop: 'Cassava',
-    localZone: 'Ikom & Obubra Belt',
+    localZone: 'Tropical Rainforest Agro-Zone',
     category: 'Disease',
     thumbnailUrl: cassavaCmdSvg,
     description:
@@ -221,17 +221,16 @@ export const FIELD_SAMPLES: FieldSample[] = [
         'Do NOT apply excessive high-nitrogen fertilizer which accelerates succulent vegetative growth favored by whiteflies.',
       ],
       escalation:
-        'Contact Cross River Agricultural Development Programme (CRADP) or IITA extension agents if over 20% of stands in your block show severe twisting.',
-      local_context_used: 'Central Cocoa & Cassava Belt (Ikom / Obubra)',
-      pidgin_audio_script:
-        'Farmer well done o! Wetin dey worry your cassava so na Cassava Mosaic sickness. Dis sickness dey come from tiny whitefly insects wey dey carry bad water enter di plant, na why di leaves dey turn yellow, dey twist like rope. First thing wey you go do now now: uproot any stand wey don spoil pass, go burn am or bury am far from farm so e no go touch others. If you no wan spend money buy chemical, squeeze plenty Dongoyaro neem leaf for inside water, put small black soap, spray di leaves make di whitefly run comot. Next planting season, no take cutting from sick farm; go carry clean resistant bundle like TME 419 from IITA or agric extension officers. Your farm go dey fine!',
+        'Contact regional agricultural extension services or IITA agronomy officers if over 20% of stands in your block show severe twisting.',
+      local_context_used: 'Tropical Rainforest Agro-Zone',
+      pidgin_audio_script: '',
     },
   },
   {
     id: 'cocoa-black-pod',
     title: 'Cocoa Black Pod Rot',
     crop: 'Cocoa',
-    localZone: 'Etung & Boki Cocoa Belt',
+    localZone: 'Humid Forest Agro-Ecological Basin',
     category: 'Disease',
     thumbnailUrl: cocoaBlackPodSvg,
     description:
@@ -269,16 +268,15 @@ export const FIELD_SAMPLES: FieldSample[] = [
       ],
       escalation:
         'Alert the local Cocoa Farmers Association or extension officer if black pod spreads to more than 15 trees within a 48-hour rainy spell.',
-      local_context_used: 'Etung & Boki Rainforest Cocoa Belt',
-      pidgin_audio_script:
-        'Agric people well done! Dis black mark wey dey eat your cocoa pod na Black Pod sickness, Phytophthora megakarya, and e dey spread like wild fire for rainy season for Cross River. As I dey talk to you now, take your pruning hook pluck all dem black pods sharp-sharp! Carry dem comot from farm go dig hole bury dem with wood ash. Open di cocoa tree canopy so breeze and sun fit enter, because cold and wet place na wetin di sickness like. Enter agro-store for Ikom or your junction, buy Ridomil Gold or Nordox copper spray, mix am according to measurement spray di pods. Protect your hands and eyes with mask and gloves. If you do this one, your harvest go full bags!',
+      local_context_used: 'Humid Forest Agro-Ecological Basin',
+      pidgin_audio_script: '',
     },
   },
   {
     id: 'maize-armyworm',
     title: 'Maize Fall Armyworm',
     crop: 'Maize',
-    localZone: 'Ogoja & Yala Savanna',
+    localZone: 'Sub-Saharan Savanna Belt',
     category: 'Pest',
     thumbnailUrl: maizeArmywormSvg,
     description:
@@ -316,16 +314,15 @@ export const FIELD_SAMPLES: FieldSample[] = [
       ],
       escalation:
         'Seek immediate agrochemical input advice if whorl damage exceeds 20-30% of plants prior to tassel emergence.',
-      local_context_used: 'Ogoja & Yala Savanna Grain Belt',
-      pidgin_audio_script:
-        'Farmer greetings o! Dis caterpillar wey dey chop your corn heart na Fall Armyworm, the wicked worm wey dey bite holes for whorl leave brown sawdust inside. If you no quick stop am, e go chop di whole farm before corn bring tassel. Today today, early morning, carry dry wood ash mix with fine sand and small dry pepper, drop half spoon straight inside every corn whorl. The ash and sand go choke the caterpillar die. If plenty worms still dey, buy Ampligo or Emamectin Benzoate chemical, spray am for evening time when the worms come outside chop. Make sure you cover your nose and mouth well when you dey spray. You go conquer am!',
+      local_context_used: 'Sub-Saharan Savanna Belt',
+      pidgin_audio_script: '',
     },
   },
   {
     id: 'plantain-sigatoka',
     title: 'Plantain Black Sigatoka',
     crop: 'Plantain',
-    localZone: 'Akamkpa & Biase Plantations',
+    localZone: 'Coastal Agro-Ecological Basin',
     category: 'Disease',
     thumbnailUrl: plantainSigatokaSvg,
     description:
@@ -363,16 +360,15 @@ export const FIELD_SAMPLES: FieldSample[] = [
       ],
       escalation:
         'Consult ADP extension specialists if younger leaves (< leaf 4 from the top) collapse before flowering.',
-      local_context_used: 'Akamkpa & Biase Plantations (Southern Agro-Zone)',
-      pidgin_audio_script:
-        'My plantain farmer, well done! Wetin dey spoil your plantain leaves so na Black Sigatoka fungus. E dey start like tiny brown line, come turn black like fire burn di leaf, make plantain bunch small and ripen before time. Wetin you go do right away: take sharp cutlass cut all dem dry black leaves comot, turn di back face ground make breeze no carry di sickness blow go up. Put plenty animal dung or compost and wood ash round the plantain root make e get power. Spray am with Tilt or Mancozeb if rain dey too heavy. Your plantain fingers go fat well well!',
+      local_context_used: 'Coastal Agro-Ecological Basin',
+      pidgin_audio_script: '',
     },
   },
   {
     id: 'oil-palm-orange-frond',
     title: 'Oil Palm Orange Frond (Mg Deficiency)',
     crop: 'Oil Palm',
-    localZone: 'Calabar & Akamkpa Palm Estates',
+    localZone: 'Equatorial Palm & Rainforest Zone',
     category: 'Deficiency',
     thumbnailUrl: oilPalmDeficiencySvg,
     description:
@@ -396,7 +392,7 @@ export const FIELD_SAMPLES: FieldSample[] = [
       standard_chemical_treatment:
         'Broadcast Kieserite (Magnesium Sulfate - MgSO4) at 1.0 to 1.5 kg per mature palm or Dolomite limestone (if soil is very acidic) in a ring around the drip line before onset of heavy rains.',
       prevention_future:
-        'Balance Potassium (MOP) and Magnesium fertilizer ratios in sandy coastal acid soils of Cross River State to prevent induced Mg lock-out.',
+        'Balance Potassium (MOP) and Magnesium fertilizer ratios in sandy coastal acid soils to prevent induced Mg lock-out.',
       action_plan_0_2_hours:
         'Inspect and confirm that only older sun-exposed lower fronds show orange spotting while new spear leaves remain green (distinguishing deficiency from lethal crown rot).',
       action_plan_2_6_hours:
@@ -410,16 +406,15 @@ export const FIELD_SAMPLES: FieldSample[] = [
       ],
       escalation:
         'Request soil and leaf tissue sampling from NIFOR / extension agents if orange spotting affects middle fronds across large plantation acreage.',
-      local_context_used: 'Calabar & Akamkpa Palm Estates',
-      pidgin_audio_script:
-        'Palm farmer greetings to you! Wetin dey make your palm fronds turn bright yellow and orange like orange peel no be insect sickness o; na hunger for Magnesium mineral for inside Cross River acid soil. Di plant dey shout say e need food! No cut the orange leaves yet o. First clear the grass round the palm tree trunk, then pour one to two kilograms of Kieserite or Dolomite powder round the palm. You fit also carry empty palm fruit bunch or burnt ash from palm mill spread round am. Inside three months, new green fronds go shoot out and your palm oil bunch go weigh heavy!',
+      local_context_used: 'Equatorial Palm & Rainforest Zone',
+      pidgin_audio_script: '',
     },
   },
   {
     id: 'yam-anthracnose',
     title: 'Yam Anthracnose (Vine Scorch)',
     crop: 'Yams',
-    localZone: 'Ogoja & Obudu Yam Hubs',
+    localZone: 'Mid-Altitude Montane Highland',
     category: 'Disease',
     thumbnailUrl: yamAnthracnoseSvg,
     description:
@@ -456,10 +451,9 @@ export const FIELD_SAMPLES: FieldSample[] = [
         'Do NOT save infected tubers from scorched vines as seed setts for subsequent planting.',
       ],
       escalation:
-        'Escalate to local Ogoja/Obudu cooperative agronomists if vine die-back reaches the main stem within 3 days.',
-      local_context_used: 'Ogoja & Obudu Yam Hubs',
-      pidgin_audio_script:
-        'Ogoja and Obudu yam farmers, salute! Dis black spots wey dey burn your yam leaves and make vine turn black dry die, na Anthracnose fungal scorch. Heavy rain dey splash am from ground enter the leaves. Quick action wey you must do: lift the yam vines from ground tie dem well for dry bamboo stick make air enter. Throw dry wood ash plenty round the yam heap. Then carry Mancozeb or Carbendazim chemical spray the leaves front and back make the fungus die. Next year, treat your seed yam sett with ash and clean fungicide before you bury am for mound. God go protect your big yam tubers!',
+        'Escalate to local cooperative agronomists if vine die-back reaches the main stem within 3 days.',
+      local_context_used: 'Mid-Altitude Montane Highland',
+      pidgin_audio_script: '',
     },
   },
   {
@@ -495,8 +489,7 @@ export const FIELD_SAMPLES: FieldSample[] = [
       ],
       escalation: 'No agronomic escalation required for non-plant objects.',
       local_context_used: null,
-      pidgin_audio_script:
-        'Dis picture wey you upload no be plant o. Na mechanical tool or iron wey dey here. Abeg snap clean photo of your crop leaf, stem, or fruit wey you wan make our agronomist inspect.',
+      pidgin_audio_script: '',
     },
   },
 ];

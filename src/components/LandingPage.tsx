@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion, Variants } from 'framer-motion';
-import { Scan, Volume2, MapPin, Sparkles } from 'lucide-react';
+import { Scan, ShieldCheck, Globe, Sparkles } from 'lucide-react';
 
 interface LandingPageProps {
   onStart?: () => void;
@@ -12,7 +12,7 @@ const CROP_IMAGES = [
   { src: '/images/media_1788672012365.jpg', alt: 'Farmland field irrigation' },
   { src: '/images/media_1788672013386.jpg', alt: 'Fresh bell pepper farm harvest' },
   { src: '/images/media_1788672013662.jpg', alt: 'Farmer cultivating fertile crop soil' },
-  { src: '/hero-poster.jpg', alt: 'Cross River agricultural landscape' },
+  { src: '/hero-poster.jpg', alt: 'Global agricultural landscape' },
 ];
 
 export const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
@@ -41,7 +41,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
   ];
 
   return (
-    <div className="relative w-full min-h-screen overflow-x-hidden overflow-y-auto bg-[#060D09] text-white flex flex-col justify-between selection:bg-[#22C55E] selection:text-[#060D09]">
+    <div className="relative w-full min-h-screen overflow-x-hidden overflow-y-auto bg-slate-950 text-white flex flex-col justify-between selection:bg-emerald-500 selection:text-slate-950">
       {/* Inline styles for infinite marquee animation and reduced-motion media query */}
       <style>{`
         @keyframes marquee-scroll-left {
@@ -128,20 +128,20 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
           style={{ backgroundImage: "url('/hero-poster.jpg')" }}
         />
 
-        {/* Dark Obsidian Glass Overlay: bg-[#060D09]/80 backdrop-blur-[2px] */}
-        <div className="absolute inset-0 bg-[#060D09]/80 backdrop-blur-[2px] pointer-events-none" />
+        {/* Dark Slate Glass Overlay */}
+        <div className="absolute inset-0 bg-slate-950/80 backdrop-blur-[2px] pointer-events-none" />
 
-        {/* Radial Gradient: radial-gradient(ellipse at center, transparent 0%, rgba(6,13,9,0.70) 50%, #060D09 100%) */}
+        {/* Radial Gradient */}
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
             background:
-              'radial-gradient(ellipse at center, transparent 0%, rgba(6,13,9,0.70) 50%, #060D09 100%)',
+              'radial-gradient(ellipse at center, transparent 0%, rgba(2,6,23,0.70) 50%, #020617 100%)',
           }}
         />
 
         {/* Vertical Vignette Fade */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#060D09]/75 via-transparent to-[#060D09] pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-b from-slate-950/80 via-transparent to-slate-950 pointer-events-none" />
       </div>
 
       {/* 2. Foreground Content — Relative Z-10 */}
@@ -156,80 +156,80 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
           <div className="space-y-5">
             <motion.div
               variants={itemVariants}
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-950/80 border border-emerald-500/40 text-emerald-300 text-xs sm:text-sm font-bold uppercase tracking-widest backdrop-blur-md shadow-lg"
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs sm:text-sm font-bold uppercase tracking-widest backdrop-blur-md shadow-lg"
             >
-              <Sparkles className="w-4 h-4 text-[#22C55E]" />
-              <span>Cross River State Smallholder Agrologist</span>
+              <Sparkles className="w-4 h-4 text-emerald-400" />
+              <span>Global Enterprise Plant Pathology Platform</span>
             </motion.div>
 
             <motion.h1
               variants={itemVariants}
-              className="text-5xl sm:text-7xl md:text-8xl font-black tracking-tight text-white drop-shadow-[0_10px_30px_rgba(0,0,0,0.9)] [text-shadow:0_0_40px_rgba(34,197,94,0.45)]"
+              className="text-5xl sm:text-7xl md:text-8xl font-black tracking-tight text-white drop-shadow-[0_10px_30px_rgba(0,0,0,0.9)]"
               style={{ fontFamily: 'Georgia, serif' }}
             >
               AgriScan{' '}
-              <span className="italic font-light text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-lime-300 to-emerald-400 [text-shadow:0_0_30px_rgba(34,197,94,0.6)]">
-                Cross River
+              <span className="italic font-light text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-emerald-400">
+                Global
               </span>
             </motion.h1>
 
             <motion.p
               variants={itemVariants}
-              className="text-lg sm:text-2xl text-slate-200 font-medium max-w-2xl mx-auto leading-relaxed drop-shadow-sm px-2"
+              className="text-lg sm:text-2xl text-slate-300 font-medium max-w-2xl mx-auto leading-relaxed drop-shadow-sm px-2"
             >
-              The AI that thinks for the farmer. Zero prompting required.
+              Enterprise Agricultural Intelligence. Zero prompting required.
             </motion.p>
 
-            {/* Glowing Unmissable CTA — Full-width on mobile, min 56px height */}
+            {/* Glowing CTA Button */}
             <motion.div variants={itemVariants} className="pt-6 sm:pt-8 flex justify-center w-full">
               <div className="relative inline-flex group w-full sm:w-auto justify-center">
-                {/* Glowing breathing aura */}
-                <span className="absolute -inset-1.5 rounded-full bg-gradient-to-r from-[#22C55E] to-[#10B981] opacity-75 blur-lg group-hover:opacity-100 group-hover:blur-xl transition duration-500 group-hover:scale-105 animate-pulse" />
+                {/* Glowing aura */}
+                <span className="absolute -inset-1.5 rounded-full bg-gradient-to-r from-emerald-500 to-teal-400 opacity-60 blur-lg group-hover:opacity-90 group-hover:blur-xl transition duration-500 group-hover:scale-105 animate-pulse" />
 
                 <button
                   id="btn-start-crop-scan"
                   onClick={onStart}
-                  className="relative inline-flex items-center justify-center gap-3.5 w-full sm:w-auto px-9 sm:px-12 py-5 sm:py-6 min-h-[56px] sm:min-h-[64px] text-xl sm:text-2xl font-black tracking-tight text-[#060D09] bg-[#22C55E] hover:bg-[#16A34A] active:bg-[#15803D] rounded-full border-2 border-emerald-300/80 shadow-[0_0_40px_rgba(34,197,94,0.7),0_0_80px_rgba(34,197,94,0.35)] hover:shadow-[0_0_60px_rgba(34,197,94,0.9),0_0_110px_rgba(34,197,94,0.5)] transition-all transform active:scale-95 cursor-pointer touch-manipulation"
+                  className="relative inline-flex items-center justify-center gap-3.5 w-full sm:w-auto px-9 sm:px-12 py-5 sm:py-6 min-h-[56px] sm:min-h-[64px] text-xl sm:text-2xl font-black tracking-tight text-slate-950 bg-emerald-500/90 hover:bg-emerald-500 active:bg-emerald-600 rounded-full border-2 border-emerald-300/80 shadow-[0_0_40px_rgba(16,185,129,0.5)] transition-all transform active:scale-95 cursor-pointer touch-manipulation"
                 >
-                  <Scan className="w-7 h-7 sm:w-8 sm:h-8 stroke-[2.75] text-[#060D09] group-hover:rotate-12 transition-transform duration-300" />
+                  <Scan className="w-7 h-7 sm:w-8 sm:h-8 stroke-[2.75] text-slate-950 group-hover:rotate-12 transition-transform duration-300" />
                   <span className="uppercase tracking-wider font-extrabold">Start Crop Scan</span>
                 </button>
               </div>
             </motion.div>
           </div>
 
-          {/* Bento Grid Features - Frosted Glass Cards (bg-white/5 border border-white/10 backdrop-blur-md rounded-2xl) */}
+          {/* Bento Grid Features - Eco-Glass Frosted Cards */}
           <motion.div
             variants={itemVariants}
             className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4 text-left"
           >
-            <div className="bg-white/5 border border-white/10 backdrop-blur-md rounded-2xl p-6 flex flex-col space-y-3 hover:border-emerald-400/40 hover:bg-white/10 transition-all shadow-xl">
-              <div className="w-12 h-12 rounded-xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-[#22C55E]">
+            <div className="bg-emerald-900/10 border border-white/10 backdrop-blur-2xl rounded-2xl p-6 flex flex-col space-y-3 hover:border-emerald-400/40 hover:bg-emerald-900/20 transition-all shadow-xl">
+              <div className="w-12 h-12 rounded-xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
                 <Scan className="w-6 h-6" />
               </div>
               <h3 className="text-white font-bold text-lg">Visual Diagnostics</h3>
-              <p className="text-slate-200 text-sm leading-relaxed">
-                Instant crop leaf and stem pathology verification using regional West African AI models.
+              <p className="text-slate-300 text-sm leading-relaxed">
+                Instant crop pathology verification across global agro-ecological zones with visual lesion morphology.
               </p>
             </div>
 
-            <div className="bg-white/5 border border-white/10 backdrop-blur-md rounded-2xl p-6 flex flex-col space-y-3 hover:border-lime-400/40 hover:bg-white/10 transition-all shadow-xl">
-              <div className="w-12 h-12 rounded-xl bg-lime-500/20 border border-lime-500/30 flex items-center justify-center text-lime-400">
-                <Volume2 className="w-6 h-6" />
-              </div>
-              <h3 className="text-white font-bold text-lg">Pidgin Audio Output</h3>
-              <p className="text-slate-200 text-sm leading-relaxed">
-                Direct spoken voice instructions in authentic Nigerian Pidgin designed for field hands.
-              </p>
-            </div>
-
-            <div className="bg-white/5 border border-white/10 backdrop-blur-md rounded-2xl p-6 flex flex-col space-y-3 hover:border-emerald-400/40 hover:bg-white/10 transition-all shadow-xl">
+            <div className="bg-emerald-900/10 border border-white/10 backdrop-blur-2xl rounded-2xl p-6 flex flex-col space-y-3 hover:border-emerald-400/40 hover:bg-emerald-900/20 transition-all shadow-xl">
               <div className="w-12 h-12 rounded-xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
-                <MapPin className="w-6 h-6" />
+                <ShieldCheck className="w-6 h-6" />
               </div>
-              <h3 className="text-white font-bold text-lg">Cross River Localized</h3>
-              <p className="text-slate-200 text-sm leading-relaxed">
-                Traditional recipes (wood ash, Dongoyaro neem) &amp; agro-store inputs mapped to Ikom, Calabar &amp; Ogoja.
+              <h3 className="text-white font-bold text-lg">Multilateral ESG Standards</h3>
+              <p className="text-slate-300 text-sm leading-relaxed">
+                Strict enforcement of international pesticide conventions, WHO Class Ia/Ib, and IFC Performance Standard 3.
+              </p>
+            </div>
+
+            <div className="bg-emerald-900/10 border border-white/10 backdrop-blur-2xl rounded-2xl p-6 flex flex-col space-y-3 hover:border-emerald-400/40 hover:bg-emerald-900/20 transition-all shadow-xl">
+              <div className="w-12 h-12 rounded-xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
+                <Globe className="w-6 h-6" />
+              </div>
+              <h3 className="text-white font-bold text-lg">Multi-Region Models</h3>
+              <p className="text-slate-300 text-sm leading-relaxed">
+                Calibrated disease registries and biological remedies mapped across tropical, subtropical, and temperate basins.
               </p>
             </div>
           </motion.div>

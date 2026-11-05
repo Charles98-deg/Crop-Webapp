@@ -52,7 +52,9 @@ export function useConnectivity(): ConnectivityState {
       const timeoutId = setTimeout(() => controller.abort(), 6000);
 
       const rawApiBase = (
-        import.meta.env.VITE_API_BASE_URL || 'https://fruity-parents-find.loca.lt'
+        import.meta.env.VITE_API_URL ||
+        import.meta.env.VITE_API_BASE_URL ||
+        ''
       ).trim();
       const configuredApiBase = rawApiBase
         .replace(/^(https?:\/\/)+/, (match) =>
@@ -61,15 +63,12 @@ export function useConnectivity(): ConnectivityState {
         .replace(/\/+$/, '')
         .replace(/\/api\/diagnose\/?$/, '')
         .replace(/\/api\/?$/, '');
-      const healthUrl = configuredApiBase ? `${configuredApiBase}/` : '/api/health';
+      const healthUrl = configuredApiBase ? `${configuredApiBase}/api/health` : '/api/health';
 
       const res = await fetch(healthUrl, {
         method: 'GET',
         cache: 'no-store',
         signal: controller.signal,
-        headers: {
-          'Bypass-Tunnel-Reminder': 'true',
-        },
       });
       clearTimeout(timeoutId);
 
@@ -222,10 +221,10 @@ export const ConnectivityStatus: React.FC<ConnectivityStatusProps> = ({
               <>
                 <span
                   className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${
-                    isSyncing ? 'bg-[#22C55E]' : 'bg-[#22C55E]'
+                    isSyncing ? 'bg-amber-400' : 'bg-amber-400'
                   }`}
                 />
-                <span className="relative inline-flex rounded-full h-3 w-3 bg-[#22C55E]" />
+                <span className="relative inline-flex rounded-full h-3 w-3 bg-amber-400" />
               </>
             ) : (
               <>
@@ -238,7 +237,7 @@ export const ConnectivityStatus: React.FC<ConnectivityStatusProps> = ({
           {/* Status Text Label */}
           <div className="flex items-center gap-2">
             {isOnline ? (
-              <Wifi className="w-4 h-4 shrink-0 text-[#22C55E]" />
+              <Wifi className="w-4 h-4 shrink-0 text-amber-400" />
             ) : (
               <WifiOff className="w-4 h-4 shrink-0 text-red-400" />
             )}
@@ -259,7 +258,7 @@ export const ConnectivityStatus: React.FC<ConnectivityStatusProps> = ({
           {/* Network Details Chip */}
           <Badge
             variant="outline"
-            className="text-xs px-2 py-0.5 rounded font-mono font-bold border-emerald-500/40 text-[#22C55E] bg-black/40"
+            className="text-xs px-2 py-0.5 rounded font-mono font-bold border-amber-500/30 text-amber-400 bg-black/40"
           >
             {isOnline ? effectiveType : 'LOCAL'}
           </Badge>
@@ -269,12 +268,12 @@ export const ConnectivityStatus: React.FC<ConnectivityStatusProps> = ({
         <div className="flex items-center gap-2 text-xs sm:text-sm">
           {isOnline ? (
             <div className="flex items-center gap-1.5 text-slate-300">
-              <Clock className="w-4 h-4 text-emerald-400 shrink-0" />
+              <Clock className="w-4 h-4 text-amber-400 shrink-0" />
               <span>
                 Synced <strong className="font-bold text-white">{formatSyncTime(lastSyncTime)}</strong>
               </span>
               {pingLatency !== null && (
-                <span className="hidden sm:inline text-emerald-400 font-mono text-xs">
+                <span className="hidden sm:inline text-amber-400 font-mono text-xs">
                   ({pingLatency}ms)
                 </span>
               )}
@@ -295,7 +294,7 @@ export const ConnectivityStatus: React.FC<ConnectivityStatusProps> = ({
             className="min-h-[48px] min-w-[48px] rounded-xl text-slate-300 hover:text-white hover:bg-white/10"
             title="Check connectivity and sync now"
           >
-            <RefreshCw className={`w-4 h-4 ${isSyncing ? 'animate-spin text-[#22C55E]' : ''}`} />
+            <RefreshCw className={`w-4 h-4 ${isSyncing ? 'animate-spin text-amber-400' : ''}`} />
           </Button>
         </div>
 
@@ -315,7 +314,7 @@ export const ConnectivityStatus: React.FC<ConnectivityStatusProps> = ({
           aria-label="Offline Mode Notification"
           className="fixed bottom-4 left-4 right-4 sm:left-auto sm:right-6 sm:max-w-md z-40 animate-in slide-in-from-bottom-3 duration-300 pointer-events-auto"
         >
-          <div className="bg-[#0A160F] text-white rounded-2xl p-4 shadow-2xl border-2 border-red-500/50 flex items-start justify-between gap-3.5 backdrop-blur-md">
+          <div className="bg-[#141412] text-white rounded-2xl p-4 shadow-2xl border-2 border-red-500/50 flex items-start justify-between gap-3.5 backdrop-blur-md">
             <div className="flex items-start gap-3">
               <div className="w-10 h-10 rounded-xl bg-red-500/20 text-red-400 flex items-center justify-center shrink-0 mt-0.5 border border-red-500/40">
                 <WifiOff className="w-5 h-5" />
@@ -334,7 +333,7 @@ export const ConnectivityStatus: React.FC<ConnectivityStatusProps> = ({
                 </p>
                 <button
                   onClick={() => setShowModal(true)}
-                  className="text-xs font-bold text-emerald-400 hover:text-[#22C55E] hover:underline pt-1 inline-block cursor-pointer"
+                  className="text-xs font-bold text-amber-400 hover:text-amber-300 hover:underline pt-1 inline-block cursor-pointer"
                 >
                   View Offline Capabilities &amp; Sync Guide →
                 </button>
@@ -378,7 +377,7 @@ export const ConnectivityStatus: React.FC<ConnectivityStatusProps> = ({
                     Connectivity &amp; Sync Status
                   </h3>
                   <p className="text-xs text-slate-300">
-                    Cross River Smallholder Field Synchronization
+                    Global Smallholder Field Synchronization
                   </p>
                 </div>
               </div>
@@ -436,7 +435,7 @@ export const ConnectivityStatus: React.FC<ConnectivityStatusProps> = ({
               </div>
             </div>
 
-            {/* How Offline Works for Farmers in Cross River */}
+            {/* How Offline Works for Remote Farms */}
             <div className="space-y-3 text-xs sm:text-sm text-slate-200">
               <h4 className="font-bold text-white flex items-center gap-2 text-sm sm:text-base">
                 <Smartphone className="w-5 h-5 text-[#22C55E]" />
@@ -447,7 +446,7 @@ export const ConnectivityStatus: React.FC<ConnectivityStatusProps> = ({
                 <div className="flex items-start gap-2.5">
                   <CheckCircle2 className="w-4 h-4 text-[#22C55E] shrink-0 mt-0.5" />
                   <p>
-                    <strong className="text-white">Zero-Data Offline Guides:</strong> The complete Cross River agronomy guide (Cassava, Cocoa, Oil Palm, Maize, Yam) is cached locally on your device.
+                    <strong className="text-white">Zero-Data Offline Guides:</strong> The complete agronomy pathology guide (Cassava, Cocoa, Oil Palm, Maize, Yam) is cached locally on your device.
                   </p>
                 </div>
 

@@ -201,7 +201,7 @@ export const ElasticMeshShowcase: React.FC = () => {
               shading={0.8}
             />
           </div>
-          <span className="text-[11px] text-slate-400 mt-2 font-mono">Example 2: Image Texture Warp (Cross River Cassava)</span>
+          <span className="text-[11px] text-slate-400 mt-2 font-mono">Example 2: Image Texture Warp (Cassava Specimen)</span>
         </div>
       </div>
     </div>

@@ -1,11 +1,11 @@
 {
-  "name": "AgriScan Cross River",
+  "name": "AgriScan Global",
   "short_name": "AgriScan",
-  "description": "Instant AI Plant Pathology & Field Agronomy for Smallholders in Cross River State, Nigeria",
+  "description": "AI-Powered Enterprise Plant Pathology Diagnostic Platform",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#F5F2ED",
-  "theme_color": "#3D5A2E",
+  "background_color": "#020617",
+  "theme_color": "#020617",
   "orientation": "portrait-primary",
   "categories": ["agriculture", "productivity", "utilities"],
   "icons": [

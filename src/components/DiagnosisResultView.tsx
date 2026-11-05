@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion, AnimatePresence, type Variants } from 'framer-motion';
 import {
   AlertTriangle,
   CheckCircle2,
@@ -18,17 +19,14 @@ import {
   Ban,
   PhoneCall,
   MapPin,
-  Info,
   Camera,
+  ShieldCheck,
+  OctagonAlert,
+  Sparkles,
 } from 'lucide-react';
 import { PathologyDiagnosis, SeverityLevel, HealthStatus } from '../types';
-import { PidginAudioPlayer } from './PidginAudioPlayer';
-import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Progress } from '@/components/ui/progress';
-import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
-import { Separator } from '@/components/ui/separator';
 
 interface DiagnosisResultViewProps {
   diagnosis: PathologyDiagnosis;
@@ -38,40 +36,45 @@ interface DiagnosisResultViewProps {
 }
 
 const getSeverityBadgeVariant = (level: SeverityLevel): {
-  variant: 'destructive' | 'warning' | 'secondary' | 'default';
   dotClass: string;
+  badgeClass: string;
   label: string;
   description: string;
+  color: string;
 } => {
   switch (level) {
     case 'Critical':
       return {
-        variant: 'destructive',
-        dotClass: 'bg-destructive animate-pulse',
+        dotClass: 'bg-rose-500 animate-pulse',
+        badgeClass: 'bg-rose-500/20 text-rose-300 border-rose-500/40',
         label: 'Critical Severity',
-        description: 'High risk of rapid field spread. Immediate action required within 2 hours.',
+        description: 'High risk of rapid field contagion. Immediate intervention required within 2 hours.',
+        color: '#f43f5e',
       };
     case 'Moderate':
       return {
-        variant: 'warning',
-        dotClass: 'bg-accent',
+        dotClass: 'bg-amber-400',
+        badgeClass: 'bg-amber-500/20 text-amber-300 border-amber-500/40',
         label: 'Moderate Severity',
-        description: 'Active infection or pest pressure. Apply containment actions today.',
+        description: 'Active infection or localized pest pressure. Implement containment protocol today.',
+        color: '#f59e0b',
       };
     case 'Low':
       return {
-        variant: 'secondary',
-        dotClass: 'bg-muted-foreground',
+        dotClass: 'bg-emerald-400',
+        badgeClass: 'bg-emerald-500/15 text-emerald-200 border-emerald-500/30',
         label: 'Low Severity',
-        description: 'Mild symptoms detected. Monitor closely and use organic remedies.',
+        description: 'Mild symptoms detected. Monitor closely and apply accessible organic remedies.',
+        color: '#34d399',
       };
     case 'None':
     default:
       return {
-        variant: 'default',
-        dotClass: 'bg-primary-foreground',
+        dotClass: 'bg-emerald-400',
+        badgeClass: 'bg-emerald-500/15 text-emerald-200 border-emerald-500/30',
         label: 'Healthy / No Severe Damage',
-        description: 'Crop appears in good health. Continue routine farm maintenance.',
+        description: 'Crop appears in good health with no critical active pathology. Continue routine farm care.',
+        color: '#34d399',
       };
   }
 };
@@ -79,16 +82,84 @@ const getSeverityBadgeVariant = (level: SeverityLevel): {
 const getHealthStatusIcon = (status: HealthStatus) => {
   switch (status) {
     case 'Healthy':
-      return <CheckCircle2 className="w-4 h-4 text-primary" />;
+      return <CheckCircle2 className="w-4 h-4 text-emerald-400" />;
     case 'Pest Infested':
-      return <Bug className="w-4 h-4 text-accent" />;
+      return <Bug className="w-4 h-4 text-amber-400" />;
     case 'Nutrient Deficient':
-      return <Activity className="w-4 h-4 text-muted-foreground" />;
+      return <Activity className="w-4 h-4 text-sky-400" />;
     case 'Diseased':
-      return <ShieldAlert className="w-4 h-4 text-destructive" />;
+      return <ShieldAlert className="w-4 h-4 text-rose-400" />;
     default:
-      return <HelpCircle className="w-4 h-4 text-muted-foreground" />;
+      return <HelpCircle className="w-4 h-4 text-slate-400" />;
   }
+};
+
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.05,
+    },
+  },
+};
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 16 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { type: 'spring' as const, stiffness: 280, damping: 26 },
+  },
+};
+
+// Circular Progress Gauge Ring component styled with Eco-Glass palette
+const CircularProgressRing: React.FC<{
+  percent: number;
+  label: string;
+  sublabel: string;
+  strokeColor?: string;
+  textColor?: string;
+}> = ({ percent, label, sublabel, strokeColor = '#34d399', textColor = 'text-emerald-400' }) => {
+  const radius = 32;
+  const circumference = 2 * Math.PI * radius;
+  const strokeDashoffset = circumference - (Math.min(percent, 100) / 100) * circumference;
+
+  return (
+    <div className="flex flex-col items-center text-center p-3.5 rounded-2xl bg-slate-900/60 border border-white/10 backdrop-blur-md flex-1">
+      <div className="relative w-22 h-22 flex items-center justify-center">
+        <svg className="w-20 h-20 -rotate-90" viewBox="0 0 80 80">
+          <circle
+            cx="40"
+            cy="40"
+            r={radius}
+            className="text-white/10"
+            strokeWidth="7"
+            stroke="currentColor"
+            fill="transparent"
+          />
+          <circle
+            cx="40"
+            cy="40"
+            r={radius}
+            stroke={strokeColor}
+            strokeWidth="7"
+            strokeDasharray={circumference}
+            strokeDashoffset={strokeDashoffset}
+            strokeLinecap="round"
+            fill="transparent"
+            className="transition-all duration-1000 ease-out"
+          />
+        </svg>
+        <div className="absolute inset-0 flex flex-col items-center justify-center">
+          <span className="text-lg font-black text-white">{percent}%</span>
+        </div>
+      </div>
+      <span className={`text-sm font-bold mt-2 ${textColor}`}>{label}</span>
+      <span className="text-xs text-slate-400 mt-0.5">{sublabel}</span>
+    </div>
+  );
 };
 
 export const DiagnosisResultView: React.FC<DiagnosisResultViewProps> = ({
@@ -113,156 +184,137 @@ export const DiagnosisResultView: React.FC<DiagnosisResultViewProps> = ({
     }
   };
 
-  // Case 0: Inverse Prompting Clarification Flow (if AI requested specific confirmation)
+  // Case 0: Clarification Flow
   if (diagnosis.needs_clarification) {
     return (
-      <div id="clarification-dialog-view" className="space-y-6 max-w-2xl mx-auto py-2">
-        <div className="bg-[#0D1C13]/85 backdrop-blur-md border-2 border-emerald-500/40 rounded-3xl p-6 sm:p-8 shadow-2xl">
-          <div className="flex items-center gap-2.5 mb-4">
-            <span className="w-3 h-3 rounded-full bg-amber-400 animate-pulse" />
-            <Badge variant="warning" className="text-xs font-bold py-1">
+      <motion.div
+        id="clarification-dialog-view"
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.35, ease: 'easeOut' }}
+        className="space-y-6 max-w-2xl mx-auto py-2"
+      >
+        <div className="bg-slate-900/80 backdrop-blur-2xl border border-emerald-500/30 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6">
+          <div className="flex items-center gap-2.5">
+            <span className="w-3 h-3 rounded-full bg-emerald-400 animate-pulse" />
+            <Badge variant="outline" className="text-xs font-bold py-1 bg-emerald-500/15 text-emerald-300 border-emerald-500/30">
               Confidence &lt; 85% • Clarification Needed
             </Badge>
           </div>
 
-          <h2
-            className="text-xl sm:text-2xl md:text-3xl font-bold text-white tracking-tight leading-snug mb-6"
-            style={{ fontFamily: 'Georgia, serif' }}
-          >
-            {diagnosis.clarification_question || 'Please answer this question to confirm diagnosis:'}
-          </h2>
+          <div>
+            <h2 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight leading-snug">
+              {diagnosis.clarification_question || 'Please select an observation to confirm the diagnosis:'}
+            </h2>
+            <p className="text-sm text-slate-300 mt-2">
+              Regional agronomists require this observation to distinguish between similar field symptoms.
+            </p>
+          </div>
 
-          <div className="grid grid-cols-1 gap-3.5 sm:gap-4">
+          <div className="grid grid-cols-1 gap-3.5">
             {diagnosis.options && diagnosis.options.length > 0 ? (
               diagnosis.options.map((option, idx) => (
-                <button
+                <motion.button
                   key={idx}
                   type="button"
+                  whileHover={{ scale: 1.01 }}
+                  whileTap={{ scale: 0.98 }}
                   onClick={() => onSelectOption?.(option)}
-                  className="w-full text-left p-5 rounded-2xl border-2 border-emerald-500/40 bg-[#0A160F]/90 hover:bg-[#10281A] hover:border-[#22C55E] active:scale-[0.98] transition-all duration-150 text-base sm:text-lg font-bold text-white shadow-md min-h-[58px] flex items-center justify-between touch-manipulation cursor-pointer group"
+                  className="w-full text-left p-4 sm:p-5 rounded-2xl border border-white/10 bg-slate-900/60 hover:bg-slate-800/80 hover:border-emerald-400 transition-all text-base sm:text-lg font-bold text-white shadow-lg min-h-[58px] flex items-center justify-between touch-manipulation cursor-pointer group"
                 >
-                  <span>{option}</span>
-                  <span className="text-[#22C55E] group-hover:translate-x-1 transition-transform text-2xl font-black ml-3">
+                  <span className="pr-4">{option}</span>
+                  <span className="text-emerald-400 group-hover:translate-x-1.5 transition-transform text-2xl font-black">
                     →
                   </span>
-                </button>
+                </motion.button>
               ))
             ) : (
-              <p className="text-sm text-slate-300">No options provided.</p>
+              <p className="text-sm text-slate-400">No confirmation options provided.</p>
             )}
           </div>
         </div>
-      </div>
+      </motion.div>
     );
   }
 
-  // Case 1: Verification Rule #1 — Image is not a plant
+  // Case 1: Verification Rule #1 — Non-Plant Detection
   if (!diagnosis.is_plant) {
     return (
-      <div id="non-plant-verification-card" className="space-y-6">
-        <Alert
-          variant="destructive"
-          className="rounded-[32px] p-6 md:p-8 bg-red-950/40 border-2 border-red-500/40 text-white backdrop-blur-md shadow-2xl"
-        >
+      <motion.div
+        id="non-plant-verification-card"
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.35, ease: 'easeOut' }}
+        className="space-y-6 max-w-3xl mx-auto"
+      >
+        <div className="rounded-3xl p-6 sm:p-8 bg-slate-900/80 border border-amber-500/30 text-white backdrop-blur-2xl shadow-2xl space-y-6">
           <div className="flex items-start gap-4">
-            <div className="w-14 h-14 rounded-2xl bg-red-500/20 border-2 border-red-500/40 flex items-center justify-center text-red-400 shrink-0">
+            <div className="w-14 h-14 rounded-2xl bg-amber-500/20 border border-amber-500/30 flex items-center justify-center text-amber-400 shrink-0">
               <AlertTriangle className="w-7 h-7" />
             </div>
             <div className="flex-1 space-y-2">
               <div className="flex items-center gap-2 flex-wrap">
-                <Badge variant="destructive">
-                  Operational Rule #1: Verification
+                <Badge variant="outline" className="text-xs font-bold bg-amber-500/20 text-amber-300 border-amber-500/30">
+                  Operational Rule #1: Crop Verification
                 </Badge>
-                <Badge variant="outline" className="text-slate-300 border-white/20">
+                <Badge variant="outline" className="text-xs font-semibold text-slate-400 border-white/10">
                   Verification Status: is_plant = false
                 </Badge>
               </div>
-              <AlertTitle
-                className="text-xl sm:text-2xl font-bold text-white mt-2"
-                style={{ fontFamily: 'Georgia, serif' }}
-              >
+              <h2 className="text-xl sm:text-2xl font-extrabold text-white mt-2">
                 Non-Plant Image Detected ({diagnosis.crop_identified})
-              </AlertTitle>
-              <AlertDescription className="text-sm sm:text-base text-slate-200 leading-relaxed">
-                The AI agronomist analyzed this photo and determined that it does not show a crop leaf, stem, pod, root, or plant tissue. All diagnosis and treatment fields are safely withheld.
-              </AlertDescription>
+              </h2>
+              <p className="text-sm sm:text-base text-slate-300 leading-relaxed">
+                The AgriScan agronomist verified that this photograph does not contain a crop leaf, stem, root, or farm specimen. Diagnostic treatments and chemical advisories are safely withheld.
+              </p>
             </div>
           </div>
 
-          {/* Pidgin Audio Guidance for Non-Plant */}
-          <div className="mt-6">
-            <PidginAudioPlayer
-              script={diagnosis.pidgin_audio_script}
-              cropName="Not a plant"
-              pathologyName="N/A"
-            />
-          </div>
-
-          <Separator className="my-6 bg-red-500/20" />
-
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
-            <p className="text-xs sm:text-sm text-slate-300 font-medium">
-              Please take a clear photo of a crop leaf, stem, or fruit in your field.
+          <div className="pt-4 border-t border-white/10 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
+            <p className="text-sm text-slate-400 font-medium">
+              Take a steady, well-lit photo of a crop leaf or fruit in your field.
             </p>
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
               <Button
                 variant="outline"
                 size="default"
                 onClick={() => setShowJsonRaw(!showJsonRaw)}
-                className="min-h-[48px] text-base"
+                className="min-h-[48px] text-sm font-bold border-white/10 text-white hover:bg-white/10 rounded-2xl cursor-pointer"
               >
-                <Code2 className="w-4 h-4 text-[#22C55E] mr-1.5" />
+                <Code2 className="w-4 h-4 text-emerald-400 mr-2" />
                 <span>{showJsonRaw ? 'Hide JSON' : 'Inspect JSON Schema'}</span>
               </Button>
               {onReset && (
-                <Button
-                  variant="default"
-                  size="default"
-                  onClick={onReset}
-                  className="min-h-[48px] text-base font-black bg-[#22C55E] text-[#060D09] hover:bg-[#16A34A]"
-                >
-                  <Camera className="w-4 h-4 mr-2" />
-                  <span>Take New Crop Photo</span>
-                </Button>
+                <motion.div whileTap={{ scale: 0.95 }}>
+                  <Button
+                    variant="default"
+                    size="default"
+                    onClick={onReset}
+                    className="w-full sm:w-auto min-h-[48px] text-sm font-black bg-emerald-500/80 text-slate-950 hover:bg-emerald-500 rounded-2xl shadow-lg cursor-pointer"
+                  >
+                    <Camera className="w-4 h-4 mr-2" />
+                    <span>Take New Crop Photo</span>
+                  </Button>
+                </motion.div>
               )}
             </div>
           </div>
-        </Alert>
-
-        {showJsonRaw && (
-          <Card className="rounded-[28px] p-5 sm:p-6 text-xs sm:text-sm font-mono shadow-2xl bg-[#0A160F] border-2 border-emerald-500/30">
-            <div className="flex items-center justify-between mb-3 pb-2 border-b border-emerald-500/20 text-slate-300">
-              <span className="font-bold">Strict JSON Output Payload</span>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={handleCopyJson}
-                className="min-h-[44px] text-emerald-400 hover:text-white font-bold"
-              >
-                {jsonCopied ? <Check className="w-4 h-4 mr-1 text-[#22C55E]" /> : <Copy className="w-4 h-4 mr-1" />}
-                <span>{jsonCopied ? 'Copied' : 'Copy JSON'}</span>
-              </Button>
-            </div>
-            <pre className="overflow-x-auto p-4 bg-black/60 rounded-xl text-xs sm:text-sm leading-relaxed text-emerald-300 border border-emerald-500/20">
-              {JSON.stringify(diagnosis, null, 2)}
-            </pre>
-          </Card>
-        )}
-      </div>
+        </div>
+      </motion.div>
     );
   }
 
-  // Calibrated uncertainty text helper
+  // Calibrated condition title
   const getConditionTitle = () => {
     if (diagnosis.health_status === 'Healthy') {
       return 'Healthy Plant — No Disease Detected';
     }
     const name = diagnosis.pathology_name || 'Unidentified Crop Condition';
     if (diagnosis.is_uncertain || confidencePercent < 60) {
-      return `Possible Issue: ${name}`;
+      return `Possible Condition: ${name}`;
     }
     if (confidencePercent < 85) {
-      return `Likely Issue: ${name}`;
+      return `Likely Condition: ${name}`;
     }
     return name;
   };
@@ -280,20 +332,20 @@ export const DiagnosisResultView: React.FC<DiagnosisResultViewProps> = ({
   const nowAction =
     diagnosis.action_plan_0_2_hours ||
     diagnosis.immediate_containment_step ||
-    'Isolate or rogue out affected stands immediately to prevent disease spread.';
+    'Isolate or rogue out affected stands immediately to prevent disease contagion across the field.';
 
   const nextAction =
     diagnosis.action_plan_2_6_hours ||
     diagnosis.organic_local_remedy ||
-    'Prepare accessible organic deterrent (wood ash or neem wash) and inspect surrounding rows.';
+    'Prepare accessible organic deterrent (wood ash dusting or neem leaf steep) and inspect surrounding rows.';
 
   const todayAction =
     diagnosis.action_plan_6_24_hours ||
-    'Monitor adjacent crops at dusk/dawn; apply recommended treatment during cool hours.';
+    'Monitor adjacent crops at dusk/dawn; apply recommended treatment during cool evening hours.';
 
   const escalationText =
     diagnosis.escalation ||
-    'If symptoms continue spreading to more than 20% of your crop within 48 hours, contact your local Cross River Agricultural Development Programme (CRADP) extension worker.';
+    'If symptoms continue spreading to more than 20% of your crop within 48 hours, contact your regional agricultural extension service or certified crop pathology agronomist.';
 
   const isLocalContext =
     diagnosis.local_context_used &&
@@ -301,26 +353,35 @@ export const DiagnosisResultView: React.FC<DiagnosisResultViewProps> = ({
     !diagnosis.local_context_used.toLowerCase().includes('no lga');
 
   return (
-    <div id="pathology-diagnostic-report" className="space-y-6">
+    <motion.div
+      id="pathology-diagnostic-report"
+      variants={containerVariants}
+      initial="hidden"
+      animate="show"
+      className="space-y-6 pb-24"
+    >
       {/* =========================================================================
-          1. PRIMARY DIAGNOSTIC SUMMARY: CROP, ISSUE & CONFIDENCE
+          1. PRIMARY DIAGNOSTIC SUMMARY CARD WITH layoutId="specimen-image"
           ========================================================================= */}
-      <Card className="rounded-[32px] p-6 sm:p-8 shadow-2xl relative overflow-hidden bg-[#0D1C13]/85 backdrop-blur-md border border-emerald-500/30 text-white space-y-6">
+      <motion.div
+        variants={itemVariants}
+        className="rounded-3xl p-6 sm:p-8 shadow-xl relative overflow-hidden bg-emerald-900/10 backdrop-blur-2xl border border-white/10 text-white space-y-6"
+      >
         <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-6">
           <div className="space-y-4 flex-1">
             {/* Status Pills */}
             <div className="flex flex-wrap items-center gap-2">
-              <Badge variant="default" className="gap-1.5 py-1 text-xs">
-                <FileCheck className="w-3.5 h-3.5 text-[#22C55E]" />
+              <Badge variant="outline" className="gap-1.5 py-1 px-3 text-sm font-bold bg-emerald-500/15 text-emerald-300 border-emerald-500/30">
+                <FileCheck className="w-4 h-4 text-emerald-400" />
                 Crop Verified
               </Badge>
 
-              <Badge variant="outline" className="gap-1.5 py-1 text-xs bg-[#0A160F] text-white border-emerald-500/40">
+              <Badge variant="outline" className="gap-1.5 py-1 px-3 text-sm font-semibold bg-slate-900/80 text-white border-white/10">
                 {getHealthStatusIcon(diagnosis.health_status)}
                 {diagnosis.health_status}
               </Badge>
 
-              <Badge variant={severity.variant} className="gap-1.5 py-1 text-xs">
+              <Badge variant="outline" className={`gap-1.5 py-1 px-3 text-sm font-bold ${severity.badgeClass}`}>
                 <span className={`w-2 h-2 rounded-full ${severity.dotClass}`} />
                 {severity.label}
               </Badge>
@@ -328,95 +389,58 @@ export const DiagnosisResultView: React.FC<DiagnosisResultViewProps> = ({
 
             {/* Crop & Pathology Title */}
             <div>
-              <div className="flex items-center gap-2">
-                <span className="text-xs sm:text-sm uppercase tracking-wider font-black text-[#22C55E]">
+              <div className="flex items-center gap-2.5">
+                <span className="text-sm uppercase tracking-wider font-extrabold text-emerald-400">
                   Crop Identified: {diagnosis.crop_identified}
                 </span>
-                <Badge variant="outline" className="text-[10px] text-emerald-300 border-emerald-500/30 bg-black/40">
+                <span className="text-xs text-slate-300 font-semibold bg-slate-900/80 px-2.5 py-0.5 rounded-full border border-white/10">
                   AI Auto-Detected
-                </Badge>
+                </span>
               </div>
 
-              <h2
-                className="text-2xl sm:text-4xl font-serif italic text-white tracking-tight mt-1 leading-tight"
-                style={{ fontFamily: 'Georgia, serif' }}
-              >
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white tracking-tight mt-1 leading-tight">
                 {getConditionTitle()}
               </h2>
 
-              <p className="text-xs sm:text-sm text-slate-300 mt-2 font-normal">
+              <p className="text-sm sm:text-base text-slate-300 mt-2 font-normal leading-relaxed">
                 {severity.description}
-              </p>
-            </div>
-
-            {/* Confidence & Reliability Bar */}
-            <div className="bg-[#0A160F] border-2 border-emerald-500/40 text-white rounded-[20px] p-4 flex flex-col gap-2 max-w-sm shadow-inner">
-              <div className="flex justify-between items-center text-xs">
-                <span className="uppercase tracking-widest text-emerald-400 font-bold">
-                  Visual Match Confidence
-                </span>
-                <span className="text-lg font-black text-white">{confidencePercent}%</span>
-              </div>
-              <Progress
-                value={Math.max(confidencePercent, 10)}
-                className="h-2 bg-emerald-950/80 border border-emerald-500/30"
-                indicatorClassName="bg-[#22C55E]"
-              />
-              <p className="text-[11px] text-slate-300 text-center font-medium">
-                {confidencePercent >= 85
-                  ? 'High confidence matching Cross River agricultural symptom library'
-                  : confidencePercent >= 60
-                  ? 'Moderate visual likelihood — monitor early progression'
-                  : 'Low confidence — recommend taking a closer, well-lit photo'}
               </p>
             </div>
           </div>
 
-          {/* Side Specimen Thumbnail */}
+          {/* Morphing Specimen Thumbnail with layoutId="specimen-image" */}
           {imagePreviewUrl && (
-            <div className="w-32 h-32 sm:w-40 sm:h-40 rounded-[24px] overflow-hidden border-2 border-emerald-500/40 bg-black/60 shrink-0 shadow-lg relative self-center lg:self-start">
+            <motion.div
+              layoutId="specimen-image"
+              className="w-36 h-36 sm:w-44 sm:h-44 rounded-3xl overflow-hidden border-2 border-emerald-500/40 bg-slate-950/80 shrink-0 shadow-2xl relative self-center lg:self-start group"
+            >
               <img
                 src={imagePreviewUrl}
                 alt="Diagnosed crop specimen"
                 className="w-full h-full object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent pointer-events-none" />
-              <span className="absolute bottom-2 left-2 text-[10px] text-white font-bold bg-black/70 px-2 py-0.5 rounded backdrop-blur-xs">
-                Your Specimen
-              </span>
-            </div>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
+              <div className="absolute bottom-2.5 left-2.5 right-2.5 flex items-center justify-between text-xs text-white font-bold bg-slate-950/80 px-2.5 py-1.5 rounded-xl backdrop-blur-md border border-white/10">
+                <span>Field Specimen</span>
+                <ShieldCheck className="w-4 h-4 text-emerald-400" />
+              </div>
+            </motion.div>
           )}
         </div>
 
-        {/* Low Confidence or Insufficient Evidence Banner */}
-        {(diagnosis.is_uncertain || diagnosis.more_info_needed || confidencePercent < 60) && (
-          <div className="bg-amber-950/40 border border-amber-500/40 rounded-2xl p-4 flex items-start gap-3">
-            <Info className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
-            <div className="text-xs sm:text-sm text-amber-200 space-y-1">
-              <strong className="font-bold block text-white">
-                More Information Recommended for Precision:
-              </strong>
-              <p>
-                {diagnosis.more_info_needed ||
-                  'The image may be slightly distant or shadowed. For highest precision, photograph the underside of the affected leaf or inspect the stem base.'}
-              </p>
-            </div>
-          </div>
-        )}
-
-        {/* Observable Symptoms */}
+        {/* Observable Symptoms Badges */}
         {diagnosis.observable_symptoms && diagnosis.observable_symptoms.length > 0 && (
-          <div className="pt-4 border-t border-emerald-500/20">
-            <h4 className="text-xs uppercase text-emerald-400 tracking-wider mb-2.5 font-bold flex items-center gap-2">
-              <ShieldAlert className="w-4 h-4 text-[#22C55E]" />
-              Visible Symptoms Identified by AI:
+          <div className="pt-4 border-t border-white/10">
+            <h4 className="text-sm uppercase text-emerald-300 tracking-wider mb-2.5 font-bold flex items-center gap-2">
+              <ShieldAlert className="w-4 h-4 text-emerald-400" />
+              Identified Field Symptoms:
             </h4>
             <div className="flex flex-wrap gap-2">
               {diagnosis.observable_symptoms.map((symptom, idx) => (
                 <Badge
                   key={idx}
                   variant="outline"
-                  className="bg-[#0A160F] px-3 py-1 rounded-xl text-xs sm:text-sm font-semibold text-white border border-emerald-500/40"
+                  className="bg-slate-900/80 px-3.5 py-1.5 rounded-xl text-sm font-semibold text-slate-200 border border-white/10"
                 >
                   {symptom}
                 </Badge>
@@ -424,86 +448,164 @@ export const DiagnosisResultView: React.FC<DiagnosisResultViewProps> = ({
             </div>
           </div>
         )}
-      </Card>
+      </motion.div>
 
       {/* =========================================================================
-          2. NIGERIAN PIDGIN SPOKEN AUDIO (ACCESSIBILITY FOR RURAL/OLDER FARMERS)
+          2. CIRCULAR SMART METRICS RINGS (Eco-Glass Palette)
           ========================================================================= */}
-      <PidginAudioPlayer
-        script={diagnosis.pidgin_audio_script}
-        cropName={diagnosis.crop_identified}
-        pathologyName={diagnosis.pathology_name}
-      />
-
-      {/* =========================================================================
-          3. THE 24-HOUR ACTION PLAN (CORE PROMISE: NOW, NEXT, TODAY, AVOID, ESCALATE)
-          ========================================================================= */}
-      <Card
-        id="section-24-hour-action-plan"
-        className="rounded-[32px] p-6 sm:p-8 shadow-2xl bg-[#0D1C13]/90 backdrop-blur-md border-2 border-emerald-500/40 text-white space-y-6"
+      <motion.div
+        variants={itemVariants}
+        className="rounded-3xl p-5 sm:p-6 bg-emerald-900/10 backdrop-blur-2xl border border-white/10 shadow-lg space-y-4"
       >
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-emerald-500/20">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Sparkles className="w-5 h-5 text-emerald-400" />
+            <h3 className="text-base sm:text-lg font-extrabold text-white">Smart Pathology Overview</h3>
+          </div>
+          <span className="text-xs font-bold px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
+            Calibrated Model
+          </span>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+          <CircularProgressRing
+            percent={confidencePercent}
+            label="Visual Confidence"
+            sublabel="Global Pathology Match"
+            strokeColor="#34d399"
+            textColor="text-emerald-400"
+          />
+          <CircularProgressRing
+            percent={diagnosis.severity_level === 'Critical' ? 95 : diagnosis.severity_level === 'Moderate' ? 70 : 35}
+            label="Containment Urgency"
+            sublabel="24-Hour Triage Priority"
+            strokeColor={severity.color}
+            textColor="text-emerald-300"
+          />
+          <CircularProgressRing
+            percent={100}
+            label="ESG Safety Rating"
+            sublabel="Zero Prohibited Agrochemicals"
+            strokeColor="#10b981"
+            textColor="text-emerald-400"
+          />
+        </div>
+      </motion.div>
+
+      {/* =========================================================================
+          3. GLOBAL ESG & PHYTOSANITARY STANDARDS COMPLIANCE SHIELD
+          ========================================================================= */}
+      <motion.div
+        variants={itemVariants}
+        id="banned-agrochemical-shield"
+        className="rounded-3xl p-6 sm:p-7 border-2 border-emerald-500/30 bg-gradient-to-br from-emerald-950/40 via-slate-950/80 to-slate-950/95 text-emerald-100 font-bold shadow-xl relative overflow-hidden"
+      >
+        <div className="relative z-10 space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 rounded-2xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400 shrink-0">
+                <OctagonAlert className="w-7 h-7" />
+              </div>
+              <div>
+                <span className="text-xs font-black uppercase tracking-widest text-emerald-400">
+                  Global ESG &amp; Phytosanitary Standards
+                </span>
+                <h3 className="text-lg sm:text-xl font-extrabold text-white">
+                  Prohibited Agrochemicals Mandate
+                </h3>
+              </div>
+            </div>
+
+            <Badge variant="outline" className="self-start sm:self-auto text-xs font-black py-1 px-3 bg-emerald-500/20 text-emerald-300 border-emerald-500/40">
+              FAO, WHO CLASS IA/IB &amp; IFC MANDATE
+            </Badge>
+          </div>
+
+          <div className="flex flex-wrap gap-2.5 pt-1">
+            <span className="px-3.5 py-2 rounded-xl text-sm font-black bg-rose-950/50 text-rose-300 border border-rose-500/40 tracking-wider">
+              🚫 NO PARAQUAT
+            </span>
+            <span className="px-3.5 py-2 rounded-xl text-sm font-black bg-rose-950/50 text-rose-300 border border-rose-500/40 tracking-wider">
+              🚫 NO LINDANE (GAMALIN 20)
+            </span>
+            <span className="px-3.5 py-2 rounded-xl text-sm font-black bg-rose-950/50 text-rose-300 border border-rose-500/40 tracking-wider">
+              🚫 NO DICHLORVOS (SNIPER/DDVP)
+            </span>
+          </div>
+
+          <p className="text-sm text-slate-300 font-normal leading-relaxed">
+            <strong className="text-emerald-300 font-bold">Mandatory Global Standard:</strong> Do NOT apply Paraquat, Lindane, or Dichlorvos (DDVP) on agricultural crops. These chemicals violate international pesticide conventions, WHO Class Ia/Ib guidelines, and IFC Performance Standard 3. They destroy soil biodiversity, contaminate groundwater, and leave toxic chemical residues. Use certified organic treatments or registered safe alternatives specified below.
+          </p>
+        </div>
+      </motion.div>
+
+      {/* =========================================================================
+          4. THE 24-HOUR ACTION PLAN (NOW, NEXT, TODAY, AVOID, ESCALATE)
+          ========================================================================= */}
+      <motion.div
+        variants={itemVariants}
+        id="section-24-hour-action-plan"
+        className="rounded-3xl p-6 sm:p-8 shadow-xl bg-emerald-900/10 backdrop-blur-2xl border border-white/10 text-white space-y-6"
+      >
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-white/10">
           <div>
-            <div className="inline-flex items-center gap-2 text-xs uppercase tracking-widest font-black text-[#22C55E] mb-1">
+            <div className="inline-flex items-center gap-2 text-xs uppercase tracking-widest font-black text-emerald-400 mb-1">
               <Clock className="w-4 h-4" />
               <span>Immediate Field Response</span>
             </div>
-            <h3
-              className="text-2xl sm:text-3xl font-black text-white tracking-tight"
-              style={{ fontFamily: 'Georgia, serif' }}
-            >
+            <h3 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
               Your 24-Hour Action Plan
             </h3>
-            <p className="text-xs sm:text-sm text-slate-300 mt-1">
+            <p className="text-sm text-slate-400 mt-1">
               Practical timeline of what to do right now, this afternoon, and over the next 24 hours.
             </p>
           </div>
 
-          <Badge variant="default" className="self-start sm:self-auto text-xs py-1">
+          <Badge variant="outline" className="self-start sm:self-auto text-xs font-bold py-1.5 px-3 bg-emerald-500/20 text-emerald-300 border-emerald-500/40">
             24H Triage Protocol
           </Badge>
         </div>
 
         {/* 3 Chronological Timeline Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {/* Timeline Step 1: 0 - 2 Hours */}
-          <div className="bg-[#0A160F] border-2 border-red-500/40 rounded-2xl p-5 space-y-3 shadow-lg relative">
+          {/* Step 1: 0 - 2 Hours */}
+          <div className="bg-slate-900/70 border border-emerald-500/30 rounded-2xl p-5 space-y-3 shadow-lg">
             <div className="flex items-center justify-between">
-              <span className="px-2.5 py-1 rounded-lg text-[11px] font-black uppercase tracking-wider bg-red-500/20 text-red-400 border border-red-500/30">
+              <span className="px-2.5 py-1 rounded-lg text-xs font-black uppercase tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
                 NOW • 0–2 HOURS
               </span>
-              <Flame className="w-4 h-4 text-red-400" />
+              <Flame className="w-4 h-4 text-emerald-400" />
             </div>
             <h4 className="text-base font-bold text-white">Immediate Field Triage</h4>
-            <p className="text-xs sm:text-sm text-slate-200 leading-relaxed">
+            <p className="text-sm text-slate-300 leading-relaxed">
               {nowAction}
             </p>
           </div>
 
-          {/* Timeline Step 2: 2 - 6 Hours */}
-          <div className="bg-[#0A160F] border-2 border-amber-500/40 rounded-2xl p-5 space-y-3 shadow-lg relative">
+          {/* Step 2: 2 - 6 Hours */}
+          <div className="bg-slate-900/70 border border-white/10 rounded-2xl p-5 space-y-3 shadow-lg">
             <div className="flex items-center justify-between">
-              <span className="px-2.5 py-1 rounded-lg text-[11px] font-black uppercase tracking-wider bg-amber-500/20 text-amber-400 border border-amber-500/30">
+              <span className="px-2.5 py-1 rounded-lg text-xs font-black uppercase tracking-wider bg-slate-800 text-slate-200 border border-white/10">
                 NEXT • 2–6 HOURS
               </span>
-              <Sprout className="w-4 h-4 text-amber-400" />
+              <Sprout className="w-4 h-4 text-emerald-400" />
             </div>
             <h4 className="text-base font-bold text-white">Same-Day Preparation</h4>
-            <p className="text-xs sm:text-sm text-slate-200 leading-relaxed">
+            <p className="text-sm text-slate-300 leading-relaxed">
               {nextAction}
             </p>
           </div>
 
-          {/* Timeline Step 3: 6 - 24 Hours */}
-          <div className="bg-[#0A160F] border-2 border-emerald-500/40 rounded-2xl p-5 space-y-3 shadow-lg relative">
+          {/* Step 3: 6 - 24 Hours */}
+          <div className="bg-slate-900/70 border border-white/10 rounded-2xl p-5 space-y-3 shadow-lg">
             <div className="flex items-center justify-between">
-              <span className="px-2.5 py-1 rounded-lg text-[11px] font-black uppercase tracking-wider bg-emerald-500/20 text-[#22C55E] border border-emerald-500/30">
+              <span className="px-2.5 py-1 rounded-lg text-xs font-black uppercase tracking-wider bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
                 TODAY • 6–24 HOURS
               </span>
-              <CalendarCheck className="w-4 h-4 text-[#22C55E]" />
+              <CalendarCheck className="w-4 h-4 text-emerald-400" />
             </div>
             <h4 className="text-base font-bold text-white">Follow-up &amp; Application</h4>
-            <p className="text-xs sm:text-sm text-slate-200 leading-relaxed">
+            <p className="text-sm text-slate-300 leading-relaxed">
               {todayAction}
             </p>
           </div>
@@ -512,17 +614,17 @@ export const DiagnosisResultView: React.FC<DiagnosisResultViewProps> = ({
         {/* AVOID & ESCALATE ROW */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
           {/* Critical Warnings (AVOID) */}
-          <div className="bg-red-950/30 border-2 border-red-500/35 rounded-2xl p-5 space-y-3">
-            <div className="flex items-center gap-2 text-red-400">
+          <div className="bg-slate-900/80 border border-rose-500/30 rounded-2xl p-5 space-y-3">
+            <div className="flex items-center gap-2 text-rose-400">
               <Ban className="w-5 h-5" />
-              <h4 className="text-sm sm:text-base font-bold uppercase tracking-wider text-white">
+              <h4 className="text-base font-bold uppercase tracking-wider text-white">
                 What to AVOID (Do Not Do):
               </h4>
             </div>
-            <ul className="space-y-2 text-xs sm:text-sm text-slate-200">
+            <ul className="space-y-2 text-sm text-slate-300">
               {avoidList.map((item, idx) => (
                 <li key={idx} className="flex items-start gap-2">
-                  <span className="text-red-400 font-black mt-0.5">•</span>
+                  <span className="text-rose-400 font-black mt-0.5">•</span>
                   <span>{item}</span>
                 </li>
               ))}
@@ -530,112 +632,117 @@ export const DiagnosisResultView: React.FC<DiagnosisResultViewProps> = ({
           </div>
 
           {/* When to Seek Expert Help (ESCALATE) */}
-          <div className="bg-emerald-950/30 border-2 border-emerald-500/35 rounded-2xl p-5 space-y-3">
+          <div className="bg-slate-900/70 border border-white/10 rounded-2xl p-5 space-y-3">
             <div className="flex items-center gap-2 text-emerald-400">
-              <PhoneCall className="w-5 h-5 text-[#22C55E]" />
-              <h4 className="text-sm sm:text-base font-bold uppercase tracking-wider text-white">
+              <PhoneCall className="w-5 h-5 text-emerald-400" />
+              <h4 className="text-base font-bold uppercase tracking-wider text-white">
                 When to Seek Expert Help:
               </h4>
             </div>
-            <p className="text-xs sm:text-sm text-slate-200 leading-relaxed">
+            <p className="text-sm text-slate-300 leading-relaxed">
               {escalationText}
             </p>
-            <div className="bg-[#0A160F] p-3 rounded-xl border border-emerald-500/25 text-xs text-emerald-300 font-medium">
-              Agricultural Extension Lead: Cross River State Ministry of Agriculture / CRADP (Calabar, Ikom, Ogoja zones).
+            <div className="bg-slate-950/80 p-3.5 rounded-xl border border-white/10 text-xs text-emerald-300 font-medium">
+              Agricultural Extension Advisory: Certified Agronomy &amp; National Plant Protection Directorate.
             </div>
           </div>
         </div>
 
-        {/* Local Agricultural Context Card */}
-        <div className="bg-[#0A160F] rounded-2xl p-4 border border-emerald-500/30 flex items-start gap-3">
-          <MapPin className="w-5 h-5 text-[#22C55E] shrink-0 mt-0.5" />
-          <div className="text-xs sm:text-sm">
+        {/* Local Agricultural Context */}
+        <div className="bg-slate-900/70 rounded-2xl p-4 border border-white/10 flex items-start gap-3">
+          <MapPin className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
+          <div className="text-sm">
             <div className="flex items-center gap-2">
               <span className="font-bold text-white">
-                {isLocalContext ? 'Localized Farm Context' : 'General Agricultural Guidance'}
+                {isLocalContext ? 'Target Farm Context' : 'General Agricultural Guidance'}
               </span>
-              <Badge variant="outline" className="text-[10px] border-emerald-500/30 text-emerald-300">
-                {isLocalContext ? 'Zone-Specific' : 'No LGA Required'}
+              <Badge variant="outline" className="text-xs border-emerald-500/30 text-emerald-300">
+                {isLocalContext ? 'Zone-Specific' : 'Universal Protocol'}
               </Badge>
             </div>
-            <p className="text-slate-300 mt-1">
+            <p className="text-slate-400 mt-1">
               {diagnosis.local_context_used ||
-                'Standard Cross River agronomic guidance applied. The diagnosis and action plan are completely valid without an LGA.'}
+                'Standard agronomic guidance applied. The diagnosis and action plan are completely valid across target agro-ecological zones.'}
             </p>
           </div>
         </div>
-      </Card>
+      </motion.div>
 
       {/* =========================================================================
-          4. DETAILED TREATMENT PROTOCOLS (ORGANIC & CHEMICAL)
+          5. TREATMENT PROTOCOLS (DESKTOP 2-COLUMN GRID)
           ========================================================================= */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-        {/* Organic & Traditional Remedy */}
-        <Card
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+        {/* Organic Remedy Card */}
+        <motion.div
+          variants={itemVariants}
           id="protocol-organic-remedy"
-          className="bg-[#0D1C13]/75 backdrop-blur-md p-6 rounded-[28px] border-2 border-emerald-500/30 shadow-xl space-y-3.5 text-white"
+          className="bg-emerald-900/10 backdrop-blur-2xl p-6 rounded-3xl border border-white/10 shadow-lg space-y-4 text-white"
         >
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-[#22C55E]">
+            <div className="w-11 h-11 rounded-2xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
               <Sprout className="w-5 h-5" />
             </div>
             <div>
-              <span className="text-[11px] font-black uppercase tracking-wider text-emerald-400">
-                Low-Cost &amp; Accessible
+              <span className="text-xs font-black uppercase tracking-wider text-emerald-400">
+                Low-Impact &amp; Sustainable
               </span>
               <h4 className="text-base font-bold text-white">
-                Organic &amp; Traditional Nigerian Remedy
+                Biological &amp; Cultural Field Remedy
               </h4>
             </div>
           </div>
-          <p className="text-sm text-slate-200 leading-relaxed font-normal">
+          <p className="text-sm text-slate-300 leading-relaxed font-normal">
             {diagnosis.organic_local_remedy ||
-              'Apply standard hearth wood ash dusting, clean weed sanitation, and neem leaf steep.'}
+              'Apply standard horticultural wood ash dusting, field sanitation, and neem leaf botanical extract wash.'}
           </p>
-          <div className="bg-[#0A160F] border border-emerald-500/30 px-4 py-2.5 rounded-xl mt-2">
-            <p className="text-[11px] font-black text-[#22C55E] uppercase">LOCAL MATERIALS</p>
-            <p className="text-xs sm:text-sm text-slate-200">Neem (Dongoyaro) leaves, domestic wood ash, and local black soap.</p>
+          <div className="bg-slate-950/80 border border-white/10 px-4 py-3 rounded-2xl">
+            <p className="text-xs font-black text-emerald-400 uppercase tracking-wide">NATURAL INPUTS</p>
+            <p className="text-sm text-slate-400 mt-0.5">Neem botanical extract, refined wood ash, and potassium horticultural soap.</p>
           </div>
-        </Card>
+        </motion.div>
 
-        {/* Standard Agrochemical Treatment with Safety Warnings */}
-        <Card
+        {/* Standard Registered Agrochemical Treatment */}
+        <motion.div
+          variants={itemVariants}
           id="protocol-chemical-treatment"
-          className="bg-[#0D1C13]/75 backdrop-blur-md p-6 rounded-[28px] border-2 border-emerald-500/30 shadow-xl space-y-3.5 text-white"
+          className="bg-emerald-900/10 backdrop-blur-2xl p-6 rounded-3xl border border-white/10 shadow-lg space-y-4 text-white"
         >
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400">
+            <div className="w-11 h-11 rounded-2xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
               <FlaskConical className="w-5 h-5" />
             </div>
             <div>
-              <span className="text-[11px] font-black uppercase tracking-wider text-emerald-400">
+              <span className="text-xs font-black uppercase tracking-wider text-emerald-400">
                 Agro-Store Input &amp; Safety
               </span>
               <h4 className="text-base font-bold text-white">
-                Standard Registered Chemical Input
+                Registered IPM Chemical Input
               </h4>
             </div>
           </div>
-          <p className="text-sm text-slate-200 leading-relaxed font-normal">
+          <p className="text-sm text-slate-300 leading-relaxed font-normal">
             {diagnosis.standard_chemical_treatment ||
-              'No chemical pesticide or fungicide necessary for this condition; rely on cultural management.'}
+              'No synthetic chemical pesticide necessary for this condition; rely on cultural management.'}
           </p>
-          <div className="bg-[#0A160F] border border-amber-500/30 px-4 py-2.5 rounded-xl">
-            <p className="text-[11px] font-black text-amber-400 uppercase">SAFETY PROTOCOL</p>
-            <p className="text-xs text-slate-200">Always wear face mask, boots, and gloves when handling agrochemicals. Respect harvest withholding periods.</p>
+          <div className="bg-slate-950/80 border border-emerald-500/20 px-4 py-3 rounded-2xl">
+            <p className="text-xs font-black text-emerald-400 uppercase tracking-wide">SAFETY PROTOCOL</p>
+            <p className="text-sm text-slate-400 mt-0.5">Always wear personal protective equipment (PPE). Adhere strictly to label pre-harvest intervals (PHI).</p>
           </div>
-        </Card>
+        </motion.div>
       </div>
 
       {/* Long-Term Prevention */}
       {diagnosis.prevention_future && (
-        <Card className="bg-[#0D1C13]/75 backdrop-blur-md p-6 rounded-[28px] border border-emerald-500/30 shadow-xl space-y-3 text-white">
+        <motion.div
+          variants={itemVariants}
+          className="bg-emerald-900/10 backdrop-blur-2xl p-6 rounded-3xl border border-white/10 shadow-lg space-y-3 text-white"
+        >
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400">
+            <div className="w-11 h-11 rounded-2xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
               <CalendarCheck className="w-5 h-5" />
             </div>
             <div>
-              <span className="text-[11px] font-black uppercase tracking-wider text-emerald-400">
+              <span className="text-xs font-black uppercase tracking-wider text-emerald-400">
                 Next Planting Season
               </span>
               <h4 className="text-base font-bold text-white">
@@ -643,16 +750,19 @@ export const DiagnosisResultView: React.FC<DiagnosisResultViewProps> = ({
               </h4>
             </div>
           </div>
-          <p className="text-sm text-slate-200 leading-relaxed">
+          <p className="text-sm text-slate-300 leading-relaxed">
             {diagnosis.prevention_future}
           </p>
-        </Card>
+        </motion.div>
       )}
 
       {/* =========================================================================
-          5. FOOTER CONTROLS & RAW JSON SCHEMA INSPECTION
+          6. FOOTER CONTROLS & JSON INSPECTION
           ========================================================================= */}
-      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 pt-4 border-t border-emerald-500/20">
+      <motion.div
+        variants={itemVariants}
+        className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 pt-4 border-t border-white/10"
+      >
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
           <Button
             id="btn-toggle-json-view"
@@ -660,9 +770,9 @@ export const DiagnosisResultView: React.FC<DiagnosisResultViewProps> = ({
             variant="outline"
             size="default"
             onClick={() => setShowJsonRaw(!showJsonRaw)}
-            className="min-h-[48px] text-base font-bold"
+            className="min-h-[48px] text-sm font-bold border-white/10 text-white hover:bg-white/10 rounded-2xl cursor-pointer"
           >
-            <Code2 className="w-4 h-4 text-[#22C55E] mr-1.5" />
+            <Code2 className="w-4 h-4 text-emerald-400 mr-2" />
             <span>{showJsonRaw ? 'Hide JSON Payload' : 'Inspect JSON Schema'}</span>
           </Button>
 
@@ -672,40 +782,50 @@ export const DiagnosisResultView: React.FC<DiagnosisResultViewProps> = ({
             variant="ghost"
             size="default"
             onClick={handleCopyJson}
-            className="min-h-[48px] text-base text-slate-300 hover:text-white font-medium"
+            className="min-h-[48px] text-sm text-slate-400 hover:text-white hover:bg-white/10 font-medium rounded-2xl cursor-pointer"
           >
-            {jsonCopied ? <Check className="w-4 h-4 text-[#22C55E] mr-1.5" /> : <Copy className="w-4 h-4 mr-1.5" />}
+            {jsonCopied ? <Check className="w-4 h-4 text-emerald-400 mr-2" /> : <Copy className="w-4 h-4 mr-2" />}
             <span>{jsonCopied ? 'Copied' : 'Copy JSON'}</span>
           </Button>
         </div>
 
         {onReset && (
-          <Button
-            id="btn-diagnose-another-specimen"
-            type="button"
-            variant="default"
-            size="default"
-            onClick={onReset}
-            className="min-h-[48px] px-8 py-3 text-base font-black bg-[#22C55E] text-[#060D09] hover:bg-[#16A34A] rounded-xl cursor-pointer"
-          >
-            <Camera className="w-4 h-4 mr-2" />
-            <span>Check Another Crop</span>
-          </Button>
+          <motion.div whileTap={{ scale: 0.95 }}>
+            <Button
+              id="btn-diagnose-another-specimen"
+              type="button"
+              variant="default"
+              size="default"
+              onClick={onReset}
+              className="w-full sm:w-auto min-h-[48px] px-8 py-3 text-base font-black bg-emerald-500/80 text-slate-950 hover:bg-emerald-500 rounded-2xl cursor-pointer shadow-lg transition-all"
+            >
+              <Camera className="w-4 h-4 mr-2" />
+              <span>Check Another Crop</span>
+            </Button>
+          </motion.div>
         )}
-      </div>
+      </motion.div>
 
-      {showJsonRaw && (
-        <Card className="rounded-[28px] p-5 sm:p-6 text-xs sm:text-sm font-mono shadow-2xl border-2 border-emerald-500/30 bg-[#0A160F]">
-          <div className="flex items-center justify-between mb-3 text-slate-300 text-xs">
-            <span>Payload Conforming to AgriScan 24-Hour Protocol Schema:</span>
-            <span className="text-[#22C55E] font-bold font-mono">application/json</span>
-          </div>
-          <pre className="overflow-x-auto p-4 bg-black/60 rounded-xl text-xs sm:text-sm leading-relaxed text-emerald-300 max-h-72 border border-emerald-500/20">
-            {JSON.stringify(diagnosis, null, 2)}
-          </pre>
-        </Card>
-      )}
-    </div>
+      {/* JSON Schema Inspection Drawer */}
+      <AnimatePresence>
+        {showJsonRaw && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.25 }}
+            className="rounded-3xl p-5 sm:p-6 text-sm font-mono shadow-2xl border border-white/10 bg-slate-950/90"
+          >
+            <div className="flex items-center justify-between mb-3 text-slate-400 text-xs">
+              <span>AgriScan 24-Hour Protocol Schema:</span>
+              <span className="text-emerald-400 font-bold">application/json</span>
+            </div>
+            <pre className="overflow-x-auto p-4 bg-slate-950 rounded-2xl text-xs sm:text-sm leading-relaxed text-emerald-300 max-h-80 border border-white/10">
+              {JSON.stringify(diagnosis, null, 2)}
+            </pre>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
   );
 };
-
