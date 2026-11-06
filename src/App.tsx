@@ -29,24 +29,20 @@ import {
 
 const LOADING_STAGES = [
   {
-    title: 'Analyzing leaf tissue & cellular structure...',
-    subtitle: 'Extracting pigment dispersion, leaf venation, and necrotic lesion morphology.',
+    title: 'Checking leaf symptoms...',
+    subtitle: 'Looking at spots, coloring, and damage patterns on the plant.',
   },
   {
-    title: 'Scanning pathology index against global agricultural registries...',
-    subtitle: 'Cross-referencing IITA, FAO, and international crop disease pathology databases.',
+    title: 'Identifying crop disease...',
+    subtitle: 'Matching symptoms with plant health records.',
   },
   {
-    title: 'Cross-referencing international safety protocols & IFC standards...',
-    subtitle: 'Enforcing environmental compliance: verifying zero prohibited agrochemicals.',
+    title: 'Checking remedy safety...',
+    subtitle: 'Finding safe, practical treatments that can be applied quickly.',
   },
   {
-    title: 'Synthesizing 24-hour emergency containment & biological remedies...',
-    subtitle: 'Formulating step-by-step triage using integrated pest management and approved inputs.',
-  },
-  {
-    title: 'Verifying Global Phytosanitary & ESG Compliance Index...',
-    subtitle: 'Generating certified agronomic diagnosis and immediate field response protocol.',
+    title: 'Building your 24-hour plan...',
+    subtitle: 'Organizing steps to save the plant and prevent further spread.',
   },
 ];
 
@@ -293,9 +289,9 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans selection:bg-emerald-500 selection:text-slate-950 relative">
+    <div className="min-h-screen bg-background text-foreground flex flex-col font-sans selection:bg-primary selection:text-primary-foreground relative">
       {/* =========================================================================
-          FULL-SCREEN 25-SECOND LOADING OVERLAY (Eco-Glass & Emerald)
+          FULL-SCREEN LOADING OVERLAY (Calm, Tokenized, Plain Wording)
           ========================================================================= */}
       <AnimatePresence>
         {isLoading && (
@@ -303,73 +299,45 @@ export default function App() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.25 }}
-            className="fixed inset-0 z-50 bg-slate-950/95 backdrop-blur-2xl flex flex-col items-center justify-center p-6 text-center select-none"
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 z-50 bg-background/95 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center select-none"
           >
-            {/* Concentric Pulsing Radar Scanner (Emerald & Glass) */}
-            <div className="relative w-48 h-48 sm:w-56 sm:h-56 flex items-center justify-center mb-8">
-              <motion.div
-                className="absolute inset-0 rounded-full bg-emerald-500/15"
-                animate={{ scale: [1, 1.35, 1], opacity: [0.2, 0.6, 0.2] }}
-                transition={{ repeat: Infinity, duration: 2.8, ease: 'easeInOut' }}
-              />
-              <motion.div
-                className="absolute inset-4 rounded-full border border-emerald-500/40"
-                animate={{ scale: [1, 1.15, 1] }}
-                transition={{ repeat: Infinity, duration: 2.8, ease: 'easeInOut', delay: 0.3 }}
-              />
-              <div className="absolute inset-8 rounded-full border border-white/10" />
-
-              {/* Rotating Radar Sweep Line */}
-              <motion.div
-                className="absolute inset-0 rounded-full"
-                animate={{ rotate: 360 }}
-                transition={{ repeat: Infinity, duration: 3.5, ease: 'linear' }}
-                style={{
-                  background:
-                    'conic-gradient(from 0deg, rgba(16, 185, 129, 0.45) 0deg, transparent 75deg, transparent 360deg)',
-                }}
-              />
-
-              {/* Glowing Emerald Core */}
-              <div className="relative w-22 h-22 sm:w-24 sm:h-24 rounded-full bg-gradient-to-tr from-emerald-600 to-emerald-500 flex items-center justify-center shadow-[0_0_40px_rgba(16,185,129,0.65)] text-slate-950">
-                <Sparkles className="w-10 h-10 animate-pulse" />
-              </div>
-            </div>
+            {/* Calm Circular Spinner */}
+            <div className="w-16 h-16 rounded-full border-2 border-primary/20 border-t-primary animate-spin mb-6" />
 
             {/* Rotating Diagnostic Stage Ticker */}
-            <div className="max-w-md w-full space-y-2 min-h-[96px]">
+            <div className="max-w-md w-full space-y-2 min-h-[80px]">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={loadingStage}
-                  initial={{ opacity: 0, y: 12 }}
+                  initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -12 }}
-                  transition={{ duration: 0.35, ease: 'easeOut' }}
+                  exit={{ opacity: 0, y: -8 }}
+                  transition={{ duration: 0.25, ease: 'easeOut' }}
                 >
-                  <h3 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight leading-snug">
-                    {LOADING_STAGES[loadingStage].title}
+                  <h3 className="text-xl sm:text-2xl font-serif font-bold text-foreground tracking-tight leading-snug">
+                    {LOADING_STAGES[loadingStage]?.title || 'Analyzing image...'}
                   </h3>
-                  <p className="text-sm text-slate-400 mt-1 leading-relaxed">
-                    {LOADING_STAGES[loadingStage].subtitle}
+                  <p className="text-sm text-muted-foreground mt-1 leading-relaxed">
+                    {LOADING_STAGES[loadingStage]?.subtitle || 'Please wait while we review the symptoms.'}
                   </p>
                 </motion.div>
               </AnimatePresence>
             </div>
 
-            {/* 25-Second SLA Progress Bar & Cancel */}
+            {/* Progress Bar & Cancel */}
             <div className="w-full max-w-xs mt-6 space-y-3">
-              <div className="flex justify-between items-center text-xs font-mono text-slate-300">
-                <span className="text-emerald-400 font-bold uppercase tracking-wider">AI AGRI-DIAGNOSTIC SLA</span>
+              <div className="flex justify-between items-center text-xs font-medium text-muted-foreground">
+                <span className="font-semibold text-foreground">Analyzing photo</span>
                 <span>{loadingProgress}%</span>
               </div>
-              <div className="h-2.5 w-full bg-slate-900 rounded-full overflow-hidden border border-white/10">
+              <div className="h-2 w-full bg-secondary rounded-full overflow-hidden border border-border">
                 <motion.div
-                  className="h-full bg-gradient-to-r from-emerald-600 to-emerald-400 rounded-full shadow-[0_0_12px_rgba(16,185,129,0.8)]"
+                  className="h-full bg-primary rounded-full transition-all duration-300"
                   style={{ width: `${loadingProgress}%` }}
                 />
               </div>
-              <p className="text-xs text-slate-400">Max 25s Response Target • Global Diagnostic Node</p>
+              <p className="text-xs text-muted-foreground">Usually takes 5 to 15 seconds</p>
 
               <div className="pt-2">
                 <Button
@@ -377,9 +345,9 @@ export default function App() {
                   variant="ghost"
                   size="sm"
                   onClick={handleCancelDiagnosis}
-                  className="text-sm text-slate-400 hover:text-white hover:bg-white/10 rounded-2xl cursor-pointer"
+                  className="text-sm text-muted-foreground hover:text-foreground hover:bg-secondary rounded-xl cursor-pointer"
                 >
-                  Cancel Analysis
+                  Cancel
                 </Button>
               </div>
             </div>
@@ -397,18 +365,16 @@ export default function App() {
           {/* =========================================================================
               DESKTOP VERTICAL SIDEBAR (Eco-Glass & Sage Green)
               ========================================================================= */}
-          <aside className="hidden md:flex flex-col w-64 border-r border-white/10 bg-slate-950/80 backdrop-blur-2xl shrink-0 h-screen sticky top-0 p-5 space-y-6 z-30 justify-between">
+          <aside className="hidden md:flex flex-col w-64 border-r border-border bg-card shrink-0 h-screen sticky top-0 p-5 space-y-6 z-30 justify-between">
             <div className="space-y-6">
               {/* Brand Logo */}
               <div className="flex items-center gap-3">
-                <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-emerald-500 to-emerald-400 p-0.5 flex items-center justify-center shadow-[0_0_20px_rgba(16,185,129,0.35)]">
-                  <div className="w-full h-full bg-slate-900 rounded-[14px] flex items-center justify-center">
-                    <Sprout className="w-6 h-6 text-emerald-400" />
-                  </div>
+                <div className="w-10 h-10 rounded-xl bg-primary/15 border border-primary/30 flex items-center justify-center text-primary shrink-0">
+                  <Sprout className="w-5 h-5" />
                 </div>
                 <div>
-                  <h2 className="text-base font-black text-white tracking-tight">AgriScan</h2>
-                  <p className="text-xs text-emerald-400 font-semibold">Enterprise Hub</p>
+                  <h2 className="text-base font-bold text-foreground tracking-tight">AgriScan</h2>
+                  <p className="text-xs text-muted-foreground font-medium">Field Triage</p>
                 </div>
               </div>
 
@@ -420,10 +386,10 @@ export default function App() {
                     setDesktopNavTab('scan');
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                   }}
-                  className={`w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-sm font-bold transition-all cursor-pointer ${
+                  className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition-colors cursor-pointer ${
                     desktopNavTab === 'scan'
-                      ? 'bg-emerald-500/80 text-slate-950 shadow-md font-black'
-                      : 'text-slate-400 hover:text-white hover:bg-white/5'
+                      ? 'bg-primary text-primary-foreground font-bold'
+                      : 'text-muted-foreground hover:text-foreground hover:bg-secondary'
                   }`}
                 >
                   <Scan className="w-5 h-5" />
@@ -436,14 +402,14 @@ export default function App() {
                     setDesktopNavTab('presets');
                     setShowPresetsModal(true);
                   }}
-                  className={`w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-sm font-bold transition-all cursor-pointer ${
+                  className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition-colors cursor-pointer ${
                     desktopNavTab === 'presets'
-                      ? 'bg-emerald-500/80 text-slate-950 shadow-md font-black'
-                      : 'text-slate-400 hover:text-white hover:bg-white/5'
+                      ? 'bg-primary text-primary-foreground font-bold'
+                      : 'text-muted-foreground hover:text-foreground hover:bg-secondary'
                   }`}
                 >
-                  <Layers className="w-5 h-5 text-emerald-400" />
-                  <span>Field Presets</span>
+                  <Layers className="w-5 h-5 text-primary" />
+                  <span>Field Samples</span>
                 </button>
 
                 <button
@@ -452,92 +418,47 @@ export default function App() {
                     setDesktopNavTab('guide');
                     setShowGuideModal(true);
                   }}
-                  className={`w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-sm font-bold transition-all cursor-pointer ${
+                  className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition-colors cursor-pointer ${
                     desktopNavTab === 'guide'
-                      ? 'bg-emerald-500/80 text-slate-950 shadow-md font-black'
-                      : 'text-slate-400 hover:text-white hover:bg-white/5'
+                      ? 'bg-primary text-primary-foreground font-bold'
+                      : 'text-muted-foreground hover:text-foreground hover:bg-secondary'
                   }`}
                 >
-                  <BookOpen className="w-5 h-5 text-emerald-400" />
+                  <BookOpen className="w-5 h-5 text-primary" />
                   <span>Agronomy Guide</span>
                 </button>
 
                 <button
                   type="button"
                   onClick={() => setActiveView('landing')}
-                  className="w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-sm font-bold text-slate-400 hover:text-white hover:bg-white/5 transition-all cursor-pointer"
+                  className="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors cursor-pointer"
                 >
                   <ArrowLeft className="w-5 h-5" />
                   <span>Landing Page</span>
                 </button>
               </nav>
-
-              {/* Environmental Context Widget */}
-              <div className="p-4 rounded-3xl bg-emerald-950/20 border border-white/10 backdrop-blur-md space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
-                    <CloudSun className="w-4 h-4" /> Global Telemetry
-                  </span>
-                  <span className="text-xs text-slate-400">Station Active</span>
-                </div>
-                <div className="flex items-baseline gap-2">
-                  <span className="text-2xl font-black text-white">24°C</span>
-                  <span className="text-xs text-slate-300">Clean / Optimal</span>
-                </div>
-                <div className="grid grid-cols-2 gap-2 text-xs text-slate-400 pt-1 border-t border-white/10">
-                  <div>
-                    <span className="text-slate-400/70 block">Humidity</span>
-                    <span className="font-bold text-white">65%</span>
-                  </div>
-                  <div>
-                    <span className="text-slate-400/70 block">Precipitation</span>
-                    <span className="font-bold text-white">0 mm</span>
-                  </div>
-                </div>
-              </div>
             </div>
 
             {/* Sidebar Bottom: Connectivity Status */}
-            <div className="pt-4 border-t border-white/10 space-y-2">
+            <div className="pt-4 border-t border-border">
               <ConnectivityStatus theme="dark" />
-              <p className="text-xs text-slate-400 font-mono">NODE: GLOBAL-ENTERPRISE-01</p>
             </div>
           </aside>
 
           {/* =========================================================================
-              MAIN CONTENT CONTAINER (SPLIT-SCREEN ON lg: SCREENS)
+              MAIN CONTENT CONTAINER
               ========================================================================= */}
           <div className="flex-1 flex flex-col min-w-0">
             <Header onOpenGuide={() => setShowGuideModal(true)} />
 
             <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6 pb-28 md:pb-12">
-              {/* Operational Rules Banner */}
-              <div className="rounded-3xl border border-white/10 bg-emerald-950/20 p-4 sm:p-5 text-white backdrop-blur-2xl shadow-lg flex items-start gap-3.5">
-                <div className="w-10 h-10 rounded-2xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 shrink-0 mt-0.5">
-                  <ShieldCheck className="w-5 h-5" />
-                </div>
-                <div className="flex-1 space-y-1">
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                    <h3 className="text-sm sm:text-base font-extrabold text-white">
-                      Global Plant Pathology AI Operational Rules Active
-                    </h3>
-                    <Badge variant="outline" className="self-start sm:self-auto text-xs font-bold py-0.5 px-3 bg-emerald-500/15 text-emerald-300 border-emerald-500/30">
-                      Enterprise Certified
-                    </Badge>
-                  </div>
-                  <p className="text-sm text-slate-300 leading-relaxed">
-                    1. Verification first (is_plant check) • 2. Integrated biological &amp; cultural remedies • 3. Strict prohibited agrochemicals guardrail (No Paraquat, Lindane, DDVP) • 4. Rapid 24-hour containment triage.
-                  </p>
-                </div>
-              </div>
-
               {/* Error Message Display */}
               {error && (
-                <div className="rounded-3xl border border-rose-500/40 bg-rose-950/40 p-5 text-white backdrop-blur-xl shadow-xl space-y-3">
+                <div className="rounded-xl border border-destructive/40 bg-destructive/15 p-4 text-foreground shadow-sm space-y-3">
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2.5 text-rose-300 font-bold text-base">
+                    <div className="flex items-center gap-2.5 text-destructive font-bold text-base">
                       <AlertCircle className="w-5 h-5 shrink-0" />
-                      <span>Diagnostic Analysis Notice</span>
+                      <span>Diagnosis Notice</span>
                     </div>
                     {lastSelectedParams && (
                       <motion.div whileTap={{ scale: 0.95 }}>
@@ -545,14 +466,14 @@ export default function App() {
                           variant="default"
                           size="sm"
                           onClick={handleReanalyzeWithAi}
-                          className="min-h-[40px] text-xs font-black bg-emerald-500 text-slate-950 hover:bg-emerald-400 rounded-xl"
+                          className="min-h-[40px] text-xs font-bold bg-primary text-primary-foreground hover:bg-primary/90 rounded-xl"
                         >
                           Retry Analysis
                         </Button>
                       </motion.div>
                     )}
                   </div>
-                  <p className="text-sm text-rose-100/90">{error}</p>
+                  <p className="text-sm text-foreground/90">{error}</p>
                 </div>
               )}
 
@@ -564,15 +485,15 @@ export default function App() {
                 <div className="hidden lg:flex lg:flex-row gap-8 items-start">
                   {/* Left 40%: Pinned ImageUploader Workspace */}
                   <div className="w-[42%] max-w-lg shrink-0 sticky top-20 space-y-4">
-                    <div className="flex items-center justify-between pb-2 border-b border-white/10">
-                      <span className="text-xs uppercase tracking-widest font-black text-emerald-400 flex items-center gap-1.5">
-                        <Camera className="w-4 h-4" /> Specimen Capture &amp; Ingest
+                    <div className="flex items-center justify-between pb-2 border-b border-border">
+                      <span className="text-xs uppercase tracking-widest font-bold text-primary flex items-center gap-1.5">
+                        <Camera className="w-4 h-4" /> Specimen Capture
                       </span>
                       {diagnosis && (
                         <button
                           type="button"
                           onClick={handleReset}
-                          className="text-xs text-emerald-400 hover:text-emerald-300 font-bold underline cursor-pointer"
+                          className="text-xs text-primary hover:underline font-bold cursor-pointer"
                         >
                           Clear &amp; New Scan
                         </button>
@@ -597,15 +518,15 @@ export default function App() {
                           transition={{ duration: 0.35, ease: 'easeOut' }}
                           className="space-y-6"
                         >
-                          <div className="flex items-center justify-between pb-2 border-b border-white/10">
-                            <span className="text-xs uppercase tracking-widest font-black text-emerald-400 flex items-center gap-1.5">
+                          <div className="flex items-center justify-between pb-2 border-b border-border">
+                            <span className="text-xs uppercase tracking-widest font-bold text-primary flex items-center gap-1.5">
                               <FileText className="w-4 h-4" /> 24-Hour Diagnostic Report
                             </span>
                             <motion.button
                               whileTap={{ scale: 0.95 }}
                               onClick={handleReanalyzeWithAi}
                               disabled={isLoading}
-                              className="inline-flex items-center gap-1.5 text-xs text-emerald-300 font-bold px-3 py-1.5 rounded-full bg-slate-900/80 hover:bg-slate-800 border border-white/10 transition-all cursor-pointer"
+                              className="inline-flex items-center gap-1.5 text-xs text-primary font-bold px-3 py-1.5 rounded-full bg-secondary hover:bg-secondary/80 border border-border transition-colors cursor-pointer"
                             >
                               <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? 'animate-spin' : ''}`} />
                               <span>Re-analyze</span>
@@ -623,28 +544,28 @@ export default function App() {
                         /* Desktop Idle State: Ready to Scan Dashboard */
                         <motion.div
                           key="desktop-awaiting"
-                          initial={{ opacity: 0, y: 15 }}
+                          initial={{ opacity: 0, y: 12 }}
                           animate={{ opacity: 1, y: 0 }}
-                          className="rounded-3xl p-8 bg-emerald-900/10 backdrop-blur-2xl border border-white/10 shadow-xl text-center space-y-6"
+                          className="rounded-xl p-8 bg-card border border-border shadow-sm text-center space-y-6"
                         >
-                          <div className="w-16 h-16 rounded-3xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 flex items-center justify-center mx-auto shadow-[0_0_30px_rgba(16,185,129,0.3)]">
-                            <Scan className="w-8 h-8" />
+                          <div className="w-14 h-14 rounded-xl bg-secondary border border-border text-primary flex items-center justify-center mx-auto">
+                            <Scan className="w-7 h-7" />
                           </div>
 
                           <div className="space-y-2 max-w-md mx-auto">
-                            <h3 className="text-2xl font-extrabold text-white">
+                            <h3 className="text-2xl font-serif font-bold text-foreground">
                               Diagnostic Workspace Ready
                             </h3>
-                            <p className="text-sm text-slate-300 leading-relaxed">
-                              Use the Camera Viewfinder on the left or select a verified enterprise pathology specimen below to test instant AI diagnosis.
+                            <p className="text-sm text-muted-foreground leading-relaxed">
+                              Use the camera viewfinder on the left or select a sample photo below to test instant AI diagnosis.
                             </p>
                           </div>
 
                           {/* Quick Preset Selector Tiles on Desktop */}
-                          <div className="pt-4 border-t border-white/10 text-left">
-                            <h4 className="text-xs uppercase tracking-wider font-extrabold text-emerald-300 mb-3 flex items-center gap-2">
-                              <Sparkles className="w-4 h-4 text-emerald-400" />
-                              Quick-Test Presets (Enterprise Showcase):
+                          <div className="pt-4 border-t border-border text-left">
+                            <h4 className="text-xs uppercase tracking-wider font-bold text-foreground mb-3 flex items-center gap-2">
+                              <Sparkles className="w-4 h-4 text-primary" />
+                              Field Sample Presets:
                             </h4>
                             <div className="grid grid-cols-3 gap-3">
                               {FIELD_SAMPLES.slice(0, 3).map((sample) => (
@@ -654,19 +575,19 @@ export default function App() {
                                   whileHover={{ scale: 1.02 }}
                                   whileTap={{ scale: 0.97 }}
                                   onClick={() => handleSelectPresetFromModal(sample)}
-                                  className="p-3 rounded-2xl bg-slate-900/60 hover:bg-slate-900/90 border border-white/10 transition-all text-left group cursor-pointer"
+                                  className="p-3 rounded-xl bg-secondary/60 hover:bg-secondary border border-border transition-colors text-left group cursor-pointer"
                                 >
-                                  <div className="aspect-video w-full rounded-xl overflow-hidden bg-black/70 mb-2 border border-white/10">
+                                  <div className="aspect-video w-full rounded-lg overflow-hidden bg-background mb-2 border border-border">
                                     <img
                                       src={sample.thumbnailUrl}
                                       alt={sample.title}
                                       className="w-full h-full object-cover group-hover:scale-105 transition-transform"
                                     />
                                   </div>
-                                  <span className="text-xs font-bold text-emerald-400 block truncate">
+                                  <span className="text-xs font-bold text-primary block truncate">
                                     {sample.crop}
                                   </span>
-                                  <p className="text-xs font-semibold text-white line-clamp-1 mt-0.5">
+                                  <p className="text-xs font-semibold text-foreground line-clamp-1 mt-0.5">
                                     {sample.title}
                                   </p>
                                 </motion.button>
@@ -688,7 +609,7 @@ export default function App() {
                         initial={{ opacity: 0, y: 16 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -16 }}
-                        transition={{ duration: 0.35, ease: 'easeOut' }}
+                        transition={{ duration: 0.3, ease: 'easeOut' }}
                         className="space-y-6"
                       >
                         <div className="flex items-center justify-between gap-3">
@@ -696,7 +617,7 @@ export default function App() {
                             type="button"
                             whileTap={{ scale: 0.95 }}
                             onClick={handleReset}
-                            className="min-h-[44px] px-4 py-2 text-sm font-bold text-white hover:text-emerald-300 rounded-2xl bg-slate-900/80 border border-white/10 cursor-pointer"
+                            className="min-h-[48px] px-4 py-2 text-sm font-semibold text-foreground hover:text-primary rounded-xl bg-secondary border border-border cursor-pointer"
                           >
                             ← Upload or take another photo
                           </motion.button>
@@ -706,7 +627,7 @@ export default function App() {
                             whileTap={{ scale: 0.95 }}
                             onClick={handleReanalyzeWithAi}
                             disabled={isLoading}
-                            className="min-h-[44px] px-4 py-2 text-sm font-bold text-emerald-300 rounded-2xl bg-slate-900/80 border border-white/10 flex items-center gap-1.5 cursor-pointer"
+                            className="min-h-[48px] px-4 py-2 text-sm font-semibold text-primary rounded-xl bg-secondary border border-border flex items-center gap-1.5 cursor-pointer"
                           >
                             <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? 'animate-spin' : ''}`} />
                             <span>Re-analyze</span>
@@ -726,7 +647,7 @@ export default function App() {
                         initial={{ opacity: 0, y: 16 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -16 }}
-                        transition={{ duration: 0.35, ease: 'easeOut' }}
+                        transition={{ duration: 0.3, ease: 'easeOut' }}
                       >
                         <ImageUploader
                           onImageSelected={handleImageSelected}
@@ -741,25 +662,25 @@ export default function App() {
           </div>
 
           {/* =========================================================================
-              FLOATING PILL-SHAPED MOBILE BOTTOM NAVIGATION (Eco-Glass & Emerald)
+              FLOATING MOBILE BOTTOM NAVIGATION
               ========================================================================= */}
-          <div className="fixed bottom-6 left-4 right-4 z-50 rounded-[2rem] bg-slate-950/90 backdrop-blur-2xl border border-white/10 p-2 flex justify-around items-center md:hidden shadow-2xl">
-            {/* Target 1: Fields / History */}
+          <div className="fixed bottom-6 left-4 right-4 z-40 rounded-2xl bg-card/95 backdrop-blur-md border border-border p-2 flex justify-around items-center md:hidden shadow-lg pb-[max(0.5rem,env(safe-area-inset-bottom))]">
+            {/* Target 1: Fields / Samples */}
             <motion.button
               type="button"
               whileTap={{ scale: 0.92 }}
               onClick={() => setShowPresetsModal(true)}
-              className="flex flex-col items-center justify-center gap-1 min-w-[64px] min-h-[48px] py-1 px-2 rounded-2xl text-slate-300 hover:text-white transition-colors cursor-pointer"
+              className="flex flex-col items-center justify-center gap-1 min-w-[64px] min-h-[48px] py-1 px-2 rounded-xl text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
             >
-              <Grid className="w-5 h-5 text-emerald-400" />
-              <span className="text-xs font-semibold">Fields</span>
+              <Grid className="w-5 h-5 text-primary" />
+              <span className="text-xs font-semibold">Samples</span>
             </motion.button>
 
-            {/* Target 2: Massive Elevated Shutter/Scan in Sage Green */}
+            {/* Target 2: Shutter/Scan */}
             <motion.button
               id="btn-floating-shutter"
               type="button"
-              whileTap={{ scale: 0.90 }}
+              whileTap={{ scale: 0.92 }}
               onClick={() => {
                 if (diagnosis) {
                   handleReset();
@@ -772,26 +693,26 @@ export default function App() {
                   }
                 }
               }}
-              className="-mt-7 w-16 h-16 rounded-full bg-emerald-500/90 hover:bg-emerald-500 shadow-[0_0_25px_rgba(16,185,129,0.55)] flex items-center justify-center text-slate-950 font-bold border-4 border-slate-950 active:scale-90 transition-transform cursor-pointer"
+              className="-mt-6 w-14 h-14 rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold border-2 border-background shadow-md flex items-center justify-center cursor-pointer transition-transform"
               title={diagnosis ? 'Start New Scan' : 'Trigger Camera Shutter'}
             >
-              {diagnosis ? <Camera className="w-7 h-7" /> : <Scan className="w-7 h-7" />}
+              {diagnosis ? <Camera className="w-6 h-6" /> : <Scan className="w-6 h-6" />}
             </motion.button>
 
-            {/* Target 3: Profile / Settings / Guide */}
+            {/* Target 3: Guide */}
             <motion.button
               type="button"
               whileTap={{ scale: 0.92 }}
               onClick={() => setShowGuideModal(true)}
-              className="flex flex-col items-center justify-center gap-1 min-w-[64px] min-h-[48px] py-1 px-2 rounded-2xl text-slate-300 hover:text-white transition-colors cursor-pointer"
+              className="flex flex-col items-center justify-center gap-1 min-w-[64px] min-h-[48px] py-1 px-2 rounded-xl text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
             >
-              <BookOpen className="w-5 h-5 text-emerald-400" />
+              <BookOpen className="w-5 h-5 text-primary" />
               <span className="text-xs font-semibold">Guide</span>
             </motion.button>
           </div>
 
           {/* =========================================================================
-              MODAL 1: ENTERPRISE SPECIMEN PRESETS (Eco-Glass & Emerald)
+              MODAL 1: FIELD SPECIMEN PRESETS
               ========================================================================= */}
           <AnimatePresence>
             {showPresetsModal && (
@@ -799,31 +720,31 @@ export default function App() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-end sm:items-center justify-center p-3 sm:p-4"
+                className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm flex items-end sm:items-center justify-center p-3 sm:p-4"
                 onClick={() => setShowPresetsModal(false)}
               >
                 <motion.div
-                  initial={{ opacity: 0, y: 50 }}
+                  initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 50 }}
+                  exit={{ opacity: 0, y: 30 }}
                   transition={{ type: 'spring', damping: 26, stiffness: 280 }}
-                  className="bg-slate-950/95 border border-white/10 rounded-3xl p-5 sm:p-6 w-full max-w-xl max-h-[85vh] overflow-y-auto space-y-4 shadow-2xl"
+                  className="bg-card border border-border rounded-2xl p-5 sm:p-6 w-full max-w-xl max-h-[85vh] overflow-y-auto space-y-4 shadow-xl"
                   onClick={(e) => e.stopPropagation()}
                 >
-                  <div className="flex items-center justify-between pb-3 border-b border-white/10">
+                  <div className="flex items-center justify-between pb-3 border-b border-border">
                     <div className="flex items-center gap-2.5">
-                      <div className="w-9 h-9 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
+                      <div className="w-9 h-9 rounded-xl bg-secondary text-primary flex items-center justify-center">
                         <Layers className="w-5 h-5" />
                       </div>
                       <div>
-                        <h3 className="text-base font-extrabold text-white">Enterprise Specimen Presets</h3>
-                        <p className="text-xs text-slate-400">Instant offline testing showcase</p>
+                        <h3 className="text-base font-bold text-foreground">Field Sample Presets</h3>
+                        <p className="text-xs text-muted-foreground">Sample crop photos for testing</p>
                       </div>
                     </div>
                     <button
                       type="button"
                       onClick={() => setShowPresetsModal(false)}
-                      className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-white/10 min-h-[44px] min-w-[44px] flex items-center justify-center cursor-pointer"
+                      className="p-2 rounded-xl text-muted-foreground hover:text-foreground hover:bg-secondary min-h-[44px] min-w-[44px] flex items-center justify-center cursor-pointer"
                     >
                       <X className="w-5 h-5" />
                     </button>
@@ -837,9 +758,9 @@ export default function App() {
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.97 }}
                         onClick={() => handleSelectPresetFromModal(sample)}
-                        className="text-left p-3.5 rounded-2xl bg-slate-900/70 border border-white/10 hover:border-emerald-400 flex items-center gap-3 group transition-colors cursor-pointer"
+                        className="text-left p-3.5 rounded-xl bg-secondary/60 border border-border hover:border-primary flex items-center gap-3 group transition-colors cursor-pointer"
                       >
-                        <div className="w-14 h-14 rounded-xl overflow-hidden bg-black/70 shrink-0 border border-white/10">
+                        <div className="w-14 h-14 rounded-lg overflow-hidden bg-background shrink-0 border border-border">
                           <img
                             src={sample.thumbnailUrl}
                             alt={sample.title}
@@ -847,13 +768,13 @@ export default function App() {
                           />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <Badge variant="outline" className="text-xs font-bold py-0.5 px-2 bg-emerald-500/15 text-emerald-300 border-emerald-500/30 mb-1">
+                          <Badge variant="outline" className="text-xs font-semibold py-0.5 px-2 mb-1">
                             {sample.crop} • {sample.category}
                           </Badge>
-                          <h4 className="text-sm font-bold text-white truncate group-hover:text-emerald-400 transition-colors">
+                          <h4 className="text-sm font-semibold text-foreground truncate group-hover:text-primary transition-colors">
                             {sample.title}
                           </h4>
-                          <p className="text-xs text-slate-400 truncate">{sample.localZone}</p>
+                          <p className="text-xs text-muted-foreground truncate">{sample.localZone}</p>
                         </div>
                       </motion.button>
                     ))}
@@ -864,7 +785,7 @@ export default function App() {
           </AnimatePresence>
 
           {/* =========================================================================
-              MODAL 2: GLOBAL AGRONOMY REFERENCE & COMPLIANCE MODAL
+              MODAL 2: AGRONOMY REFERENCE MODAL
               ========================================================================= */}
           <AnimatePresence>
             {showGuideModal && (
@@ -872,31 +793,31 @@ export default function App() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-end sm:items-center justify-center p-3 sm:p-4"
+                className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm flex items-end sm:items-center justify-center p-3 sm:p-4"
                 onClick={() => setShowGuideModal(false)}
               >
                 <motion.div
-                  initial={{ opacity: 0, y: 50 }}
+                  initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 50 }}
+                  exit={{ opacity: 0, y: 30 }}
                   transition={{ type: 'spring', damping: 26, stiffness: 280 }}
-                  className="bg-slate-950/95 border border-white/10 rounded-3xl p-5 sm:p-6 w-full max-w-3xl max-h-[85vh] overflow-y-auto space-y-4 shadow-2xl"
+                  className="bg-card border border-border rounded-2xl p-5 sm:p-6 w-full max-w-3xl max-h-[85vh] overflow-y-auto space-y-4 shadow-xl"
                   onClick={(e) => e.stopPropagation()}
                 >
-                  <div className="flex items-center justify-between pb-3 border-b border-white/10">
+                  <div className="flex items-center justify-between pb-3 border-b border-border">
                     <div className="flex items-center gap-2.5">
-                      <div className="w-9 h-9 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
+                      <div className="w-9 h-9 rounded-xl bg-secondary text-primary flex items-center justify-center">
                         <BookOpen className="w-5 h-5" />
                       </div>
                       <div>
-                        <h3 className="text-base font-extrabold text-white">Global Agronomy Reference</h3>
-                        <p className="text-xs text-slate-400">Offline crop pathology standards and biological remedies</p>
+                        <h3 className="text-base font-bold text-foreground">Agronomy Guide</h3>
+                        <p className="text-xs text-muted-foreground">Crop pathology references and biological remedies</p>
                       </div>
                     </div>
                     <button
                       type="button"
                       onClick={() => setShowGuideModal(false)}
-                      className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-white/10 min-h-[44px] min-w-[44px] flex items-center justify-center cursor-pointer"
+                      className="p-2 rounded-xl text-muted-foreground hover:text-foreground hover:bg-secondary min-h-[44px] min-w-[44px] flex items-center justify-center cursor-pointer"
                     >
                       <X className="w-5 h-5" />
                     </button>

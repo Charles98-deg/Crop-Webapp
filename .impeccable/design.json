@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-06T00:16:00.000Z",
+  "title": "Design System: AgriScan",
+  "extensions": {
+    "colorMeta": {
+      "primary": { "role": "primary", "displayName": "Botanical Emerald", "canonical": "#22C55E" },
+      "background": { "role": "neutral", "displayName": "Obsidian Earth", "canonical": "#060D09" },
+      "foreground": { "role": "neutral", "displayName": "Pure White", "canonical": "#FFFFFF" },
+      "card": { "role": "neutral", "displayName": "Frosted Peat Card", "canonical": "rgba(13, 28, 19, 0.75)" },
+      "secondary": { "role": "secondary", "displayName": "Deep Canopy Green", "canonical": "rgba(22, 44, 30, 0.8)" },
+      "muted-foreground": { "role": "neutral", "displayName": "Mint Sage", "canonical": "#A7F3D0" },
+      "border": { "role": "neutral", "displayName": "Organic Border", "canonical": "rgba(34, 197, 94, 0.28)" }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display (Newsreader)", "purpose": "Hero headline only" },
+      "headline": { "displayName": "Headline (Plus Jakarta Sans)", "purpose": "Primary screen titles and verdicts" },
+      "title": { "displayName": "Title (Newsreader)", "purpose": "Card titles and section headings" },
+      "body": { "displayName": "Body (Plus Jakarta Sans)", "purpose": "Action triage instructions and descriptions" }
+    },
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "md", "value": "768px" },
+      { "name": "lg", "value": "1024px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Primary action button, used for 'Scan your crop'.",
+      "html": "<button class=\"ds-btn-primary\">Scan your crop</button>",
+      "css": ".ds-btn-primary { background: var(--color-primary, #22C55E); color: var(--color-primary-foreground, #060D09); padding: 14px 28px; border-radius: 12px; font-weight: 700; font-size: 1rem; border: none; cursor: pointer; transition: opacity 0.2s ease, transform 0.1s ease; } .ds-btn-primary:hover { opacity: 0.9; } .ds-btn-primary:active { transform: scale(0.98); }"
+    },
+    {
+      "name": "Standard Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Container for triage timeline, diagnosis results, and key actions.",
+      "html": "<div class=\"ds-card\"><h3 class=\"ds-card-title\">Action Plan: 0–2 Hours</h3><p class=\"ds-card-body\">Isolate affected plants immediately.</p></div>",
+      "css": ".ds-card { background: var(--color-card, rgba(13, 28, 19, 0.75)); border: 1px solid var(--color-border, rgba(34, 197, 94, 0.28)); border-radius: 12px; padding: 24px; color: var(--color-foreground, #FFFFFF); } .ds-card-title { font-family: 'Newsreader', Georgia, serif; font-size: 1.25rem; font-weight: 600; margin-bottom: 8px; } .ds-card-body { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.95rem; color: var(--color-muted-foreground, #A7F3D0); line-height: 1.5; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Field Diagnostic Instrument",
+    "overview": "AgriScan is built for growers outdoors in direct sunlight: one hand on the crop, one hand holding a mobile phone, stressed because their livelihood is at risk. It feels like an essential, calm, precision agricultural diagnostic instrument—trustworthy, rapid, uncluttered, and uncompromisingly legible.",
+    "keyCharacteristics": [
+      "Single Canvas Ground (#060D09 / bg-background)",
+      "High text contrast for outdoor sunlight",
+      "Restrained physical materials (max one blur, no pulsing glow)",
+      "One clear promise on landing: Scan your crop"
+    ],
+    "rules": [
+      { "name": "The Single Canvas Rule", "body": "Every view and surface renders atop bg-background. bg-slate-950 and arbitrary hex darks are strictly banned.", "section": "colors" },
+      { "name": "The Token Fidelity Rule", "body": "Never declare raw hex codes or Tailwind default color scales in component templates. Use semantic theme tokens.", "section": "colors" },
+      { "name": "The Font Class Rule", "body": "Typography uses font-sans and font-serif utility classes exclusively. Inline fontFamily and Georgia are prohibited.", "section": "typography" },
+      { "name": "The No-Gradient Rule", "body": "Text color is always solid token foreground. Gradient text is forbidden.", "section": "typography" }
+    ],
+    "dos": [
+      "Do test every screen at 360px–375px mobile width",
+      "Do ensure all interactive controls have a minimum touch target of 48px height",
+      "Do use semantic tokens exclusively",
+      "Do verify changes by running npx tsc --noEmit"
+    ],
+    "donts": [
+      "Don't use bg-slate-950 or any slate color classes",
+      "Don't use raw hex codes in component classes or inline styles",
+      "Don't use inline fontFamily or mention Georgia directly",
+      "Don't use gradient text or pulsing glowing shadows",
+      "Don't stack multiple backdrop-blur layers",
+      "Don't display fake telemetry or unverifiable enterprise certifications"
+    ]
+  }
+}

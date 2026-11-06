@@ -3,23 +3,23 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex shrink-0 items-center justify-center gap-2.5 rounded-xl text-base font-bold whitespace-nowrap transition-all outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/50 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-5 min-h-[48px] touch-manipulation cursor-pointer active:scale-[0.98]",
+  "inline-flex shrink-0 items-center justify-center gap-2.5 rounded-xl text-base font-bold whitespace-nowrap transition-all outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-5 min-h-[48px] touch-manipulation cursor-pointer active:scale-[0.98]",
   {
     variants: {
       variant: {
         default:
-          "bg-[#22C55E] text-[#060D09] hover:bg-[#16A34A] active:bg-[#15803D] font-black shadow-md shadow-emerald-950/50 border border-emerald-300/40",
+          "bg-primary text-primary-foreground hover:bg-primary/90 font-black border border-primary/20",
         destructive:
-          "bg-destructive text-white shadow-sm hover:bg-destructive/90 border border-destructive/40 font-bold",
+          "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90 border border-destructive/40 font-bold",
         outline:
-          "border-2 border-emerald-500/40 bg-[#0A160F]/80 text-white shadow-sm hover:bg-[#0D2416] hover:border-[#22C55E] hover:text-[#22C55E] font-bold",
+          "border border-border bg-transparent text-foreground shadow-sm hover:bg-secondary hover:text-foreground font-bold",
         secondary:
-          "bg-[#11261A] text-white border border-emerald-500/30 hover:bg-[#163524] hover:border-emerald-500/60 shadow-sm font-semibold",
+          "bg-secondary text-secondary-foreground border border-border hover:bg-secondary/80 shadow-sm font-semibold",
         ghost:
-          "text-white hover:bg-white/10 hover:text-[#22C55E] font-medium",
-        link: "text-[#22C55E] underline-offset-4 hover:underline font-bold",
+          "text-muted-foreground hover:bg-muted hover:text-foreground font-medium",
+        link: "text-primary underline-offset-4 hover:underline font-bold",
         accent:
-          "bg-[#10B981] text-white hover:bg-[#059669] font-black shadow-md shadow-emerald-950/50 border border-emerald-400/40",
+          "bg-accent text-accent-foreground hover:bg-accent/90 font-black border border-accent/20",
       },
       size: {
         default: "min-h-[48px] px-6 py-3 text-base rounded-xl",

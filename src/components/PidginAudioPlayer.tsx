@@ -202,25 +202,25 @@ export const PidginAudioPlayer: React.FC<PidginAudioPlayerProps> = ({
   return (
     <div
       id="pidgin-audio-player-card"
-      className="bg-[#181816]/80 backdrop-blur-md border border-[#2D2D2A]/60 rounded-3xl p-5 sm:p-7 shadow-lg relative overflow-hidden text-white"
+      className="bg-card border border-border rounded-2xl p-5 sm:p-7 shadow-sm relative overflow-hidden text-foreground"
     >
       {/* Header section */}
-      <div className="flex items-center justify-between flex-wrap gap-4 pb-4 border-b border-[#2D2D2A]">
+      <div className="flex items-center justify-between flex-wrap gap-4 pb-4 border-b border-border">
         <div className="flex items-center space-x-3.5">
-          <div className="w-12 h-12 rounded-2xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400 shrink-0 shadow-inner">
+          <div className="w-11 h-11 rounded-xl bg-secondary border border-border flex items-center justify-center text-primary shrink-0">
             <Volume2 className="w-6 h-6" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h3 className="text-base sm:text-lg font-bold text-white">
-                Pidgin Audio Script (Field Guide)
+              <h3 className="text-base sm:text-lg font-serif font-bold text-foreground">
+                Pidgin Audio Field Guide
               </h3>
-              <Badge variant="outline" className="text-xs py-0.5 bg-amber-500/15 text-amber-300 border-amber-500/30">
+              <Badge variant="outline" className="text-xs py-0.5">
                 Spoken Voice
               </Badge>
             </div>
-            <p className="text-xs sm:text-sm text-[#A3A19B] mt-0.5 font-normal">
-              Direct spoken instructions formulated in Nigerian Pidgin for rural field hands
+            <p className="text-xs sm:text-sm text-muted-foreground mt-0.5 font-normal">
+              Direct spoken instructions in Nigerian Pidgin for rural field hands
             </p>
           </div>
         </div>
@@ -232,23 +232,23 @@ export const PidginAudioPlayer: React.FC<PidginAudioPlayerProps> = ({
           variant="outline"
           size="default"
           onClick={handleCopyScript}
-          className="min-h-[48px] text-sm sm:text-base font-bold text-white bg-[#141412] hover:bg-[#20201D] border-[#2D2D2A] rounded-2xl cursor-pointer"
+          className="min-h-[48px] text-sm sm:text-base font-bold text-foreground bg-secondary hover:bg-secondary/80 border-border rounded-xl cursor-pointer"
           title="Copy Pidgin speech script to clipboard"
         >
-          {copied ? <Check className="w-4 h-4 text-amber-400 mr-1.5" /> : <Copy className="w-4 h-4 text-amber-400 mr-1.5" />}
+          {copied ? <Check className="w-4 h-4 text-primary mr-1.5" /> : <Copy className="w-4 h-4 text-primary mr-1.5" />}
           <span>{copied ? 'Copied to Clipboard!' : 'Copy Script'}</span>
         </Button>
       </div>
 
       {/* Audio Playback Controls */}
-      <div className="mt-5 flex items-center justify-between flex-wrap gap-4 bg-[#141412] rounded-2xl p-4 border border-[#2D2D2A]">
+      <div className="mt-5 flex items-center justify-between flex-wrap gap-4 bg-secondary/60 rounded-xl p-4 border border-border">
         <div className="flex items-center gap-3 flex-wrap">
           <Button
             id="btn-toggle-speech-play"
             type="button"
             variant="default"
             onClick={handleTogglePlay}
-            className="gap-2.5 px-6 py-3 min-h-[48px] text-base font-black bg-[#D97706] text-white hover:bg-[#B45309] shadow-[0_0_20px_rgba(217,119,6,0.4)] active:scale-95 rounded-2xl cursor-pointer"
+            className="gap-2.5 px-6 py-3 min-h-[48px] text-base font-bold bg-primary text-primary-foreground hover:bg-primary/90 active:scale-95 rounded-xl cursor-pointer"
           >
             {isPlaying ? (
               <>
@@ -270,29 +270,29 @@ export const PidginAudioPlayer: React.FC<PidginAudioPlayerProps> = ({
               variant="secondary"
               size="icon"
               onClick={handleRestart}
-              className="min-h-[48px] min-w-[48px] rounded-2xl border border-[#2D2D2A] bg-[#22221F] text-white hover:bg-[#2A2A26] cursor-pointer"
+              className="min-h-[48px] min-w-[48px] rounded-xl border border-border bg-secondary text-foreground hover:bg-secondary/80 cursor-pointer"
               title="Restart from beginning"
             >
-              <RotateCcw className="w-5 h-5 text-white" />
+              <RotateCcw className="w-5 h-5 text-foreground" />
             </Button>
           )}
 
-          {/* Animated visualizer waves when playing */}
+          {/* Visualizer bars when playing */}
           {isPlaying && (
-            <div className="hidden sm:flex items-center gap-1.5 pl-2">
-              <span className="w-1.5 h-4 bg-amber-500 rounded-full animate-pulse" />
-              <span className="w-1.5 h-6 bg-amber-400 rounded-full animate-pulse [animation-delay:150ms]" />
-              <span className="w-1.5 h-3 bg-amber-300 rounded-full animate-pulse [animation-delay:300ms]" />
-              <span className="w-1.5 h-7 bg-amber-500 rounded-full animate-pulse [animation-delay:75ms]" />
-              <span className="w-1.5 h-4 bg-amber-400 rounded-full animate-pulse [animation-delay:225ms]" />
+            <div className="hidden sm:flex items-center gap-1.5 pl-2" aria-hidden="true">
+              <span className="w-1.5 h-3 bg-primary rounded-full" />
+              <span className="w-1.5 h-5 bg-primary/80 rounded-full" />
+              <span className="w-1.5 h-2 bg-primary/60 rounded-full" />
+              <span className="w-1.5 h-6 bg-primary rounded-full" />
+              <span className="w-1.5 h-4 bg-primary/80 rounded-full" />
             </div>
           )}
         </div>
 
         {/* Speed Controls */}
         <div className="flex items-center gap-2.5 text-sm">
-          <span className="text-[#A3A19B] font-bold text-xs uppercase tracking-wider">Speed:</span>
-          <div className="inline-flex rounded-xl bg-[#22221F] p-1 border border-[#2D2D2A]">
+          <span className="text-muted-foreground font-bold text-xs uppercase tracking-wider">Speed:</span>
+          <div className="inline-flex rounded-xl bg-secondary p-1 border border-border">
             {[0.8, 0.88, 1.0].map((rate) => (
               <button
                 key={rate}
@@ -305,11 +305,11 @@ export const PidginAudioPlayer: React.FC<PidginAudioPlayerProps> = ({
                 }}
                 className={`min-h-[44px] px-3.5 py-2 rounded-lg transition-all font-bold text-xs sm:text-sm cursor-pointer ${
                   speechRate === rate
-                    ? 'bg-[#D97706] text-white shadow-md font-black'
-                    : 'text-[#A3A19B] hover:text-white hover:bg-white/5'
+                    ? 'bg-primary text-primary-foreground shadow-sm font-bold'
+                    : 'text-muted-foreground hover:text-foreground hover:bg-secondary/80'
                 }`}
               >
-                {rate === 0.8 ? 'Slow (0.8x)' : rate === 0.88 ? 'Field Cadence (0.88x)' : 'Normal (1x)'}
+                {rate === 0.8 ? 'Slow (0.8x)' : rate === 0.88 ? 'Field (0.88x)' : 'Normal (1x)'}
               </button>
             ))}
           </div>
@@ -318,18 +318,18 @@ export const PidginAudioPlayer: React.FC<PidginAudioPlayerProps> = ({
 
       {/* Visual fallback alert if audio synthesis fails */}
       {audioError && (
-        <div className="mt-4 bg-amber-950/40 border border-amber-600/40 rounded-2xl p-4 text-xs sm:text-sm text-amber-200 flex items-center justify-between gap-3 animate-in fade-in">
+        <div className="mt-4 bg-warning/15 border border-warning/30 rounded-xl p-4 text-xs sm:text-sm text-foreground flex items-center justify-between gap-3 animate-in fade-in">
           <div className="flex items-center gap-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-amber-400 shrink-0" />
+            <span className="w-2.5 h-2.5 rounded-full bg-warning shrink-0" />
             <p>
-              <strong className="text-white font-semibold">Audio notice: </strong>
+              <strong className="font-semibold text-foreground">Audio notice: </strong>
               {audioError}
             </p>
           </div>
           <button
             type="button"
             onClick={() => setAudioError(null)}
-            className="text-amber-400 hover:text-white font-bold text-xs uppercase tracking-wider shrink-0 px-2 py-1 rounded-md hover:bg-white/10 cursor-pointer transition-colors"
+            className="text-warning hover:underline font-bold text-xs uppercase tracking-wider shrink-0 px-2 py-1 rounded-md cursor-pointer"
           >
             Dismiss
           </button>
@@ -337,15 +337,15 @@ export const PidginAudioPlayer: React.FC<PidginAudioPlayerProps> = ({
       )}
 
       {/* Spoken Text Script with active sentence highlighting */}
-      <div className="mt-4 bg-[#121211] rounded-2xl p-5 border border-[#2D2D2A] max-h-60 overflow-y-auto leading-relaxed text-base">
-        <p className="text-[#E6E4DD]">
+      <div className="mt-4 bg-background rounded-xl p-4 border border-border max-h-60 overflow-y-auto leading-relaxed text-sm">
+        <p className="text-foreground">
           {sentences.map((sentence, idx) => (
             <span
               key={idx}
               className={`transition-colors duration-200 inline ${
                 currentSentenceIndex === idx
-                  ? 'bg-amber-500/30 text-white font-semibold px-1 rounded'
-                  : 'text-[#E6E4DD]'
+                  ? 'bg-primary/20 text-foreground font-semibold px-1 rounded'
+                  : 'text-foreground'
               }`}
             >
               {sentence}{' '}
@@ -354,13 +354,13 @@ export const PidginAudioPlayer: React.FC<PidginAudioPlayerProps> = ({
         </p>
       </div>
 
-      <div className="mt-3.5 flex items-center justify-between text-xs text-[#A3A19B]">
+      <div className="mt-3.5 flex items-center justify-between text-xs text-muted-foreground">
         <span className="flex items-center gap-1.5">
-          <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+          <Sparkles className="w-3.5 h-3.5 text-primary" />
           Native Nigerian Pidgin translation tuned for rural smallholders
         </span>
         {cropName && (
-          <span className="font-bold text-amber-400">
+          <span className="font-bold text-primary">
             Target Crop: {cropName}
           </span>
         )}

@@ -60,37 +60,34 @@ export const AgronomyGuide: React.FC = () => {
   ];
 
   return (
-    <div className="rounded-3xl p-6 sm:p-8 space-y-6 shadow-xl border border-white/10 bg-slate-950/80 backdrop-blur-2xl text-white">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-white/10">
+    <div className="rounded-xl p-6 sm:p-8 space-y-6 shadow-sm border border-border bg-card text-card-foreground">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-border">
         <div>
-          <h3 className="text-xl sm:text-2xl font-bold text-white flex items-center gap-2.5">
-            <BookOpen className="w-6 h-6 text-emerald-400" />
-            Global Crops Pathology Reference
+          <h3 className="text-xl sm:text-2xl font-serif font-bold text-foreground flex items-center gap-2.5">
+            <BookOpen className="w-6 h-6 text-primary" />
+            Crop Pathology Reference
           </h3>
-          <p className="text-sm text-slate-300 mt-1">
-            Key agronomic profiles, prevalent pathologies, and international treatment protocols
+          <p className="text-sm text-muted-foreground mt-1">
+            Common pathologies and field treatment protocols
           </p>
         </div>
-        <Badge variant="outline" className="self-start text-xs font-bold py-1 px-3 bg-emerald-500/15 text-emerald-300 border-emerald-500/30">
-          Global Enterprise Agriculture
-        </Badge>
       </div>
 
       {/* Preparation Recipes for Smallholders & Agronomists */}
-      <div className="bg-slate-900/40 border border-white/10 rounded-2xl p-5 sm:p-6 space-y-3.5 shadow-lg text-white">
-        <h4 className="text-base font-bold text-white flex items-center gap-2">
-          <Sparkles className="w-5 h-5 text-emerald-400" />
+      <div className="bg-secondary/40 border border-border rounded-xl p-5 sm:p-6 space-y-3.5 shadow-sm text-foreground">
+        <h4 className="text-base font-bold text-foreground flex items-center gap-2">
+          <Sparkles className="w-5 h-5 text-primary" />
           Standard Biological &amp; Cultural IPM Formulations
         </h4>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-slate-300">
-          <div className="bg-slate-900/60 p-4 rounded-2xl border border-white/10">
-            <strong className="text-emerald-400 block mb-1.5 text-sm font-black">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-muted-foreground">
+          <div className="bg-card p-4 rounded-xl border border-border">
+            <strong className="text-primary block mb-1.5 text-sm font-bold">
               1. Neem Botanical Bio-Pesticide &amp; Repellent
             </strong>
             Pound 1kg of fresh mature neem leaves or crushed dried seeds in 5L of water. Soak for 24-48 hours. Squeeze out residue through clean cloth. Dissolve 2 tablespoons of potassium black soap (acting as surfactant/sticker). Dilute with 10L clean water and spray onto crop leaves in calm morning hours.
           </div>
-          <div className="bg-slate-900/60 p-4 rounded-2xl border border-white/10">
-            <strong className="text-emerald-400 block mb-1.5 text-sm font-black">
+          <div className="bg-card p-4 rounded-xl border border-border">
+            <strong className="text-primary block mb-1.5 text-sm font-bold">
               2. Wood Ash Mineral Dusting Protocol
             </strong>
             Collect dry wood ash from clean hardwood hearths, sieve through wire mesh to remove char coals. Dust generously over yam mounds, around plantain bases, or mix 50:50 with dry sand to pour inside maize whorls. Wood ash deters chewing pests, desorbs slug slime, and delivers readily available potassium.
@@ -103,37 +100,37 @@ export const AgronomyGuide: React.FC = () => {
         {guideItems.map((item, idx) => (
           <div
             key={idx}
-            className="bg-slate-900/50 border border-white/10 rounded-2xl p-5 space-y-3.5 flex flex-col justify-between shadow-lg text-white"
+            className="bg-card border border-border rounded-xl p-5 space-y-3.5 flex flex-col justify-between shadow-sm text-foreground"
           >
             <div>
               <div className="flex items-center justify-between gap-2">
-                <h4 className="text-base font-bold text-white">
+                <h4 className="text-base font-bold text-foreground">
                   {item.crop}
                 </h4>
-                <Badge variant="outline" className="text-xs font-bold text-emerald-300 border-emerald-500/30 bg-emerald-500/10">
-                  Global Standard
+                <Badge variant="outline" className="text-xs font-semibold">
+                  Field Guide
                 </Badge>
               </div>
-              <p className="text-xs text-slate-400 mt-1">
+              <p className="text-xs text-muted-foreground mt-1">
                 <strong>Main Zones:</strong> {item.focusZones}
               </p>
-              <div className="mt-3 text-xs sm:text-sm text-emerald-100 bg-emerald-950/30 p-3 rounded-xl border border-emerald-500/30">
-                <strong className="text-emerald-400 block text-xs uppercase font-black mb-0.5">
+              <div className="mt-3 text-xs sm:text-sm text-foreground bg-secondary/60 p-3 rounded-xl border border-border">
+                <strong className="text-primary block text-xs uppercase font-bold mb-0.5">
                   Primary Diseases/Pests:
                 </strong>
                 {item.prevalentIssues}
               </div>
             </div>
 
-            <div className="space-y-2 pt-1 text-xs text-slate-300">
-              <div className="bg-slate-900/70 p-3 rounded-xl border border-white/10">
-                <strong className="text-emerald-400 block text-xs uppercase font-black mb-0.5">
+            <div className="space-y-2 pt-1 text-xs text-muted-foreground">
+              <div className="bg-secondary/50 p-3 rounded-xl border border-border">
+                <strong className="text-primary block text-xs uppercase font-bold mb-0.5">
                   Organic Control:
                 </strong>
                 {item.organicStandard}
               </div>
-              <div className="bg-slate-900/70 p-3 rounded-xl border border-white/10">
-                <strong className="text-slate-400 block text-xs uppercase font-black mb-0.5">
+              <div className="bg-secondary/50 p-3 rounded-xl border border-border">
+                <strong className="text-muted-foreground block text-xs uppercase font-bold mb-0.5">
                   Standard Agrochemical:
                 </strong>
                 {item.chemicalStandard}

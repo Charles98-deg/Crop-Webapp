@@ -8,13 +8,13 @@ const alertVariants = cva(
     variants: {
       variant: {
         default:
-          "border-emerald-500/30 bg-[#0D1C13]/85 text-white backdrop-blur-md shadow-lg",
+          "border-border bg-card text-card-foreground shadow-sm",
         destructive:
-          "border-red-500/40 bg-red-950/50 text-red-100 backdrop-blur-md shadow-lg [&>svg]:text-red-400",
+          "border-destructive/30 bg-destructive/15 text-foreground shadow-sm [&>svg]:text-destructive",
         warning:
-          "border-amber-500/40 bg-amber-950/50 text-amber-100 backdrop-blur-md shadow-lg [&>svg]:text-amber-400",
+          "border-warning/30 bg-warning/15 text-foreground shadow-sm [&>svg]:text-warning",
         success:
-          "border-emerald-500/40 bg-emerald-950/50 text-emerald-100 backdrop-blur-md shadow-lg [&>svg]:text-[#22C55E]",
+          "border-primary/30 bg-primary/15 text-foreground shadow-sm [&>svg]:text-primary",
       },
     },
     defaultVariants: {
@@ -42,7 +42,7 @@ function AlertTitle({ className, ...props }: React.ComponentProps<"h5">) {
   return (
     <h5
       data-slot="alert-title"
-      className={cn("font-bold leading-snug tracking-tight text-base sm:text-lg text-white", className)}
+      className={cn("font-bold leading-snug tracking-tight text-base sm:text-lg text-foreground", className)}
       {...props}
     />
   );
@@ -52,7 +52,7 @@ function AlertDescription({ className, ...props }: React.ComponentProps<"div">) 
   return (
     <div
       data-slot="alert-description"
-      className={cn("mt-1.5 text-sm sm:text-base leading-relaxed text-slate-200 [&_p]:leading-relaxed", className)}
+      className={cn("mt-1.5 text-sm sm:text-base leading-relaxed text-muted-foreground [&_p]:leading-relaxed", className)}
       {...props}
     />
   );
