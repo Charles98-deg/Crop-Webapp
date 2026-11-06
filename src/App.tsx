@@ -5,6 +5,7 @@ import { ImageUploader } from './components/ImageUploader';
 import { DiagnosisResultView } from './components/DiagnosisResultView';
 import { AgronomyGuide } from './components/AgronomyGuide';
 import { LandingPage } from './components/LandingPage';
+import { PricingView } from './components/PricingView';
 import { ConnectivityStatus } from './components/ConnectivityStatus';
 import { PathologyDiagnosis, WestAfricanCrop, FieldSample } from './types';
 import { FIELD_SAMPLES } from './data/fieldSamples';
@@ -25,6 +26,7 @@ import {
   CloudSun,
   Grid,
   FileText,
+  Tag,
 } from 'lucide-react';
 
 const LOADING_STAGES = [
@@ -47,7 +49,7 @@ const LOADING_STAGES = [
 ];
 
 export default function App() {
-  const [activeView, setActiveView] = useState<'landing' | 'scanner'>('landing');
+  const [activeView, setActiveView] = useState<'landing' | 'scanner' | 'pricing'>('landing');
   const [diagnosis, setDiagnosis] = useState<PathologyDiagnosis | null>(null);
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
   const [lastSelectedParams, setLastSelectedParams] = useState<{
@@ -356,10 +358,18 @@ export default function App() {
       </AnimatePresence>
 
       {/* =========================================================================
-          VIEW SWITCHER (LANDING VS SCANNER DASHBOARD)
+          VIEW SWITCHER (LANDING VS SCANNER DASHBOARD VS PRICING PREVIEW)
           ========================================================================= */}
       {activeView === 'landing' ? (
-        <LandingPage onStart={handleStartScanner} />
+        <LandingPage
+          onStart={handleStartScanner}
+          onOpenPricing={() => setActiveView('pricing')}
+        />
+      ) : activeView === 'pricing' ? (
+        <PricingView
+          onBack={() => setActiveView('landing')}
+          onStartScan={handleStartScanner}
+        />
       ) : (
         <div className="flex-1 flex flex-col md:flex-row min-h-screen">
           {/* =========================================================================
@@ -436,6 +446,15 @@ export default function App() {
                   <ArrowLeft className="w-5 h-5" />
                   <span>Landing Page</span>
                 </button>
+
+                <button
+                  type="button"
+                  onClick={() => setActiveView('pricing')}
+                  className="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors cursor-pointer"
+                >
+                  <Tag className="w-5 h-5 text-primary" />
+                  <span>Pricing</span>
+                </button>
               </nav>
             </div>
 
@@ -449,7 +468,10 @@ export default function App() {
               MAIN CONTENT CONTAINER
               ========================================================================= */}
           <div className="flex-1 flex flex-col min-w-0">
-            <Header onOpenGuide={() => setShowGuideModal(true)} />
+            <Header
+              onOpenGuide={() => setShowGuideModal(true)}
+              onOpenPricing={() => setActiveView('pricing')}
+            />
 
             <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6 pb-28 md:pb-12">
               {/* Error Message Display */}

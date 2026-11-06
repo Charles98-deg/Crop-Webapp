@@ -4,6 +4,7 @@ import { Scan, ShieldCheck, Clock, Sprout } from 'lucide-react';
 
 interface LandingPageProps {
   onStart?: () => void;
+  onOpenPricing?: () => void;
 }
 
 const CROP_IMAGES = [
@@ -15,7 +16,7 @@ const CROP_IMAGES = [
   { src: '/hero-poster.jpg', alt: 'Global agricultural landscape' },
 ];
 
-export const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
+export const LandingPage: React.FC<LandingPageProps> = ({ onStart, onOpenPricing }) => {
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
@@ -205,6 +206,19 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
               </p>
             </div>
           </motion.div>
+
+          {/* Quiet Footer Link to Pricing Preview */}
+          {onOpenPricing && (
+            <motion.div variants={itemVariants} className="pt-4 text-center">
+              <button
+                type="button"
+                onClick={onOpenPricing}
+                className="text-xs text-muted-foreground hover:text-foreground transition-colors underline-offset-4 hover:underline cursor-pointer min-h-[44px] inline-flex items-center"
+              >
+                Pricing preview
+              </button>
+            </motion.div>
+          )}
         </motion.div>
       </div>
     </div>

@@ -4,10 +4,11 @@ import { Sprout, BookOpen, Activity } from 'lucide-react';
 
 interface HeaderProps {
   onOpenGuide?: () => void;
+  onOpenPricing?: () => void;
   activeTab?: string;
 }
 
-export const Header: React.FC<HeaderProps> = ({ onOpenGuide }) => {
+export const Header: React.FC<HeaderProps> = ({ onOpenGuide, onOpenPricing }) => {
   return (
     <header
       id="main-app-header"
@@ -31,6 +32,16 @@ export const Header: React.FC<HeaderProps> = ({ onOpenGuide }) => {
 
         {/* Action Controls */}
         <div className="flex items-center gap-2.5">
+          {onOpenPricing && (
+            <button
+              type="button"
+              onClick={onOpenPricing}
+              className="text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors px-2.5 py-1.5 rounded-lg hover:bg-secondary cursor-pointer min-h-[44px] flex items-center"
+            >
+              Pricing
+            </button>
+          )}
+
           {onOpenGuide && (
             <motion.button
               type="button"
